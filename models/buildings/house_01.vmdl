@@ -1,0 +1,273 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:modeldoc29:version{3cec427c-1b0e-4d48-a90a-0436f33a6041} -->
+{
+	rootNode = 
+	{
+		_class = "RootNode"
+		children = 
+		[
+			{
+				_class = "BodyGroupList"
+				children = 
+				[
+					{
+						_class = "BodyGroup"
+						name = "base"
+						children = 
+						[
+							{
+								_class = "BodyGroupChoice"
+								meshes = 
+								[
+									"house0",
+								]
+							},
+							{
+								_class = "BodyGroupChoice"
+								meshes = 
+								[
+									"house1",
+								]
+							},
+							{
+								_class = "BodyGroupChoice"
+								meshes = 
+								[
+									"house2",
+								]
+							},
+							{
+								_class = "BodyGroupChoice"
+								meshes = 
+								[
+									"house3",
+								]
+							},
+							{
+								_class = "BodyGroupChoice"
+								meshes = 
+								[
+									"house4",
+								]
+							},
+						]
+						hidden_in_tools = false
+					},
+					{
+						_class = "BodyGroup"
+						name = "floor"
+						hidden_in_tools = false
+					},
+					{
+						_class = "BodyGroup"
+						name = "floor2"
+						hidden_in_tools = false
+					},
+				]
+			},
+			{
+				_class = "MaterialGroupList"
+				children = 
+				[
+					{
+						_class = "DefaultMaterialGroup"
+						name = "house1"
+						remaps = 
+						[
+							{
+								from = "texture.vmat"
+								to = "materials/buildings/house_1.vmat"
+							},
+						]
+						use_global_default = false
+						global_default_material = ""
+					},
+					{
+						_class = "MaterialGroup"
+						name = "house2"
+						remaps = 
+						[
+							{
+								from = "materials/buildings/house_1.vmat"
+								to = "materials/buildings/house_2.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "house3"
+						remaps = 
+						[
+							{
+								from = "materials/buildings/house_1.vmat"
+								to = "materials/buildings/house_3.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "house4"
+						remaps = 
+						[
+							{
+								from = "materials/buildings/house_1.vmat"
+								to = "materials/buildings/house_4.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "house5"
+						remaps = 
+						[
+							{
+								from = "materials/buildings/house_1.vmat"
+								to = "materials/buildings/house_5.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "house6"
+						remaps = 
+						[
+							{
+								from = "materials/buildings/house_1.vmat"
+								to = "materials/buildings/house_6.vmat"
+							},
+						]
+					},
+				]
+			},
+			{
+				_class = "PhysicsShapeList"
+				children = 
+				[
+					{
+						_class = "PhysicsShapeBox"
+						parent_bone = ""
+						surface_prop = "default"
+						collision_group = ""
+						collision_interact_as = ""
+						collision_interact_with = ""
+						collision_interact_exclude = ""
+						origin = [ 0.0, 0.0, 2.5 ]
+						angles = [ 0.0, 0.0, 0.0 ]
+						dimensions = [ 200.0, 200.0, 25.0 ]
+					},
+				]
+			},
+			{
+				_class = "RenderMeshList"
+				children = 
+				[
+					{
+						_class = "RenderMeshFile"
+						name = "house0"
+						filename = "raw/models/buildings/House.fbx"
+						import_translation = [ -25.0, 0.0, 12.5 ]
+						import_rotation = [ 0.0, 0.0, 0.0 ]
+						import_scale = 1.0
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						parent_bone = ""
+						import_filter = 
+						{
+							exclude_by_default = true
+							exception_list = 
+							[
+								"Cube_011",
+							]
+						}
+					},
+					{
+						_class = "RenderMeshFile"
+						name = "house1"
+						filename = "raw/models/buildings/House2.fbx"
+						import_translation = [ 0.0, 0.0, 12.5 ]
+						import_rotation = [ 0.0, 0.0, 0.0 ]
+						import_scale = 1.0
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						parent_bone = ""
+						import_filter = 
+						{
+							exclude_by_default = false
+							exception_list = [  ]
+						}
+					},
+					{
+						_class = "RenderMeshFile"
+						name = "house2"
+						filename = "raw/models/buildings/House3.fbx"
+						import_translation = [ 0.0, 0.0, 12.5 ]
+						import_rotation = [ 0.0, 0.0, 0.0 ]
+						import_scale = 1.0
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						parent_bone = ""
+						import_filter = 
+						{
+							exclude_by_default = false
+							exception_list = [  ]
+						}
+					},
+					{
+						_class = "RenderMeshFile"
+						name = "house3"
+						filename = "raw/models/buildings/House4.fbx"
+						import_translation = [ 0.0, 0.0, 12.5 ]
+						import_rotation = [ 0.0, 0.0, 0.0 ]
+						import_scale = 0.8
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						parent_bone = ""
+						import_filter = 
+						{
+							exclude_by_default = false
+							exception_list = [  ]
+						}
+					},
+					{
+						_class = "RenderMeshFile"
+						name = "house4"
+						filename = "raw/models/buildings/House5.fbx"
+						import_translation = [ 0.0, 0.0, 12.5 ]
+						import_rotation = [ 0.0, 0.0, 0.0 ]
+						import_scale = 0.9
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						parent_bone = ""
+						import_filter = 
+						{
+							exclude_by_default = false
+							exception_list = [  ]
+						}
+					},
+					{
+						_class = "RenderPrimitiveBox"
+						name = "floor"
+						parent_bone = ""
+						material_name = "materials/simple/simple_green_01.vmat"
+						origin = [ 0.0, 0.0, 11.0 ]
+						angles = [ 0.0, 0.0, 0.0 ]
+						max_u = 1.0
+						max_v = 1.0
+						dimensions = [ 200.0, 200.0, 10.0 ]
+						segments_x = 1
+						segments_y = 1
+						segments_z = 1
+						invert = false
+					},
+				]
+			},
+		]
+		model_archetype = ""
+		primary_associated_entity = ""
+		anim_graph_name = ""
+	}
+}

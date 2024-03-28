@@ -1,0 +1,13 @@
+{
+	"ui": false,
+	"volume": 0.200000,
+	"volumerandom": 0.000000,
+	"pitch": 1.000000,
+	"pitchrandom": 0.000000,
+	"distancemax": 200.000000,
+	"sounds":
+	[
+		"sounds/vehicles/generic/rev.loop.ogg"
+	],
+	"selectionmode": "3"
+}

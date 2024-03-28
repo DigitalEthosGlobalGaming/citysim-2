@@ -1,0 +1,5584 @@
+{
+  "__guid": "9f832399-4887-46b0-8f21-2ee284f538e2",
+  "GameObjects": [
+    {
+      "__guid": "bfc59c12-1ed2-4f91-8956-a95a315eac3c",
+      "Name": "Sun",
+      "Rotation": "-0.0729315,0.4822396,0.1305433,0.8631827",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "DirectionalLight",
+          "__guid": "0f52f3d3-7c6c-46ee-a3b2-d6d3eb778e15",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "0.94419,0.97767,1,1",
+          "Shadows": true,
+          "SkyColor": "0.2532,0.32006,0.35349,1"
+        }
+      ]
+    },
+    {
+      "__guid": "00344a8c-fa5e-45ae-b12a-10bb781a1dc3",
+      "Name": "2D Skybox",
+      "Tags": "skybox",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "SkyBox2D",
+          "__guid": "129c1726-9ad7-4026-b866-facc45f165af",
+          "SkyMaterial": "materials/skybox/light_test_sky_sunny03.vmat",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "EnvmapProbe",
+          "__guid": "b6f62638-7bde-44f8-badd-eab17642e06a",
+          "Bounds": {
+            "Mins": "-512,-512,-512",
+            "Maxs": "512,512,512"
+          },
+          "Feathering": 0.02,
+          "Projection": "Sphere",
+          "Texture": "textures/cubemaps/default2.vtex",
+          "TintColor": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "3ee1c9f4-07be-4e0b-8b23-67bee2d8ec8a",
+      "Name": "Camera",
+      "Position": "-267.452,-379.653,297.7903",
+      "Rotation": "-0.1448582,0.2860239,0.4279631,0.8450171",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "CameraComponent",
+          "__guid": "a213d8f0-d7f9-4390-8ded-ee50f7a6e064",
+          "BackgroundColor": "0.33333,0.46275,0.52157,1",
+          "ClearFlags": "All",
+          "FieldOfView": 60,
+          "IsMainCamera": true,
+          "Orthographic": false,
+          "OrthographicHeight": 1204,
+          "Priority": 1,
+          "RenderExcludeTags": "",
+          "RenderTags": "",
+          "TargetEye": "None",
+          "Viewport": "0,0,1,1",
+          "ZFar": 10000,
+          "ZNear": 10
+        },
+        {
+          "__type": "Bloom",
+          "__guid": "43db939c-c75e-45c9-b3be-bc446f16383d",
+          "BloomColor": {
+            "color": [
+              {
+                "c": "1,1,1,1"
+              },
+              {
+                "t": 1,
+                "c": "1,1,1,1"
+              }
+            ],
+            "alpha": []
+          },
+          "BloomCurve": [
+            {
+              "y": 0.5
+            },
+            {
+              "x": 1,
+              "y": 1
+            }
+          ],
+          "Mode": "Additive",
+          "Strength": 0.5,
+          "Threshold": 0.5,
+          "ThresholdWidth": 0.5
+        },
+        {
+          "__type": "Tonemapping",
+          "__guid": "605ed550-a848-4490-8a8c-7acc6b68ca6c",
+          "ExposureCompensation": 0,
+          "MaximumExposure": 2,
+          "MinimumExposure": 1,
+          "Rate": 1
+        },
+        {
+          "__type": "Sharpen",
+          "__guid": "47ba7bc0-d216-4c2b-9489-b05cfa410c1a",
+          "Scale": 0.2
+        }
+      ]
+    },
+    {
+      "__guid": "fb08b6d8-5164-4197-8c85-a41c69ec3059",
+      "Name": "Test",
+      "Position": "-126.4292,-187.5311,115.5769",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "GridMap",
+          "__guid": "797d9fa8-62fc-4e74-b7f5-1acd130ac2ac",
+          "AmountToCreateAtOnce": 10,
+          "GridSize": "200,200",
+          "GridSpaceTemplate": {
+            "_type": "gameobject",
+            "prefab": "prefabs/gridspace.prefab"
+          },
+          "XSize": 15,
+          "YSize": 15
+        },
+        {
+          "__type": "PathfindingTester",
+          "__guid": "86de327d-4a6f-4512-954e-738e3db5579f",
+          "__enabled": false,
+          "Map": {
+            "_type": "component",
+            "component_id": "797d9fa8-62fc-4e74-b7f5-1acd130ac2ac",
+            "go": "fb08b6d8-5164-4197-8c85-a41c69ec3059",
+            "component_type": "GridMap"
+          },
+          "RunInterval": 1
+        }
+      ],
+      "Children": [
+        {
+          "__guid": "b05e8d0a-ac60-4cd5-927d-7f609db4ab40",
+          "Name": "GridSpace_0_0",
+          "Position": "-1500,-1500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "3f69a15f-9637-4448-b5f7-de03c1126aff",
+              "Blocked": false,
+              "GridPosition": "0,0"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "e3f3d8e9-4b32-4f6c-a0b8-e8627cd34a2a",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "534df579-0915-43f6-924f-41ef6eee3f61",
+          "Name": "GridSpace_0_1",
+          "Position": "-1500,-1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "39b9b5b5-f1d5-4130-bf3d-bdcbbab790a9",
+              "Blocked": false,
+              "GridPosition": "0,1"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "d12289cd-62e6-43a5-a572-f9daac63d5e5",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "956dd72f-b064-4b05-b8b3-52874f65d281",
+          "Name": "GridSpace_0_2",
+          "Position": "-1500,-1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "9cd9f76e-03ae-4c4a-9bcc-5b7d7af3f6dc",
+              "Blocked": false,
+              "GridPosition": "0,2"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "1af88d27-7463-40f8-b7fb-f0a15228e782",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "ffc75ab2-eaa8-4e8d-9dbc-974ce784e6fe",
+          "Name": "GridSpace_0_3",
+          "Position": "-1500,-900,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "389d12b4-8319-47bd-a68a-87b83e092e58",
+              "Blocked": false,
+              "GridPosition": "0,3"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "bd589c56-1902-4656-8eab-05c432b5811d",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "f16ed6ab-f50c-4811-9a49-5fd89f83eaca",
+          "Name": "GridSpace_0_4",
+          "Position": "-1500,-700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "02ef2c59-1d31-4fcf-97e0-d760ba7ea4ba",
+              "Blocked": false,
+              "GridPosition": "0,4"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "32c310af-c969-4f53-9500-3b9fb7047f1e",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "4612f1e1-8c24-4e12-9d24-af531cbdc818",
+          "Name": "GridSpace_0_5",
+          "Position": "-1500,-500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "82b81c11-14cf-482d-bd7f-d0f03a3f837e",
+              "Blocked": false,
+              "GridPosition": "0,5"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "ba8154b3-9d75-484a-baae-bfeb5ddf6846",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "a7420603-a32e-46de-a8bb-3e1d5aaa0c45",
+          "Name": "GridSpace_0_6",
+          "Position": "-1500,-300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "d89bda3b-060b-4c78-bbd2-9b9f60ad9631",
+              "Blocked": false,
+              "GridPosition": "0,6"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "d99defd2-06b3-4a37-abfb-5f6ef94b50ff",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "b52c1089-2fed-4dad-8253-9f75d3969b9d",
+          "Name": "GridSpace_0_7",
+          "Position": "-1500,-100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "66f67ae5-d049-4320-a491-cc0c3c216541",
+              "Blocked": false,
+              "GridPosition": "0,7"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "4789db0e-f69c-4ba7-87f6-fdefb35908e7",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "d0938ce9-18e9-4206-84c9-cd1caa3083ab",
+          "Name": "GridSpace_0_8",
+          "Position": "-1500,99.99997,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "d62fd3aa-064e-4d0e-aaaa-826207b7f48b",
+              "Blocked": false,
+              "GridPosition": "0,8"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "1f5401dc-0608-4498-a011-2bcbd67fd1fc",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "fa4512d1-de26-49b7-a200-3dc732c9b9d2",
+          "Name": "GridSpace_0_9",
+          "Position": "-1500,300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "ee3cb625-cd32-42cd-bf9f-34c508a00649",
+              "Blocked": false,
+              "GridPosition": "0,9"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "4b32d7e8-d21d-40ba-a137-b03cf462350a",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "dc4892fe-89d7-46e0-afea-125f918c5356",
+          "Name": "GridSpace_0_10",
+          "Position": "-1500,500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "f595e726-dc44-468d-bf35-a26e6306545d",
+              "Blocked": false,
+              "GridPosition": "0,10"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "4a3052a3-0ccd-4a42-ab9a-5720fa77535c",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "8aa5f74a-478a-4475-985f-904d44a34957",
+          "Name": "GridSpace_0_11",
+          "Position": "-1500,700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "56a8fed4-b542-4ec0-9d82-62df0269a8a6",
+              "Blocked": false,
+              "GridPosition": "0,11"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "354a63e3-0a49-4783-a757-07c637aeb03f",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "9fa01a07-a237-4686-860b-2f810f85821c",
+          "Name": "GridSpace_0_12",
+          "Position": "-1500,900.0001,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "3cebe9b3-f63f-483d-bb7e-4e2d21d79640",
+              "Blocked": false,
+              "GridPosition": "0,12"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "9ce3382d-9968-44b0-a40b-e48b739ddc8a",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "a54f92f0-bb91-4481-91ff-608a4a890365",
+          "Name": "GridSpace_0_13",
+          "Position": "-1500,1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "7fb07ed0-48dd-4ffd-a8bf-33c28277f49b",
+              "Blocked": false,
+              "GridPosition": "0,13"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "d450d876-03ed-48b2-802e-d14ff05183f8",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "210a65c4-4fd8-4c96-9770-7d7d1e538bfa",
+          "Name": "GridSpace_0_14",
+          "Position": "-1500,1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "3c4870da-d18b-4320-a33f-cc01c5b575fd",
+              "Blocked": false,
+              "GridPosition": "0,14"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "8835b71c-ea9d-421d-975f-2f6004470a09",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "0895e9b6-c1dd-4e9f-b2e7-909b08636c16",
+          "Name": "GridSpace_1_0",
+          "Position": "-1300,-1500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "c3e2e866-30e0-4b04-826f-eea8c9d3d97d",
+              "Blocked": false,
+              "GridPosition": "1,0"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "a2a95939-397b-4ab9-a9d6-bf4fb03cd20b",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "fd0a86bf-1130-4720-925a-315eddd4f7fb",
+          "Name": "GridSpace_1_1",
+          "Position": "-1300,-1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "19ebda1e-55ce-4dc6-8b0d-13faa815fb1e",
+              "Blocked": false,
+              "GridPosition": "1,1"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "41fe46cf-a2a0-4926-bac2-377614840bee",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "e7f4046f-4e4c-4254-b1a6-1cbd82cc9519",
+          "Name": "GridSpace_1_2",
+          "Position": "-1300,-1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "47d03e44-d3b3-4928-a15b-b0614c8d79b8",
+              "Blocked": false,
+              "GridPosition": "1,2"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "a6553236-d8a5-4896-b038-06751953958d",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "3536ac1e-c22a-40f9-9910-67a0377b353f",
+          "Name": "GridSpace_1_3",
+          "Position": "-1300,-900,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "c292a7d8-86b9-4860-ada9-944c43ee79c4",
+              "Blocked": false,
+              "GridPosition": "1,3"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "83c5fe6e-3f14-4830-9ec2-89c2783990f5",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "bbdbfbad-799d-40d6-b3e1-35e252784fb7",
+          "Name": "GridSpace_1_4",
+          "Position": "-1300,-700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "e90edefc-7210-4db9-91dc-8083050b69f1",
+              "Blocked": false,
+              "GridPosition": "1,4"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "a276a034-f55b-4cd2-a05c-334d4a248d5b",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "f4c1dea9-7832-4b31-820d-55c22658fb94",
+          "Name": "GridSpace_1_5",
+          "Position": "-1300,-500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "aceb62cb-10d0-43b8-8612-25abde9e467c",
+              "Blocked": false,
+              "GridPosition": "1,5"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "4ff8af5e-c3b9-41a0-814e-68156046db05",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "5d660260-cecc-4d5d-ae73-3d6290fac41c",
+          "Name": "GridSpace_1_6",
+          "Position": "-1300,-300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "80c15f7a-79c2-47ec-b15c-2320759fea57",
+              "Blocked": false,
+              "GridPosition": "1,6"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "5433ec30-5a04-43bf-84a7-8987fee6feda",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "ffdb78b4-3516-4f6b-81d3-2a85de2199a5",
+          "Name": "GridSpace_1_7",
+          "Position": "-1300,-100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "732bedca-2fd0-461b-956b-60498885d671",
+              "Blocked": false,
+              "GridPosition": "1,7"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "206d6b6a-162e-4449-b180-d26ad5077a4b",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "b7b8e044-3614-4468-a32f-30b68ad044bb",
+          "Name": "GridSpace_1_8",
+          "Position": "-1300,99.99997,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "a8b278bc-6977-47d3-9d37-5bd7a9f96518",
+              "Blocked": false,
+              "GridPosition": "1,8"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "e796c026-76af-465d-b9b9-eea3397516af",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "3d5fc621-e236-42db-9f31-3d69d6d9f6f1",
+          "Name": "GridSpace_1_9",
+          "Position": "-1300,300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "66712c94-812a-4594-878e-d5e1d6816b2d",
+              "Blocked": false,
+              "GridPosition": "1,9"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "9f117194-78e7-481f-9987-7ff1a44af22d",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "b8081775-5177-446f-affa-5b6a728016af",
+          "Name": "GridSpace_1_10",
+          "Position": "-1300,500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "e7109f6e-582d-4b6a-ba5f-03a12bb4ce64",
+              "Blocked": false,
+              "GridPosition": "1,10"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "c22e9011-a09d-4daf-97f7-cfb72172bc8b",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "09563029-272e-4034-adda-3cbf525165ff",
+          "Name": "GridSpace_1_11",
+          "Position": "-1300,700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "ffa13d08-ece4-4b44-b4f0-781a5f32f8e0",
+              "Blocked": false,
+              "GridPosition": "1,11"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "7ad7a489-1e7c-4366-89b1-423f3995ce10",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "e4dab311-7e02-4af1-ba59-5712b1f275a3",
+          "Name": "GridSpace_1_12",
+          "Position": "-1300,900.0001,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "76008c59-b787-43a8-a6d1-2c610fba3ccf",
+              "Blocked": false,
+              "GridPosition": "1,12"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "7da83036-5721-4317-9918-7966a18cc555",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "4c23d00a-e69e-4e42-a05b-8fa35ad3edec",
+          "Name": "GridSpace_1_13",
+          "Position": "-1300,1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "2bb67cf2-1268-49b4-a6d6-b1451ef2ebfa",
+              "Blocked": false,
+              "GridPosition": "1,13"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "965360aa-0c75-4871-82d0-d2bf926cd72f",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "6208a5d6-6a3d-4c2c-b57c-8b5b6087448e",
+          "Name": "GridSpace_1_14",
+          "Position": "-1300,1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "d5c4f368-8438-4f41-95af-d868eecaf25d",
+              "Blocked": false,
+              "GridPosition": "1,14"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "26655389-45cc-410b-9f1f-c2572d1af4d0",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "5183cc08-fefa-4b4d-8ac2-bea5fe63ae8d",
+          "Name": "GridSpace_2_0",
+          "Position": "-1100,-1500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "1f34c3d6-3a2d-4d3c-9af0-9e7966087e14",
+              "Blocked": false,
+              "GridPosition": "2,0"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "f46dc30f-a4a7-4d3d-9ffc-7809fdce441b",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "02c8d6a4-0982-463a-847f-93ae18407ed4",
+          "Name": "GridSpace_2_1",
+          "Position": "-1100,-1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "06715174-c0f5-481a-9f07-6f0dcef389b5",
+              "Blocked": false,
+              "GridPosition": "2,1"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "83e9ffa6-a7be-4228-88e4-cc2c20dcf19b",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "b8e59bcc-587f-4d52-a48a-2c71b515e082",
+          "Name": "GridSpace_2_2",
+          "Position": "-1100,-1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "255eccb8-6a61-46b9-b478-95b39851d153",
+              "Blocked": false,
+              "GridPosition": "2,2"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "b4e5ffb7-7305-4a92-a035-64faaf5840da",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "b2063e22-f22b-472f-8a2e-ce823b72d4b0",
+          "Name": "GridSpace_2_3",
+          "Position": "-1100,-900,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "db979b14-8ee5-4106-a66d-085c47df8bbc",
+              "Blocked": false,
+              "GridPosition": "2,3"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "42be3316-b24d-44a8-a5eb-2852feb2b2e5",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "d2336220-381a-4977-9201-9ff69ba38fd8",
+          "Name": "GridSpace_2_4",
+          "Position": "-1100,-700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "5bc1335f-a81d-4554-8af9-672e03e7aeeb",
+              "Blocked": false,
+              "GridPosition": "2,4"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "be9970e2-b169-4476-9891-e9039739c2cb",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "29c30c7b-2ba4-4992-8882-845fcece22d8",
+          "Name": "GridSpace_2_5",
+          "Position": "-1100,-500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "dfa345f4-bc1a-4964-af8f-716cff971cee",
+              "Blocked": false,
+              "GridPosition": "2,5"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "4e01eec5-3fbd-4ac3-b971-6db295eb84a9",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "96e41b7c-3e70-4162-9c71-72215b1ee183",
+          "Name": "GridSpace_2_6",
+          "Position": "-1100,-300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "4109879b-716e-44ae-aeca-31442d3ba600",
+              "Blocked": false,
+              "GridPosition": "2,6"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "b293f447-c574-4764-b11b-04f9d65a15a8",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "7619e7e7-d049-48e7-8a14-ec47c49e6301",
+          "Name": "GridSpace_2_7",
+          "Position": "-1100,-100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "2029f2f2-0a7d-45a4-9019-b04b1ed8ab53",
+              "Blocked": false,
+              "GridPosition": "2,7"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "0c765a74-d984-42bf-9399-c0efdd2f5c12",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "b00699a8-54ee-4c70-af04-d4cb6c6df80e",
+          "Name": "GridSpace_2_8",
+          "Position": "-1100,99.99997,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "8ce87a77-3d4f-4811-b53a-75344c2fe158",
+              "Blocked": false,
+              "GridPosition": "2,8"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "700c5aef-76d6-437e-9f41-4936b877bb80",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "b5467ba0-e40e-4647-a781-74a469fb8a69",
+          "Name": "GridSpace_2_9",
+          "Position": "-1100,300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "ea3f9365-48cc-4346-8614-ec6f427fd8c1",
+              "Blocked": false,
+              "GridPosition": "2,9"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "1a57f527-cb73-4dde-9f21-2c89ad6ad4bc",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "5bdbace2-f210-4e52-ac84-e0639feda069",
+          "Name": "GridSpace_2_10",
+          "Position": "-1100,500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "6c5c9b31-9c36-4bc9-bd63-15a9df26504a",
+              "Blocked": false,
+              "GridPosition": "2,10"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "218a3262-9ed7-4844-bff8-5d7b4ce3549c",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "622632fb-8439-420c-b66b-ce1acd1ab605",
+          "Name": "GridSpace_2_11",
+          "Position": "-1100,700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "d566a48e-0212-41bd-b5f7-ca17e0171358",
+              "Blocked": false,
+              "GridPosition": "2,11"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "6b93c1b9-5dc9-4abf-8951-6a1b13c3e803",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "2e5f470b-f6c9-4cc2-b25f-6e6947e9115e",
+          "Name": "GridSpace_2_12",
+          "Position": "-1100,900.0001,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "6e88ce48-bb11-4771-a67c-2ca3256894fe",
+              "Blocked": false,
+              "GridPosition": "2,12"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "0ada9fdb-aec2-440d-9c4a-db85918f9101",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "5f5dade7-638d-423b-869b-7ca5bdaf4fdd",
+          "Name": "GridSpace_2_13",
+          "Position": "-1100,1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "0c5e8df0-8cc3-4d15-9bbc-30b350a21032",
+              "Blocked": false,
+              "GridPosition": "2,13"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "5307aaab-be8d-4696-b95f-1962b53e5bfd",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "4a109d2d-7d9a-4932-9d74-216d12b18a1d",
+          "Name": "GridSpace_2_14",
+          "Position": "-1100,1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "9e21f886-1444-4598-8b1d-411b8f471a8e",
+              "Blocked": false,
+              "GridPosition": "2,14"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "90bf1968-6cb9-43e6-ac4f-376d7ee2212e",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "8893d332-2048-4f9f-8e38-da97a5651554",
+          "Name": "GridSpace_3_0",
+          "Position": "-900,-1500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "bc969b4e-9644-489e-bca7-cc2233a86010",
+              "Blocked": false,
+              "GridPosition": "3,0"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "401ca021-ad50-4ca4-a119-23583aab6e73",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "43506faf-524c-414a-a234-3c693ea975a3",
+          "Name": "GridSpace_3_1",
+          "Position": "-900,-1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "dd564d97-16fd-477c-ae83-2406449e0763",
+              "Blocked": false,
+              "GridPosition": "3,1"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "9e1942a0-5286-4933-b016-d819cbc83b34",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "2cff2fc6-2124-4fb2-bc8b-541df02e7b23",
+          "Name": "GridSpace_3_2",
+          "Position": "-900,-1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "0f0e7e1d-dc23-471b-b8fa-be411ac9c9a3",
+              "Blocked": false,
+              "GridPosition": "3,2"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "261a78b5-c0a9-41e9-8ea9-996d45f7f332",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "62cac8bb-f33f-4662-8c6f-cd108e4c06e7",
+          "Name": "GridSpace_3_3",
+          "Position": "-900,-900,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "46bf9d87-2247-4bab-a6d7-1fe5ab759416",
+              "Blocked": false,
+              "GridPosition": "3,3"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "9eaf763e-870d-4ad1-ae96-6763cb63dfb0",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "3a384ed6-4743-4e08-a5dc-aa9c1e1eb546",
+          "Name": "GridSpace_3_4",
+          "Position": "-900,-700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "243791d1-3cc5-4be4-a01d-e39640de613f",
+              "Blocked": false,
+              "GridPosition": "3,4"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "61d39f77-4fdd-4e5b-9dc5-296ab0f6bde1",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "70aec5d2-8c05-43bb-80ee-7d7576ec36e3",
+          "Name": "GridSpace_3_5",
+          "Position": "-900,-500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "aa1f734a-c451-47fa-83a5-4bb394120c65",
+              "Blocked": false,
+              "GridPosition": "3,5"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "db95a3a6-9d8b-4ef0-86a5-c59e4690d379",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "45f195f0-f0bc-4ed7-bfb5-36054423872a",
+          "Name": "GridSpace_3_6",
+          "Position": "-900,-300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "32904c9f-6af7-4693-bee1-1e66d5d701c7",
+              "Blocked": false,
+              "GridPosition": "3,6"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "c41c7dee-55a3-42d0-b845-5a409c1ea721",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "3cfce1ef-0a85-494d-ba1b-d35e1d11c191",
+          "Name": "GridSpace_3_7",
+          "Position": "-900,-100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "b0c58388-9dc0-4634-8570-71f7b545b6a3",
+              "Blocked": false,
+              "GridPosition": "3,7"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "bc063baa-3af5-451a-95a0-2d54f31e9371",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "4925eb7a-e6a8-4eed-95cd-8d8b487cb622",
+          "Name": "GridSpace_3_8",
+          "Position": "-900,99.99997,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "7f2a9331-2f3b-475c-b240-3be10c250e87",
+              "Blocked": false,
+              "GridPosition": "3,8"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "79d17c02-dea9-4442-825f-93cc7b72f9b9",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "37b95e3d-77c6-4aa5-954e-9ff028eb5043",
+          "Name": "GridSpace_3_9",
+          "Position": "-900,300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "99685ea0-c1f3-4cf4-8ba2-1ce12be24408",
+              "Blocked": false,
+              "GridPosition": "3,9"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "deb943e3-1d0c-4e28-8daa-69fcfce8c021",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "8fe81b11-02da-436f-bb9c-ec34bf7751ad",
+          "Name": "GridSpace_3_10",
+          "Position": "-900,500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "cdcf36bc-1c18-4969-bbf7-8e86e58e9f10",
+              "Blocked": false,
+              "GridPosition": "3,10"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "dd36f639-30a3-44ec-98ea-8c113fc657ca",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "bbe5f4c3-ac2c-492d-9b11-d9f9044a16b7",
+          "Name": "GridSpace_3_11",
+          "Position": "-900,700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "3f91f455-152c-4e2b-ab37-1ae5acd3d70f",
+              "Blocked": false,
+              "GridPosition": "3,11"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "ffea7456-99af-428d-ac41-8d7a411a6710",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "1efe435a-a77e-48e1-97a8-8d81fe874086",
+          "Name": "GridSpace_3_12",
+          "Position": "-900,900.0001,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "d5b8894f-c245-4fc2-9b46-9369cb48d3d6",
+              "Blocked": false,
+              "GridPosition": "3,12"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "33f6ef2a-65c8-453e-a6fc-71f7be6b9084",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "814cf8fb-38fa-4324-baef-d0560445cdc5",
+          "Name": "GridSpace_3_13",
+          "Position": "-900,1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "d06d91f2-9cc7-4f20-af3b-443b70116cf7",
+              "Blocked": false,
+              "GridPosition": "3,13"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "795e75ce-6d96-4273-bf79-9e4a76f8a689",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "4860b59b-e102-4a7e-9079-37de0ac3057e",
+          "Name": "GridSpace_3_14",
+          "Position": "-900,1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "385dfd0a-cea7-4305-b18a-59cb11dcd78e",
+              "Blocked": false,
+              "GridPosition": "3,14"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "7b010d56-ab3e-400a-a872-c305f08895b7",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "9ae496c4-fbc8-474a-aad2-d10597d0463a",
+          "Name": "GridSpace_4_0",
+          "Position": "-700,-1500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "68cf6616-b683-4cee-95be-8cebf8743eea",
+              "Blocked": false,
+              "GridPosition": "4,0"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "6a87834a-3172-4189-8a2b-47499f07801e",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "3eed5a17-3f3f-4974-b8a2-d55a82dcd5df",
+          "Name": "GridSpace_4_1",
+          "Position": "-700,-1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "5a6cee49-4d94-47df-a696-92e7c248b039",
+              "Blocked": false,
+              "GridPosition": "4,1"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "b66ad3db-171f-4774-bad9-be45ce6fdec4",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "f7d218e1-e10f-46fe-b5a9-034733c21d09",
+          "Name": "GridSpace_4_2",
+          "Position": "-700,-1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "cb067984-07ff-4926-83a0-c5dee5d1b775",
+              "Blocked": false,
+              "GridPosition": "4,2"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "48d1df78-8b17-4953-8b0c-b3c404e95d5d",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "531032d5-800d-4604-a6f8-473b7aed49a3",
+          "Name": "GridSpace_4_3",
+          "Position": "-700,-900,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "db18cfd0-dacb-4bbe-8b3d-395c2f4af1ad",
+              "Blocked": false,
+              "GridPosition": "4,3"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "20820700-ad7a-46ab-b672-1ac1a92b845a",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "e93e509f-a323-4e29-a2fb-acc414891bd9",
+          "Name": "GridSpace_4_4",
+          "Position": "-700,-700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "f3825a28-61e3-4d3b-b857-779f1aea97c5",
+              "Blocked": false,
+              "GridPosition": "4,4"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "aed001f9-8263-46e4-80b8-bce912b5c14a",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "e3dfa070-aa8d-4cc0-869f-045a07b7333d",
+          "Name": "GridSpace_4_5",
+          "Position": "-700,-500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "80054877-1321-4f68-821c-a4a7b2f0acd0",
+              "Blocked": false,
+              "GridPosition": "4,5"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "669dfcf5-f5de-4d6a-98a8-9686fc22cff6",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "aff5036d-a9dd-4c14-b239-597c1db99b04",
+          "Name": "GridSpace_4_6",
+          "Position": "-700,-300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "f6d15041-3316-44af-a5f9-2d80c560aab9",
+              "Blocked": false,
+              "GridPosition": "4,6"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "53e42436-65b5-41fc-acae-c7d672da0781",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "a32c9e1c-b77b-47c8-83d2-3d82e6350e7d",
+          "Name": "GridSpace_4_7",
+          "Position": "-700,-100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "3da60a3c-077e-47dc-b5df-926a7f74911d",
+              "Blocked": false,
+              "GridPosition": "4,7"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "1553d45b-98ba-4930-b975-5543989a0962",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "55757f34-b355-4554-9645-fb7b8ba50291",
+          "Name": "GridSpace_4_8",
+          "Position": "-700,99.99997,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "2c4412f2-0615-4bce-9720-0527f74fcccd",
+              "Blocked": false,
+              "GridPosition": "4,8"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "12cbbd06-d188-4ec4-a8da-0f9ebc799fa1",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "b95a87ef-837f-4295-902f-2350384bf454",
+          "Name": "GridSpace_4_9",
+          "Position": "-700,300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "a97a17e9-2d34-43fb-9afc-aebaf243a8a4",
+              "Blocked": false,
+              "GridPosition": "4,9"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "62ef833f-255c-4685-b0c5-0c74a503badc",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "7ad6f0c3-4a29-4496-8fbd-3262ffec094d",
+          "Name": "GridSpace_4_10",
+          "Position": "-700,500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "4def3633-de29-4e9f-8a97-29cdb80d52f6",
+              "Blocked": false,
+              "GridPosition": "4,10"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "05b6f091-20e3-401a-b21c-86506c0575af",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "9859c36f-0906-422b-bea4-cd4f1086ce17",
+          "Name": "GridSpace_4_11",
+          "Position": "-700,700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "02e3fe06-44dd-451f-8f8a-d86dc90b5cca",
+              "Blocked": false,
+              "GridPosition": "4,11"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "6b422401-97cc-437e-b798-de4a964fc45a",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "80dbb61b-30d2-413e-966e-1472d39c6e8f",
+          "Name": "GridSpace_4_12",
+          "Position": "-700,900.0001,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "86b2e04a-6dc9-4ac6-b7d5-033776d8b4ef",
+              "Blocked": false,
+              "GridPosition": "4,12"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "bd620379-ac5b-48f3-aee6-9a8fcf1abcde",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "8ff7bc3b-b81f-47a4-9ba4-91d312ae8d87",
+          "Name": "GridSpace_4_13",
+          "Position": "-700,1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "c0533bc8-a5d8-404d-ac3d-79b3a22d1900",
+              "Blocked": false,
+              "GridPosition": "4,13"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "4098aefb-dc85-4ff8-bf8d-1faf1fbb36f6",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "88b677b7-44f3-4edc-8358-62e476e1daf1",
+          "Name": "GridSpace_4_14",
+          "Position": "-700,1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "6f6ae81d-4126-4664-a8b2-93f1ae2deaa1",
+              "Blocked": false,
+              "GridPosition": "4,14"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "69612c43-7460-4afc-bb7b-865d4b4d632c",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "25f68da9-b296-4667-93e8-a4cb33e62011",
+          "Name": "GridSpace_5_0",
+          "Position": "-500,-1500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "bcdb9a40-faf8-4f81-b426-d32cd0ee0165",
+              "Blocked": false,
+              "GridPosition": "5,0"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "f3fffa24-2d2c-453e-a836-d41a4f4b57e8",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "cd76e816-b5ef-4be3-b8db-c0c728d7da0c",
+          "Name": "GridSpace_5_1",
+          "Position": "-500,-1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "babc3f06-2154-4998-b8e1-cc7e29f69830",
+              "Blocked": false,
+              "GridPosition": "5,1"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "59db52d4-2f19-4ea7-9553-2fce300bb22b",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "c208895a-f1b3-4ade-acde-5d513db54823",
+          "Name": "GridSpace_5_2",
+          "Position": "-500,-1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "6fe89fb4-be1d-493e-a38c-8b713eb71ce8",
+              "Blocked": false,
+              "GridPosition": "5,2"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "9fcf0950-63ee-426c-b955-158fdc90b154",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "4a434394-7c22-4cfe-819b-284951fe66a5",
+          "Name": "GridSpace_5_3",
+          "Position": "-500,-900,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "94e8d054-0475-4354-85d1-3e3004f0f331",
+              "Blocked": false,
+              "GridPosition": "5,3"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "6b341ca3-13e8-4a13-a029-8552af0fb9b3",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "9b4c0cb8-928c-4960-90eb-479bcd918dab",
+          "Name": "GridSpace_5_4",
+          "Position": "-500,-700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "166dfe57-3beb-42fe-a58b-705a430c7cb4",
+              "Blocked": false,
+              "GridPosition": "5,4"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "b982ab7f-57cb-4840-af96-14c6215295dc",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "1519a6de-57a0-4f69-b8fb-3d34b9d24afe",
+          "Name": "GridSpace_5_5",
+          "Position": "-500,-500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "8fd5878a-45d1-46fa-a9fd-fc83a2ed5737",
+              "Blocked": false,
+              "GridPosition": "5,5"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "0cbd5c2a-56ea-4518-8c32-85a0ffaa3da0",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "3e72cbf2-fbef-4460-bfc5-9a14ace5a605",
+          "Name": "GridSpace_5_6",
+          "Position": "-500,-300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "a06961b4-5b23-4b15-9b37-f597fe034fbf",
+              "Blocked": false,
+              "GridPosition": "5,6"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "4b014f17-6d49-4e75-9692-c93b048a6d87",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "c5e61519-91e3-4612-9b36-9f5c53892f53",
+          "Name": "GridSpace_5_7",
+          "Position": "-500,-100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "fff2772c-c2dc-4c4f-a68b-5b89eeddb56e",
+              "Blocked": false,
+              "GridPosition": "5,7"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "6245ebd3-1945-4533-87a9-5ff399f28a07",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "3ca54c2b-4df8-42bc-840c-9025fb75e62f",
+          "Name": "GridSpace_5_8",
+          "Position": "-500,99.99997,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "a10124c4-e031-4359-a192-3fb007085062",
+              "Blocked": false,
+              "GridPosition": "5,8"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "710e5dd9-fcde-4f51-9a94-9efb0bd64696",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "711d46df-6368-4230-98f5-96563c2f74bc",
+          "Name": "GridSpace_5_9",
+          "Position": "-500,300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "f2a65c2b-19eb-4077-b6fd-baed6f775ce6",
+              "Blocked": false,
+              "GridPosition": "5,9"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "bdadf874-a918-4ecd-add2-8b41e583cf1b",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "d1fb09e5-8b0e-4872-8093-dbc4b426a370",
+          "Name": "GridSpace_5_10",
+          "Position": "-500,500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "152d6e05-3707-4fb5-baf7-1824b3593f38",
+              "Blocked": false,
+              "GridPosition": "5,10"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "30da20a7-89cd-49da-a33b-45bfea6139bc",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "81ed433c-9d59-40eb-9c5b-05f8b8605523",
+          "Name": "GridSpace_5_11",
+          "Position": "-500,700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "fd08ca35-5d94-49c0-9130-b3b53479ba86",
+              "Blocked": false,
+              "GridPosition": "5,11"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "4dc8a195-1d9b-402c-8e7b-68d3c934c531",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "8b663703-af94-4f78-ac9b-c5eedb65093a",
+          "Name": "GridSpace_5_12",
+          "Position": "-500,900.0001,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "fe9eef48-3da4-4178-b85a-a02d6864b673",
+              "Blocked": false,
+              "GridPosition": "5,12"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "af6e7a0c-8038-4f08-91e0-7d5712a1a925",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "b84ed5ba-518d-4274-8ef1-a66f7ef4876d",
+          "Name": "GridSpace_5_13",
+          "Position": "-500,1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "40a5266b-4815-438b-b44f-1e6e81d5562d",
+              "Blocked": false,
+              "GridPosition": "5,13"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "165b6b31-7b33-45d5-ad9e-96bc0e1754ca",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "05600f3b-790f-4eaa-a185-2fe5d47973cb",
+          "Name": "GridSpace_5_14",
+          "Position": "-500,1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "2401fb8a-4a38-44e3-b429-38a4c5cf3e28",
+              "Blocked": false,
+              "GridPosition": "5,14"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "87512cbb-280d-40d4-b897-620a60f70c29",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "5d18700d-f07c-4900-8f8b-1d035a4bb6a6",
+          "Name": "GridSpace_6_0",
+          "Position": "-300,-1500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "6854f68d-a7be-4fee-ac72-f11b9e7a8557",
+              "Blocked": false,
+              "GridPosition": "6,0"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "6b6550cf-f2d8-4fac-a052-491f4e606123",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "864d8215-5539-4ca9-b82f-08d39073a382",
+          "Name": "GridSpace_6_1",
+          "Position": "-300,-1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "19fe0fcf-bc94-4668-8c59-0c57386c3e90",
+              "Blocked": false,
+              "GridPosition": "6,1"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "c31afcd6-502b-4e63-84be-ba765b59e9e6",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "d3850240-8c6e-4bed-b36d-1d16fc929d23",
+          "Name": "GridSpace_6_2",
+          "Position": "-300,-1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "1b8f457d-8503-4e5c-b235-f5e64d46389d",
+              "Blocked": false,
+              "GridPosition": "6,2"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "7b772109-09ab-41f7-a278-a6b1be45618e",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "b287ec1b-9056-4465-9521-4062bd5651ac",
+          "Name": "GridSpace_6_3",
+          "Position": "-300,-900,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "6c14c443-1f2c-41c4-ade2-36cd9ffe5bc7",
+              "Blocked": false,
+              "GridPosition": "6,3"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "80d6e79b-0707-47a4-9699-b6a5d610702b",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "231cd106-957c-4e32-9666-04c0fd209941",
+          "Name": "GridSpace_6_4",
+          "Position": "-300,-700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "20046b9f-167f-4293-9799-e71e22a069eb",
+              "Blocked": false,
+              "GridPosition": "6,4"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "ef9ee365-a245-4450-867c-9c07cdd7ed8b",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "ba42cdb2-c397-4264-afd4-8a89c01b24ff",
+          "Name": "GridSpace_6_5",
+          "Position": "-300,-500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "9d4d7997-b3b2-4f3f-8374-b6756f8d90ed",
+              "Blocked": false,
+              "GridPosition": "6,5"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "a0651540-9ed4-4776-a322-916225fe2610",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "fa419a2a-ae45-4ff1-a8cb-3f858e319e58",
+          "Name": "GridSpace_6_6",
+          "Position": "-300,-300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "84d9af42-ab7d-4056-a9c8-543a9cfca7c4",
+              "Blocked": false,
+              "GridPosition": "6,6"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "e7e8bfaa-bb1e-49a2-9e30-6f257fc4e843",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "9f7ed727-4400-4a57-a5b8-9fcd2a1ecc47",
+          "Name": "GridSpace_6_7",
+          "Position": "-300,-100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "45500d27-e570-43b9-8ca8-b190ab57ad8c",
+              "Blocked": false,
+              "GridPosition": "6,7"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "6440d0dc-59cb-4953-bb06-b57b46f02898",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "17914cdb-3a1b-4622-835c-350a655ab9fa",
+          "Name": "GridSpace_6_8",
+          "Position": "-300,99.99997,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "d6ad2226-4c21-494a-a2e9-687de1ffc39c",
+              "Blocked": false,
+              "GridPosition": "6,8"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "414205e6-a8ee-4a0d-8605-ab89d966deae",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "cc5203b9-65fc-481e-88a3-51dec21e2fd4",
+          "Name": "GridSpace_6_9",
+          "Position": "-300,300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "7e68c98e-3620-499f-9da1-8ccaa940fae7",
+              "Blocked": false,
+              "GridPosition": "6,9"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "220577bb-8568-4b86-a746-db276b97e413",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "049dd13b-47a5-4d95-97db-47b63c419c94",
+          "Name": "GridSpace_6_10",
+          "Position": "-300,500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "e9e00db4-a96a-4fde-8c7c-58dacbcec7ab",
+              "Blocked": false,
+              "GridPosition": "6,10"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "80b1b78a-7f78-4164-aa72-e8fedde94592",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "6782707e-0d60-478b-b4c6-2031b629b88e",
+          "Name": "GridSpace_6_11",
+          "Position": "-300,700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "f3b75cc7-7ee4-4c85-984f-a1d59222e77d",
+              "Blocked": false,
+              "GridPosition": "6,11"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "86b5f05d-5da1-4e31-ade3-c240160f266b",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "7dfbd480-33a8-4128-a65d-08731edf0a86",
+          "Name": "GridSpace_6_12",
+          "Position": "-300,900.0001,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "8d586b97-1451-430a-862d-406c87481522",
+              "Blocked": false,
+              "GridPosition": "6,12"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "95531ebf-ba94-4cb8-81bc-54da33d7fa6c",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "25725eb9-33b7-4e76-860a-19f23c4cb08e",
+          "Name": "GridSpace_6_13",
+          "Position": "-300,1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "0a196dac-b1de-4b77-a5f5-4b78aef5e29f",
+              "Blocked": false,
+              "GridPosition": "6,13"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "5432e5de-24c2-4735-93f4-9fc2d590235b",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "feb00d7c-dc74-437a-9d08-6bcdd48ad616",
+          "Name": "GridSpace_6_14",
+          "Position": "-300,1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "417c2b80-8032-4d5e-84ff-0006e4a11dbd",
+              "Blocked": false,
+              "GridPosition": "6,14"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "528f2034-47aa-4239-ab34-06b3be8663a1",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "0f25463c-120e-44b2-9dd0-d5af9a3295b8",
+          "Name": "GridSpace_7_0",
+          "Position": "-100,-1500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "33870a88-a15a-44a3-954f-bed5d8be8411",
+              "Blocked": false,
+              "GridPosition": "7,0"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "bef3e1f3-18ab-4bbb-b702-2240f4da1bed",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "64317192-6968-4c8e-86af-56d81cb021b1",
+          "Name": "GridSpace_7_1",
+          "Position": "-100,-1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "e917df45-b6ea-4e6d-8032-c3a46d2c0e33",
+              "Blocked": false,
+              "GridPosition": "7,1"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "e96ace96-b0a8-436b-a2d8-55c6c8f1f840",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "b0cb123c-6029-4ad1-ac64-7145316b9017",
+          "Name": "GridSpace_7_2",
+          "Position": "-100,-1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "34ec697a-cd91-40d7-ad94-ff937aad59ca",
+              "Blocked": false,
+              "GridPosition": "7,2"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "a1a5f6d1-9b49-4370-9d49-5a9117338665",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "2437e81b-f37b-4f6f-bcb5-971d80d0894f",
+          "Name": "GridSpace_7_3",
+          "Position": "-100,-900,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "838775a4-7c02-4037-bde3-4c545a1a33ec",
+              "Blocked": false,
+              "GridPosition": "7,3"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "8cef9af8-d49b-4dda-81d4-76f0d4beacbe",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "d96ca8dd-b5f7-4582-9ed0-b551fe85c555",
+          "Name": "GridSpace_7_4",
+          "Position": "-100,-700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "11ba28f9-9045-42ce-bf03-2ac4769b23b8",
+              "Blocked": false,
+              "GridPosition": "7,4"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "e5ed5477-1450-4aa6-93cb-b7961c508889",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "a33138b1-f713-4d0d-932d-70214a4108a2",
+          "Name": "GridSpace_7_5",
+          "Position": "-100,-500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "79724bda-e02c-4026-a076-65ca6c1d5997",
+              "Blocked": false,
+              "GridPosition": "7,5"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "72aa1fcc-1a79-4a04-a695-d56e257e2387",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "9c8034e3-9bf2-40c8-8d1c-c1993ca09646",
+          "Name": "GridSpace_7_6",
+          "Position": "-100,-300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "aab5d94e-657f-4ed5-8884-3ae413756cfd",
+              "Blocked": false,
+              "GridPosition": "7,6"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "8a1d6820-df65-4090-8645-d5b2f3310a27",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "1092af57-c655-4721-b980-5d8789974e0d",
+          "Name": "GridSpace_7_7",
+          "Position": "-100,-100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "81f84cc9-cdc8-4414-80e0-14c748d6d21f",
+              "Blocked": false,
+              "GridPosition": "7,7"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "d42412ee-6c77-480a-8218-c7d9256bc0af",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "2da480aa-ce0e-43ed-afa4-56970c03c755",
+          "Name": "GridSpace_7_8",
+          "Position": "-100,99.99997,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "e34f07cf-0863-4838-b7a2-8338473f818f",
+              "Blocked": false,
+              "GridPosition": "7,8"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "8fab0d05-0beb-45a0-9aec-60c1a0119dd8",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "be4a3b29-8c08-4803-8d8f-40f58cd419a5",
+          "Name": "GridSpace_7_9",
+          "Position": "-100,300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "d2aefc91-7bf3-4a02-860f-ae66bb403951",
+              "Blocked": false,
+              "GridPosition": "7,9"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "1e6bae8b-463a-46dc-b86a-dd021885af0f",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "d0273493-de60-4c1d-951d-6eec1064dd7f",
+          "Name": "GridSpace_7_10",
+          "Position": "-100,500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "21f280a2-cfb5-4d94-af7b-7832061d87ba",
+              "Blocked": false,
+              "GridPosition": "7,10"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "e514799c-eb01-4bde-be8c-3ec779752e56",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "224ccda1-c20b-4771-84bf-9fa84f791396",
+          "Name": "GridSpace_7_11",
+          "Position": "-100,700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "97a18cf5-a3a6-4cc6-bff0-ed60ee3dd407",
+              "Blocked": false,
+              "GridPosition": "7,11"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "601f394b-3f31-49cf-a3e8-a4c1562798a0",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "6950c334-562e-4684-90df-a31ffeb4e00d",
+          "Name": "GridSpace_7_12",
+          "Position": "-100,900.0001,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "d5ea0816-de9a-496c-b5e8-b4da784977d2",
+              "Blocked": false,
+              "GridPosition": "7,12"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "859d97b1-bd62-4064-9f17-3f957d0ff6a3",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "b1305cef-ddc8-41f1-8b9c-74f7c1c3cc1a",
+          "Name": "GridSpace_7_13",
+          "Position": "-100,1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "8f5418ed-cf90-4d80-8777-1c6a41d8c74a",
+              "Blocked": false,
+              "GridPosition": "7,13"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "faea3bba-1eba-4c21-b6a8-831a67eacd74",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "266c038d-784c-48e5-a91d-575c95a6012c",
+          "Name": "GridSpace_7_14",
+          "Position": "-100,1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "86781d7b-0d50-4e86-8e63-abdd4b77b2c2",
+              "Blocked": false,
+              "GridPosition": "7,14"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "1134d2fa-2f6c-448e-8ea9-ace0193303d5",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "8b4f9405-61ae-4a5d-8f06-0c409cdf577e",
+          "Name": "GridSpace_8_0",
+          "Position": "100,-1500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "4a3be8a0-f7a4-4a2a-812f-8c4e843908e1",
+              "Blocked": false,
+              "GridPosition": "8,0"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "6aa9f0a1-8d4b-46c8-b37f-10946789ae01",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "e66663f6-39a3-461b-918c-b4c9388394d2",
+          "Name": "GridSpace_8_1",
+          "Position": "100,-1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "5d18b2b7-445c-4157-b6ca-96eb962076dd",
+              "Blocked": false,
+              "GridPosition": "8,1"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "501ec7a6-9337-439c-b012-c16862b5c47f",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "541bda28-fd24-406a-b763-65f082fbc378",
+          "Name": "GridSpace_8_2",
+          "Position": "100,-1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "0b704d27-f3f8-4702-8929-39f75037bce3",
+              "Blocked": false,
+              "GridPosition": "8,2"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "46dc7f27-0f3f-42ce-bfd8-74c1ff7f33a8",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "9378833e-5e78-42f1-8bfa-2cdb8fb974d8",
+          "Name": "GridSpace_8_3",
+          "Position": "100,-900,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "de31f478-0e93-4f09-bd4d-423e2691122f",
+              "Blocked": false,
+              "GridPosition": "8,3"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "9b765153-99ef-468b-8002-67fe389a979a",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "b6d1d96c-485c-4629-83e7-7a8351570908",
+          "Name": "GridSpace_8_4",
+          "Position": "100,-700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "0980ae3b-bbc7-44cd-92c7-d6550b66210a",
+              "Blocked": false,
+              "GridPosition": "8,4"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "5436269b-af96-40d1-bc5e-524620d5c09b",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "6c10cb52-69d2-4988-adf7-283c82949ceb",
+          "Name": "GridSpace_8_5",
+          "Position": "100,-500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "cc8c095a-2cec-429b-8950-74dd77497c05",
+              "Blocked": false,
+              "GridPosition": "8,5"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "ec1d7994-41a5-4203-832d-3c41658a1199",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "02c426a1-726e-484e-88e8-fcb7234e8774",
+          "Name": "GridSpace_8_6",
+          "Position": "100,-300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "1b5d161e-301c-4a00-8f29-0dd0fe019d7b",
+              "Blocked": false,
+              "GridPosition": "8,6"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "4b2aa5ea-184a-40d4-bece-9e2a06ec41d7",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "170ebb20-6278-4455-b5a8-472a570433fd",
+          "Name": "GridSpace_8_7",
+          "Position": "100,-100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "0cdbb873-a2b6-44b5-842c-441c38fadcfc",
+              "Blocked": false,
+              "GridPosition": "8,7"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "97555d6f-0d64-4a6c-a9d9-16c429a5ce63",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "b0edd6dd-cdbb-4dd6-8b95-d7ae1636a010",
+          "Name": "GridSpace_8_8",
+          "Position": "100,99.99997,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "aa4ce929-138a-4508-85c1-a9b88934dbc2",
+              "Blocked": false,
+              "GridPosition": "8,8"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "ec5b634e-651f-4466-bb07-6108283d3f8a",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "0a55cc73-ca95-42f5-b59e-7974eb0f755e",
+          "Name": "GridSpace_8_9",
+          "Position": "100,300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "9da922e9-ac83-405f-b05b-3665723cf843",
+              "Blocked": false,
+              "GridPosition": "8,9"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "e4769f22-4d07-4ca0-ad9f-3d987f1b743b",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "359b9693-9ca7-4339-9174-b88ca30e7395",
+          "Name": "GridSpace_8_10",
+          "Position": "100,500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "1a673373-5182-4d16-9198-cf69dba8687e",
+              "Blocked": false,
+              "GridPosition": "8,10"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "b043fe10-93e0-43a4-b53d-1d2fee0ba2e1",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "3645a224-8ad5-442f-a2ac-b88f484dc69d",
+          "Name": "GridSpace_8_11",
+          "Position": "100,700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "c4588b8e-10e3-4315-8e66-2ef98a5b035b",
+              "Blocked": false,
+              "GridPosition": "8,11"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "7d70b883-d921-4bb5-950c-9fae5daed47d",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "b2a76766-77cf-4200-ba76-d73cc7957024",
+          "Name": "GridSpace_8_12",
+          "Position": "100,900.0001,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "31d510ab-43a0-4f74-864e-4af1a422f68a",
+              "Blocked": false,
+              "GridPosition": "8,12"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "f235a3b0-87b9-4e69-9e01-4005bf3dbf64",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "d914d43f-e562-4560-9af8-6f577006960c",
+          "Name": "GridSpace_8_13",
+          "Position": "100,1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "80cebe6c-bf85-4b5b-8688-6b9401bd9f2c",
+              "Blocked": false,
+              "GridPosition": "8,13"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "9e90b080-5a89-4b72-85b2-ce9e03e23c7e",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "5504bc5c-777a-4403-9b80-1f440c9911db",
+          "Name": "GridSpace_8_14",
+          "Position": "100,1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "30f8b2bb-f972-41c3-8919-e52d79831480",
+              "Blocked": false,
+              "GridPosition": "8,14"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "020c7232-7b94-4556-8b31-0f8eb2f34f0e",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "e8ebbe7b-0a7c-401e-bbeb-65788eaa07fa",
+          "Name": "GridSpace_9_0",
+          "Position": "300,-1500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "0013a9b7-dcf6-4eae-85bd-77acc7c3e7f5",
+              "Blocked": false,
+              "GridPosition": "9,0"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "bf04cb7b-bc61-4a0f-a270-c405211de827",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "c8cfe677-4f1e-46c1-89cb-050217f0617b",
+          "Name": "GridSpace_9_1",
+          "Position": "300,-1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "2a47de8b-ca3d-4e0c-9b47-4bc7695247a8",
+              "Blocked": false,
+              "GridPosition": "9,1"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "e93087cc-a8fe-4b19-afa9-b95e47491227",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "df30fa18-2645-4428-9fde-0faceb8d2393",
+          "Name": "GridSpace_9_2",
+          "Position": "300,-1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "74da426d-6a8e-473b-b8e0-c509278d543a",
+              "Blocked": false,
+              "GridPosition": "9,2"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "fe16a14e-8d94-4492-83fd-e9cbd9389c17",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "3e577e35-41e0-4fd9-923b-772d369e9f62",
+          "Name": "GridSpace_9_3",
+          "Position": "300,-900,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "920ed74a-92dc-4636-84d5-9e91149710ef",
+              "Blocked": false,
+              "GridPosition": "9,3"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "c80a013e-6a7e-4d81-b289-2eacb483b22a",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "fd528e8c-2cd3-47bf-aeb8-4290a0923e20",
+          "Name": "GridSpace_9_4",
+          "Position": "300,-700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "1410b852-2495-4149-ad35-bc9134f802f8",
+              "Blocked": false,
+              "GridPosition": "9,4"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "209d56ce-a2e8-4b39-9a6a-3e8ad76ba902",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "60579d47-00cd-4650-acd6-a89b8c72b5a5",
+          "Name": "GridSpace_9_5",
+          "Position": "300,-500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "f0d63294-2306-446d-9f9a-0b1e7f1b7607",
+              "Blocked": false,
+              "GridPosition": "9,5"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "17ae9319-48cf-4460-847c-8e84d30dbd4e",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "1b3c5571-3ef4-4fdd-aff0-10bc076462f3",
+          "Name": "GridSpace_9_6",
+          "Position": "300,-300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "e5dffeb9-1e06-4cc3-877a-a2982c1aeea2",
+              "Blocked": false,
+              "GridPosition": "9,6"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "d2d2a011-5a05-4481-8db5-5392343f681d",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "df3327ba-62ee-42ee-946b-cbc88a08de21",
+          "Name": "GridSpace_9_7",
+          "Position": "300,-100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "16777da1-fecd-4060-a02d-7866e40ed877",
+              "Blocked": false,
+              "GridPosition": "9,7"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "8219df80-4196-4c97-bad4-f1811084466c",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "660c1698-0498-48b7-8273-6e1f31820aeb",
+          "Name": "GridSpace_9_8",
+          "Position": "300,99.99997,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "7a45aee2-3275-495f-b193-1470ea5fb363",
+              "Blocked": false,
+              "GridPosition": "9,8"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "ba6cadde-7620-47a3-b259-81a81c5f227f",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "56fed2e8-7804-4c44-bb2c-34aef69e3a8d",
+          "Name": "GridSpace_9_9",
+          "Position": "300,300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "f9f36f6f-c805-473d-a1fd-5bc68fa617a0",
+              "Blocked": false,
+              "GridPosition": "9,9"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "c40b66cf-abce-4c7c-89bd-6c43bf800182",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "89476d20-573d-4067-ae20-724423b80c5d",
+          "Name": "GridSpace_9_10",
+          "Position": "300,500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "f43dd88a-adf5-40b2-832f-59e0fc4c3b84",
+              "Blocked": false,
+              "GridPosition": "9,10"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "dad05238-a988-4362-ac83-08db307b2834",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "df7adc32-3bc6-4212-84bd-39de8c4198b8",
+          "Name": "GridSpace_9_11",
+          "Position": "300,700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "c5f362d8-5197-4a1d-a954-c18b769bfe00",
+              "Blocked": false,
+              "GridPosition": "9,11"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "6e5ec7da-b947-440e-9f17-0ee5496b3a43",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "a3a1f16d-da16-447a-ac39-a06dd7ce89cd",
+          "Name": "GridSpace_9_12",
+          "Position": "300,900.0001,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "2ba4c868-4c83-4938-8e93-327d2520a3a0",
+              "Blocked": false,
+              "GridPosition": "9,12"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "717054a9-3533-4772-ba21-9080072f20da",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "7193f06c-8de0-4e4b-b20c-b78e11583493",
+          "Name": "GridSpace_9_13",
+          "Position": "300,1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "b66eb9a4-ea7e-43ac-baca-d5f364310f0c",
+              "Blocked": false,
+              "GridPosition": "9,13"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "cfc65ce4-77f7-412e-9cf2-b06b3325e199",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "1b00bda3-0f2d-4389-8183-4f77459a669a",
+          "Name": "GridSpace_9_14",
+          "Position": "300,1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "fb5a1deb-6718-4529-82ee-09cf8af49006",
+              "Blocked": false,
+              "GridPosition": "9,14"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "a429f311-d03c-49a2-956e-e2e3f4704436",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "fedd2311-2585-4e6e-b876-c63a94aabd82",
+          "Name": "GridSpace_10_0",
+          "Position": "500,-1500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "3501cdd4-f305-4643-8896-ca610eb7c8d9",
+              "Blocked": false,
+              "GridPosition": "10,0"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "9b055dfc-7355-43d0-a87c-88c1fcdcae2f",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "0ff3c05e-f0b5-406e-a994-20f6c8eae4b8",
+          "Name": "GridSpace_10_1",
+          "Position": "500,-1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "93809496-0b3b-4f99-95c9-0c10f4692ceb",
+              "Blocked": false,
+              "GridPosition": "10,1"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "4c205c99-da15-41a9-8c1e-562690b15f4c",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "162612e5-639e-40b2-8a75-4c64e24b3be3",
+          "Name": "GridSpace_10_2",
+          "Position": "500,-1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "a80e7549-473f-44c3-8971-f9ac9f7c7a07",
+              "Blocked": false,
+              "GridPosition": "10,2"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "3bbb285c-0d02-489e-9927-e8750f69debe",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "0d3edcb5-64c4-4957-b53d-30ec0322da9d",
+          "Name": "GridSpace_10_3",
+          "Position": "500,-900,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "03914461-16b4-4a89-abb3-f8bbad61d114",
+              "Blocked": false,
+              "GridPosition": "10,3"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "87a7ec83-a2bf-467b-8239-fb33c7806cb6",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "26dd50c8-7f07-46dc-b088-17ee5ca52bcb",
+          "Name": "GridSpace_10_4",
+          "Position": "500,-700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "4955e9c8-5fb5-464d-99b2-8613df5cf745",
+              "Blocked": false,
+              "GridPosition": "10,4"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "002d7198-6dc6-405e-b697-70963b04821d",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "9c725efe-7b04-4487-a0f9-f72b01dd1bb9",
+          "Name": "GridSpace_10_5",
+          "Position": "500,-500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "e26e5c7f-a41a-447d-a1c7-3fa19b88fdef",
+              "Blocked": false,
+              "GridPosition": "10,5"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "3be80deb-770a-4325-8b81-d7ea39e8d9c6",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "7bd8fe87-3378-498b-ab77-d4f3f6d4504a",
+          "Name": "GridSpace_10_6",
+          "Position": "500,-300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "a036a180-e7bc-4070-bd73-f60b72ea347c",
+              "Blocked": false,
+              "GridPosition": "10,6"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "ce2ce83e-869f-41e8-89a5-a1719b9e4d91",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "029c3234-121e-40e2-a93f-de6774c75da2",
+          "Name": "GridSpace_10_7",
+          "Position": "500,-100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "26e3386b-8655-4488-a604-c5dbe00983d4",
+              "Blocked": false,
+              "GridPosition": "10,7"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "ab4d6d6e-b87c-4d51-a9ba-cc765fe15d32",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "a140e5e5-a2f2-4df0-9de0-e0ec06d59d2a",
+          "Name": "GridSpace_10_8",
+          "Position": "500,99.99997,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "ad0d97b8-9743-405f-936d-91da2b9170a3",
+              "Blocked": false,
+              "GridPosition": "10,8"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "6457063a-b881-43ad-a77d-48264fd4fb2d",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "3306ffc5-f851-4553-a016-50c50aa230e0",
+          "Name": "GridSpace_10_9",
+          "Position": "500,300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "81e7ca05-fbc0-4f59-8bd9-7b614c9f65e0",
+              "Blocked": false,
+              "GridPosition": "10,9"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "d579f493-0ac7-49bb-8ff4-592880b68f70",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "555cfcea-8a00-42f6-a9ec-b17ba62ea948",
+          "Name": "GridSpace_10_10",
+          "Position": "500,500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "ec3260f5-d462-406b-8701-6179cd805101",
+              "Blocked": false,
+              "GridPosition": "10,10"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "0b921cf9-a68d-48a7-892f-244ae5a30ebb",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "828ce8b2-cff4-41cf-8728-8a663f463155",
+          "Name": "GridSpace_10_11",
+          "Position": "500,700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "414108fa-435e-410a-bad5-87f4dcf9f8c1",
+              "Blocked": false,
+              "GridPosition": "10,11"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "2c5987a4-7103-4f7a-992b-4afc5917c18a",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "dc481569-93f2-4fd6-bc66-2458bb3b4577",
+          "Name": "GridSpace_10_12",
+          "Position": "500,900.0001,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "18f1e2a3-b275-4ff6-8774-3382ddff0066",
+              "Blocked": false,
+              "GridPosition": "10,12"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "66c7e8dd-279c-4b93-9e3b-6f66bfe8a19c",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "492925ab-ac7d-4bc6-b247-bc29b6fecd8f",
+          "Name": "GridSpace_10_13",
+          "Position": "500,1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "b0ac9215-2637-4809-bbcc-52b63bfdb4a8",
+              "Blocked": false,
+              "GridPosition": "10,13"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "4ece4a83-c7ef-4128-9225-0baeeb9146e0",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "08a446a4-8859-4e45-aac5-9509f3d8ea5c",
+          "Name": "GridSpace_10_14",
+          "Position": "500,1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "b7c301da-32b9-45a9-9a56-058c7b413194",
+              "Blocked": false,
+              "GridPosition": "10,14"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "afc216ec-9138-4905-98f6-397fc2c43bea",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "f178600d-9069-4b69-bb4a-8eb735e2c3bc",
+          "Name": "GridSpace_11_0",
+          "Position": "700,-1500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "3fd976a1-8808-4bc2-b8cf-85c419702db7",
+              "Blocked": false,
+              "GridPosition": "11,0"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "0f8b3f4a-feaf-45ba-a222-538275a5ec39",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "b9224ef3-2f77-4a88-8526-ced9272c2322",
+          "Name": "GridSpace_11_1",
+          "Position": "700,-1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "a8b4ee0a-58e2-4062-87ed-a166b579f8bd",
+              "Blocked": false,
+              "GridPosition": "11,1"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "de1f2136-b773-47c2-975c-3b66f319b794",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "7be26eb3-dd1d-4609-8a0b-6df7e57fd640",
+          "Name": "GridSpace_11_2",
+          "Position": "700,-1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "749c0ecf-4d14-443f-8e50-980a826cb9e5",
+              "Blocked": false,
+              "GridPosition": "11,2"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "358dfbbf-04d2-4c54-9fd4-83ea6075d399",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "ca3d83cb-01eb-4f03-a260-04fd8491c09f",
+          "Name": "GridSpace_11_3",
+          "Position": "700,-900,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "ef96df3e-d1e4-4e3c-b4ec-c5f948efaaca",
+              "Blocked": false,
+              "GridPosition": "11,3"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "43e23aaf-168e-45fa-b4a9-f3a69dc7671a",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "53ae373c-5648-4c5d-8a4d-f24eab626602",
+          "Name": "GridSpace_11_4",
+          "Position": "700,-700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "1cd3c370-2f4b-4c4e-868b-6a369b9afc77",
+              "Blocked": false,
+              "GridPosition": "11,4"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "035b29ca-90d6-4cda-b3c6-0c9bf544fee5",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "7ed65865-a3a6-489c-ad5d-c74544011e94",
+          "Name": "GridSpace_11_5",
+          "Position": "700,-500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "98581b70-33a8-4147-a2f6-5ef702b84e1c",
+              "Blocked": false,
+              "GridPosition": "11,5"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "eaeab716-d64a-4bf1-82ce-a2ea2ef09f6e",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "fa16ebdc-38b6-4ba3-bde5-bc0d65bc8aca",
+          "Name": "GridSpace_11_6",
+          "Position": "700,-300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "d45cad32-3c31-4dda-b6db-993c75430e15",
+              "Blocked": false,
+              "GridPosition": "11,6"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "99267f02-cba7-4c6d-a37f-b4ec9cadf89a",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "933c26f1-0ab3-4b18-a9a8-e82d39c5e3c3",
+          "Name": "GridSpace_11_7",
+          "Position": "700,-100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "73f570f9-095f-4273-8b4e-041dae6f5ee9",
+              "Blocked": false,
+              "GridPosition": "11,7"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "008287d1-3931-43a0-94fb-885a4e700d18",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "69e5efb9-fcf4-46e8-84f3-ad6239412d39",
+          "Name": "GridSpace_11_8",
+          "Position": "700,99.99997,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "386f08d7-e162-4d1e-84cf-61f282f7bcbd",
+              "Blocked": false,
+              "GridPosition": "11,8"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "fdc3401e-9c83-40ab-91a7-fe174ef9ac70",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "56e43895-b1ab-494b-9be7-67b6da8ade30",
+          "Name": "GridSpace_11_9",
+          "Position": "700,300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "8fe290f1-d68a-4566-81f2-c90b20cd27bc",
+              "Blocked": false,
+              "GridPosition": "11,9"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "0e376273-f32c-46f5-ba67-91050eaead5c",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "ceea8fb0-446c-45a7-82b9-68784a621354",
+          "Name": "GridSpace_11_10",
+          "Position": "700,500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "9ab3e9be-12b6-449d-89df-e5ca05ce7288",
+              "Blocked": false,
+              "GridPosition": "11,10"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "ae017e5f-21e7-45e2-9175-f91232afc105",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "2b7bc448-5533-4902-bcb7-cff91cbd6584",
+          "Name": "GridSpace_11_11",
+          "Position": "700,700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "5df34ba4-00f8-4e71-a291-2b419d86bb78",
+              "Blocked": false,
+              "GridPosition": "11,11"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "13e8e35e-3ba5-494d-8d60-cdd353529ba0",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "e255ba6f-a8c2-40a1-8990-208280d098a7",
+          "Name": "GridSpace_11_12",
+          "Position": "700,900.0001,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "9910c9f8-0c35-4fe0-a95c-120b48a5b3c0",
+              "Blocked": false,
+              "GridPosition": "11,12"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "2e471711-e402-4903-b32d-240ce8f98208",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "7db71c07-cada-4888-8511-02a4339f4523",
+          "Name": "GridSpace_11_13",
+          "Position": "700,1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "0fc60a71-3049-4ae0-9e09-d160740c0cc9",
+              "Blocked": false,
+              "GridPosition": "11,13"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "ebc85d7c-865c-45df-91a2-16dadf7f8747",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "308c26a3-77f6-48cd-869e-9b03550ba9b2",
+          "Name": "GridSpace_11_14",
+          "Position": "700,1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "369f1766-09e7-4f44-add1-651905df2a07",
+              "Blocked": false,
+              "GridPosition": "11,14"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "d1bf3f08-ecc0-48f8-8a78-46bd71ebf807",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "ea39af0c-aa97-41bf-ac76-16c389684ea3",
+          "Name": "GridSpace_12_0",
+          "Position": "900,-1500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "353246b2-fc91-458c-af44-6a0f11f395c2",
+              "Blocked": false,
+              "GridPosition": "12,0"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "2ef36d59-fc90-4d47-86ee-888cdeede43a",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "e9ec9ddf-48ad-4de9-8aef-65dff3037659",
+          "Name": "GridSpace_12_1",
+          "Position": "900,-1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "03358cad-c059-438c-a8cc-c4391faf1605",
+              "Blocked": false,
+              "GridPosition": "12,1"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "1fa62116-51e6-48b6-aeb3-b83203ab833a",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "8989703d-be1a-4b00-b328-3104fceb8334",
+          "Name": "GridSpace_12_2",
+          "Position": "900,-1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "529c6387-0c1d-47e5-b6ad-22446583d67b",
+              "Blocked": false,
+              "GridPosition": "12,2"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "b82e1873-e70c-4069-9e61-c4b517336323",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "7a430a9f-2454-4b26-aaa2-f73a38df67df",
+          "Name": "GridSpace_12_3",
+          "Position": "900,-900,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "04de6a28-b7d7-4841-947e-ff9f8c011ec0",
+              "Blocked": false,
+              "GridPosition": "12,3"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "e472478f-4fa8-4442-a738-85af843e64f0",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "b93d461c-2918-499d-9048-fd0e0275b7fe",
+          "Name": "GridSpace_12_4",
+          "Position": "900,-700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "f47cd12f-af16-4a8f-9bc5-7ca59f50778a",
+              "Blocked": false,
+              "GridPosition": "12,4"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "12e3bd21-758c-47c1-9996-6e061a6de36e",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "12148004-820e-453a-b5ca-c5b643336634",
+          "Name": "GridSpace_12_5",
+          "Position": "900,-500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "f1947471-7226-4ca8-909b-fe694060a344",
+              "Blocked": false,
+              "GridPosition": "12,5"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "b427acb9-d616-4ec6-be14-6de72592211d",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "ef6ce10b-fd84-477d-8170-54637b4f9705",
+          "Name": "GridSpace_12_6",
+          "Position": "900,-300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "fa99890a-44bb-423c-bab8-52ad0763818f",
+              "Blocked": false,
+              "GridPosition": "12,6"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "4438b9aa-6c66-4080-9301-9da3fbb2a08d",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "ba7ef8ba-6097-4948-ab64-53d6f43b256f",
+          "Name": "GridSpace_12_7",
+          "Position": "900,-100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "d2091ee0-a689-47eb-b7d1-175e48826005",
+              "Blocked": false,
+              "GridPosition": "12,7"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "848bd527-112a-4e26-872f-1d743ded21fa",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "48270b9a-893e-4d6a-9b86-b2c0137a08a0",
+          "Name": "GridSpace_12_8",
+          "Position": "900,99.99997,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "e0bc75ae-d706-4d04-9241-7d56dc7a9c89",
+              "Blocked": false,
+              "GridPosition": "12,8"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "520b2c63-1344-49de-bc49-34c74bc1fd67",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "69ae42b2-0f3f-4b14-8155-45cb39055116",
+          "Name": "GridSpace_12_9",
+          "Position": "900,300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "8544e74f-60b3-4527-844c-cc607161ac2a",
+              "Blocked": false,
+              "GridPosition": "12,9"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "2a5f8f10-1db7-4c45-9689-fb01b099541e",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "ed2c9d2b-b707-494a-a98c-fabeb96f686b",
+          "Name": "GridSpace_12_10",
+          "Position": "900,500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "625bb05b-3e04-408d-b495-df3c96199d22",
+              "Blocked": false,
+              "GridPosition": "12,10"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "7963ecdf-d1f8-43bf-8996-d511f7100764",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "a6232651-1976-45a4-b897-16b5e49844f7",
+          "Name": "GridSpace_12_11",
+          "Position": "900,700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "058a5270-1150-46e9-943b-9582c4d844a8",
+              "Blocked": false,
+              "GridPosition": "12,11"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "71139d7e-6053-4a76-a9a9-b8b073adcaa9",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "da193557-70ab-44cc-8b29-a581f0ea7066",
+          "Name": "GridSpace_12_12",
+          "Position": "900,900.0001,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "a055d0c4-3932-469b-830a-7f291377471b",
+              "Blocked": false,
+              "GridPosition": "12,12"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "2e5cc5a1-7fa7-4b09-ac61-9f311e11a72b",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "251004d0-8b55-4a62-b812-5bfa0afee823",
+          "Name": "GridSpace_12_13",
+          "Position": "900,1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "bc41a6d1-bb4b-450c-8dc2-228634216f2a",
+              "Blocked": false,
+              "GridPosition": "12,13"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "23225063-551b-4c65-a704-fd87e49046b8",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "9245365f-319f-4601-8fc0-d0179c6688bd",
+          "Name": "GridSpace_12_14",
+          "Position": "900,1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "8708404c-7287-4ddf-8bf2-5224f23338ea",
+              "Blocked": false,
+              "GridPosition": "12,14"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "4ca02b79-c7f3-4fd8-bb20-8024d6d8d8f5",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "16188b94-5ea4-49bb-8d3d-676645f8ce96",
+          "Name": "GridSpace_13_0",
+          "Position": "1100,-1500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "5b67ac1f-5760-4d15-8514-8fa99aab9a87",
+              "Blocked": false,
+              "GridPosition": "13,0"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "b9e6d29c-f9d5-4781-aaad-6f30c6e18559",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "5d7adff2-e7da-4807-9a59-b1f094250aa8",
+          "Name": "GridSpace_13_1",
+          "Position": "1100,-1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "21f1fd41-3309-443f-ad91-7ec08f998ff7",
+              "Blocked": false,
+              "GridPosition": "13,1"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "b87a3d51-1feb-4aaf-a3d9-a206906c4360",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "5b5c102a-6ca3-46bb-9cb4-aaa21f010c8b",
+          "Name": "GridSpace_13_2",
+          "Position": "1100,-1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "1cfc43fb-6443-481f-916a-e0bfb4774e7b",
+              "Blocked": false,
+              "GridPosition": "13,2"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "d00a3ebd-8b11-46e1-a1ce-16b864740a3a",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "0921c72e-6bf6-4f83-bdec-bb2c020ab803",
+          "Name": "GridSpace_13_3",
+          "Position": "1100,-900,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "a798032a-06b1-48cf-86d9-9b2cbb7458a7",
+              "Blocked": false,
+              "GridPosition": "13,3"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "e332ca26-48cb-451e-89d2-a45fa917f4ab",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "a0984870-b30a-4b74-9cf2-f79f2448b612",
+          "Name": "GridSpace_13_4",
+          "Position": "1100,-700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "3b670f52-0096-487b-8b8c-e89feba9f22d",
+              "Blocked": false,
+              "GridPosition": "13,4"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "bfe541fa-6cab-45fc-8dc6-5b6059b898a2",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "d20b4f49-d866-40e0-8f64-7b64a870a753",
+          "Name": "GridSpace_13_5",
+          "Position": "1100,-500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "2131b51d-ddc1-4ca2-8bee-90c64f646598",
+              "Blocked": false,
+              "GridPosition": "13,5"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "864fb276-0ce5-4a7a-893e-8c07b4b043a2",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "1050027c-7701-4edc-88ff-d0828dfca503",
+          "Name": "GridSpace_13_6",
+          "Position": "1100,-300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "0b83ca3c-b355-4894-8dcc-24de357e85e2",
+              "Blocked": false,
+              "GridPosition": "13,6"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "71800dbf-2ef0-460a-b904-9d2f164833b1",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "f8e102e7-90a2-40e4-b54f-56a396373edb",
+          "Name": "GridSpace_13_7",
+          "Position": "1100,-100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "e12771af-6350-40d4-880a-217ea85305bb",
+              "Blocked": false,
+              "GridPosition": "13,7"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "a55c40ca-9606-4683-83d0-198e8d7aa0ee",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "1d1edc69-6364-4bef-9146-8244a9793e96",
+          "Name": "GridSpace_13_8",
+          "Position": "1100,99.99997,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "32f5d123-c448-4d9d-8137-cc6919bbe784",
+              "Blocked": false,
+              "GridPosition": "13,8"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "c7f87d29-a131-4cd1-8cb3-55f6a0d4e80b",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "e630a5e3-f826-4b64-a38e-3bd394e2ca93",
+          "Name": "GridSpace_13_9",
+          "Position": "1100,300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "807b62bd-826b-4936-9b0b-644822f9c701",
+              "Blocked": false,
+              "GridPosition": "13,9"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "440d1804-b7f1-4ea2-abaf-196cf038122c",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "3511bf93-229f-4ae6-906e-4ef5ede3595e",
+          "Name": "GridSpace_13_10",
+          "Position": "1100,500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "aff72f05-55ef-4c74-958c-dc330090755f",
+              "Blocked": false,
+              "GridPosition": "13,10"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "eba0efa8-e390-4bc8-af2e-3f0f854cf78d",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "1d0e1f8a-3524-464b-80d4-4e148e13a9e1",
+          "Name": "GridSpace_13_11",
+          "Position": "1100,700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "8e71aba1-4ddd-45bb-bd62-a5e906edcae1",
+              "Blocked": false,
+              "GridPosition": "13,11"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "12560483-9d02-4731-81ff-3a5daa9b0566",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "3e9f40c8-edfe-4caa-a0e7-0cec10deaad3",
+          "Name": "GridSpace_13_12",
+          "Position": "1100,900.0001,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "6a4c0cf0-d620-4fab-8a8d-ef3dc886b77e",
+              "Blocked": false,
+              "GridPosition": "13,12"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "f29b5a51-ddce-49db-8aa0-a3d77197e111",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "3df10468-d976-458a-abe7-b91b1b5c69ae",
+          "Name": "GridSpace_13_13",
+          "Position": "1100,1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "d4ab625c-e242-4c49-ac4d-5b50064747e6",
+              "Blocked": false,
+              "GridPosition": "13,13"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "ce7c0bc1-b67a-4444-9cda-85fad5a61cac",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "6ae1b715-e9a2-4333-8bc2-7872e8ae287f",
+          "Name": "GridSpace_13_14",
+          "Position": "1100,1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "c46ac04c-0147-4baf-8590-18febb5e7633",
+              "Blocked": false,
+              "GridPosition": "13,14"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "362c83bf-d878-49c3-89ef-5d84c35109c4",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "3d5e80e5-1151-4ab5-8255-96a373084237",
+          "Name": "GridSpace_14_0",
+          "Position": "1300,-1500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "e3525c57-6a02-4b8a-9bb8-afe3c2e918ff",
+              "Blocked": false,
+              "GridPosition": "14,0"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "049dec7c-5f08-479c-b93e-ddc35599b8a0",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "b1cb8509-4bc1-4c3c-b2dc-0dfed268a655",
+          "Name": "GridSpace_14_1",
+          "Position": "1300,-1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "e0a3949c-3127-4be5-ac13-5c6e6ab857b0",
+              "Blocked": false,
+              "GridPosition": "14,1"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "9f6adcb8-2ef4-4f43-af36-fa22ce020e46",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "b0f675ee-f69a-4c83-a9fc-91af22c22222",
+          "Name": "GridSpace_14_2",
+          "Position": "1300,-1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "5ed91f89-bd81-4583-b398-b9d88e084489",
+              "Blocked": false,
+              "GridPosition": "14,2"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "4a32e632-e543-4bb5-af38-36b5defe14f5",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "c6e2c9f5-972b-4c05-89c9-5de10b28deb0",
+          "Name": "GridSpace_14_3",
+          "Position": "1300,-900,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "60945180-ac1a-450c-81c3-f8189c645201",
+              "Blocked": false,
+              "GridPosition": "14,3"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "178327a1-7cc1-4c20-a309-9549f61b3b4b",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "1bf370c6-9423-49f8-b49e-bc84b951f765",
+          "Name": "GridSpace_14_4",
+          "Position": "1300,-700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "2cf59269-4261-4cbd-91bc-7d3b997111aa",
+              "Blocked": false,
+              "GridPosition": "14,4"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "9c957eb0-3cd8-4a4f-9e6f-05f2b6bfb0f0",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "85e854cf-1522-4eb3-a040-03c9065f1630",
+          "Name": "GridSpace_14_5",
+          "Position": "1300,-500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "25244f05-8b14-45af-8ff6-da200f8150e2",
+              "Blocked": false,
+              "GridPosition": "14,5"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "4a63981d-46fb-45fe-a9e1-6964e067e4ef",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "5575d213-f925-4430-9f43-b1ac2fbac1a6",
+          "Name": "GridSpace_14_6",
+          "Position": "1300,-300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "3f8a7369-80bf-4bec-8cf9-c6615c5858c0",
+              "Blocked": false,
+              "GridPosition": "14,6"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "b2d62357-6d82-4598-b8a2-eb25f7795a89",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "71a4da7d-484f-47df-a5ae-f504a80087c7",
+          "Name": "GridSpace_14_7",
+          "Position": "1300,-100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "91531e5a-6572-4d7e-a17f-dd9c502e807f",
+              "Blocked": false,
+              "GridPosition": "14,7"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "4e1bb625-99fe-411c-8929-1445f2aa6ddc",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "96596b50-500a-45ed-989a-87e0eeb5b1cd",
+          "Name": "GridSpace_14_8",
+          "Position": "1300,99.99997,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "114ff7fc-7f07-43d4-8103-5625d363636d",
+              "Blocked": false,
+              "GridPosition": "14,8"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "a2214fc8-156c-4619-82a9-02801a76788d",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "3d73c4e1-dcc6-416a-8327-3a41a1c5074e",
+          "Name": "GridSpace_14_9",
+          "Position": "1300,300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "e778b641-d80c-4e6b-adac-d630061f68fa",
+              "Blocked": false,
+              "GridPosition": "14,9"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "4191d84e-2b63-4ad5-9d7c-5f5f98052dfe",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "43b02fe2-3fb2-4750-ad92-a27c2ee0b636",
+          "Name": "GridSpace_14_10",
+          "Position": "1300,500,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "6d22656a-3ee4-4072-ba7a-ba51f5ec1be8",
+              "Blocked": false,
+              "GridPosition": "14,10"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "1c95aeff-04d1-433a-9dbb-d71e6cea49b0",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "3c749d91-fc44-4f20-bdc2-249fea99489e",
+          "Name": "GridSpace_14_11",
+          "Position": "1300,700,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "7258d6f3-9491-4693-8f64-98406f4677ae",
+              "Blocked": false,
+              "GridPosition": "14,11"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "a51448a8-854b-46e3-99e7-afb8b5911929",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "66f16486-8d54-4ab9-bcca-a2938d6b61b6",
+          "Name": "GridSpace_14_12",
+          "Position": "1300,900.0001,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "bd83d4f4-60d3-4c72-9943-6cc080003e67",
+              "Blocked": false,
+              "GridPosition": "14,12"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "526682d9-497b-4498-942c-c26dfcde184a",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "c9a75fdc-f4f3-4459-96ed-0d2b11ec0a93",
+          "Name": "GridSpace_14_13",
+          "Position": "1300,1100,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "e5ae1bcc-2a7f-45e2-b7f3-c9f4802a681e",
+              "Blocked": false,
+              "GridPosition": "14,13"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "2c509428-bdfe-4711-94ec-a7bf7fa158c1",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "2c8eba57-280e-4e67-b8b5-994360ccb323",
+          "Name": "GridSpace_14_14",
+          "Position": "1300,1300,0",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "Components": [
+            {
+              "__type": "GridSpace",
+              "__guid": "bf145a1e-faba-459b-a2fd-400f5fd0e654",
+              "Blocked": false,
+              "GridPosition": "14,14"
+            },
+            {
+              "__type": "SkinnedModelRenderer",
+              "__guid": "7612bcfe-903a-4d7c-9049-664d68694017",
+              "BodyGroups": 18446744073709551615,
+              "CreateBoneObjects": false,
+              "Model": "models/roads/street_curve.vmdl",
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "Lerping": true,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 60,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "Title": "minimal",
+  "Description": "",
+  "LastSaved": "2024-03-28T22:23:37.0463199\u002B10:00",
+  "ResourceVersion": 1,
+  "__version": 1,
+  "__references": [
+    "facepunch.arena"
+  ]
+}

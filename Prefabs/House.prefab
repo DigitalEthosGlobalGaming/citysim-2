@@ -1,0 +1,83 @@
+{
+  "SchemaVersion": 1,
+  "Name": null,
+  "Description": null,
+  "Root": {
+    "Guid": "2470ef53-0624-4f96-958a-46b6186331b7",
+    "Class": "TileEntity",
+    "Entities": [],
+    "Components": [
+      {
+        "Guid": "faac78b4-aa84-47c2-b2e6-f4b2dd63df1b",
+        "Class": "TileNeed",
+        "Keys": {
+          "Type": {
+            "Type": "String",
+            "Value": "\u0022Food\u0022"
+          },
+          "Amount": {
+            "Type": "Single",
+            "Value": "-1"
+          },
+          "_name": {
+            "Value": "\u0022TileNeed\u0022"
+          },
+          "_tags": {
+            "Value": "[]"
+          },
+          "MaxSupply": {
+            "Type": "Single",
+            "Value": "50"
+          }
+        }
+      },
+      {
+        "Guid": "e8e44bef-2807-4dab-83f8-ba2820a83e43",
+        "Class": "TileNeed",
+        "Keys": {
+          "Type": {
+            "Type": "String",
+            "Value": "\u0022Health\u0022"
+          },
+          "Amount": {
+            "Type": "Single",
+            "Value": "-5"
+          },
+          "MaxSupply": {
+            "Type": "Single",
+            "Value": "50"
+          },
+          "_name": {
+            "Value": "\u0022TileNeed\u0022"
+          },
+          "_tags": {}
+        }
+      }
+    ],
+    "Keys": {
+      "_name": {
+        "Value": "\u0022House\u0022"
+      },
+      "_localposition": {
+        "Value": "\u00220,0,0\u0022"
+      },
+      "_localrotation": {
+        "Value": "\u00220,0,0\u0022"
+      },
+      "_scale": {
+        "Value": "1"
+      },
+      "_tags": {
+        "Value": "\u0022\u0022"
+      },
+      "Model": {
+        "Type": "Model",
+        "Value": "\u0022models/buildings/house_01.vmdl\u0022"
+      },
+      "RenderColor": {
+        "Type": "Color",
+        "Value": "\u00221,1,1,1\u0022"
+      }
+    }
+  }
+}

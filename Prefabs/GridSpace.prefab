@@ -1,0 +1,32 @@
+{
+  "RootObject": {
+    "__guid": "0fc9d2ff-fcd9-4f2c-94c6-b82c6088957a",
+    "Name": "gridspace",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "Components": [
+      {
+        "__type": "GridSpace",
+        "__guid": "16188729-982e-46c8-a436-e474a9bc4171",
+        "Blocked": false,
+        "GridPosition": "0,0"
+      },
+      {
+        "__type": "SkinnedModelRenderer",
+        "__guid": "a9f3ae4c-ca26-455f-92f8-20d1c63cb668",
+        "BodyGroups": 18446744073709551615,
+        "CreateBoneObjects": false,
+        "Model": "models/roads/street_empty.vmdl",
+        "RenderType": "On",
+        "Tint": "1,1,1,1"
+      }
+    ],
+    "Children": []
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "ResourceVersion": 1,
+  "__version": 1,
+  "__references": []
+}
