@@ -1,0 +1,17 @@
+@import "/Ui/Punchboard/_tokens.scss";
+HandBar { position: relative; width: 100%; flex-direction: column; gap: 10px; pointer-events: none;
+ &.paying-out { .hand-cards, .hand-heading { display: none; } }
+ .hand-heading { align-self: center; max-width: 100%; justify-content: space-between; gap: 32px; color: $pb-ink; background-color: $pb-panel; border: 2px solid $pb-ink; border-radius: $pb-radius; padding: 3px 8px; font-size: 16px; font-weight: 700; }
+ .hand-cards { width: 100%; justify-content: center; align-items: flex-end; padding-top: 10px; }
+ .hand-tag-row { flex-wrap: wrap; gap: 4px; }
+ .hand-flight { position: absolute; transform-origin: 50% 50%; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background-color: $pb-card; border: 3px solid $pb-ink; border-radius: $pb-radius-lg; box-shadow: 0 5px 0 $pb-core; color: $pb-ink; pointer-events: none; z-index: 20; }
+ .flight-face { width: 100%; height: 100%; min-height: 0; max-height: none; pointer-events: none; opacity: 1; }
+ .hand-flight * { pointer-events: none; }
+ .flight-icon { font-size: 50px; } .flight-name { font-size: 19px; font-weight: 800; }
+ .flight-piece { position: absolute; width: 25px; height: 18px; background-color: $pb-accent; border: 2px solid $pb-ink; } .piece-a { left: -18px; top: 30px; transform: rotate(-25deg); } .piece-b { right: -18px; bottom: 35px; transform: rotate(30deg); }
+ .hand-actions { justify-content: center; align-items: center; flex-wrap: wrap; gap: 12px; pointer-events: all; }
+ .renovation-hint { color: $pb-ink; background-color: $pb-panel; padding: 4px 8px; font-size: 18px; }
+ .empty-hand { color: $pb-panel; font-size: 18px; }
+}
+Hud.large-text HandBar { .hand-heading, .renovation-hint { color: $pb-ink; background-color: $pb-panel; padding: 4px 8px; font-size: 18px; }
+ .empty-hand { font-size: 27px; } }

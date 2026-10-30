@@ -1,0 +1,34 @@
+@namespace CitySim
+@using CitySim.Match
+@using CitySim.Punchboard
+@inherits MatchPanel
+<root class="goals-panel @(City.Screens.Top == GameScreen.Goals ? "expanded" : "")">
+ <PbButton CssClass="goals-trigger global-action" Size=@(PbSize.Small) Kind=@(PbButtonKind.Tertiary) Clicked=@(() => { City.ToggleGoals(); })><ChildContent><div class="goals-summary"><div class="goals-label">GOALS</div>@foreach (var item in goals) { var def = GoalLibrary.Get(item.GoalId); <div class="goals-summary-item">@($"{def.Icon} {def.Name}")</div> } @if (goals.Count == 0) { <div class="goals-summary-item">No active goals</div> }</div></ChildContent></PbButton>
+ <div class="pb-goals-layout"><PbPanel Title="CITY GOALS"><ChildContent><div class="pb-goals-content">
+ <div class="pb-goals-heading"><div>Goals</div>@if (City.Screens.Top == GameScreen.Goals) { <PbButton Text="Close · Esc" Size=@(PbSize.Small) Kind=@(PbButtonKind.Ghost) Clicked=@(() => { City.ToggleGoals(); }) /> }</div>
+ <div class="goals-body pb-goals-scroll">
+ @foreach (var item in goals) { var def=GoalLibrary.Get(item.GoalId); var progress=GoalRules.Evaluate(BoundMatch,CityGame.Me,def); <div class="pb-goal-item"><PbPanel Title=@def.Name><ChildContent><div class="pb-goal-detail"><div>@($"{def.Icon} {def.Description}")</div>@if (item.Claim != null) { <div>@($"✓ Round {item.Claim.Round} · "+string.Join(" · ",item.Claim.Awards.Select(a => $"{City.Match.Players[a.Player].Name} +{a.Vp} VP")))</div> } else { <PbMeter Value=@(progress.Target > 0 ? (float)progress.Current/progress.Target : 0f) Label="Your progress" Text=@($"{progress.Current} / {progress.Target}") /> }</div></ChildContent></PbPanel></div> }
+ <div class="pb-goal-item personal-goal"><PbPanel Title="🔒 YOUR UNIQUE GOAL"><ChildContent><div class="pb-goal-detail">@if (contract?.Selected is { } id) { var def=Contracts.Get(id); <div>@($"{def.Icon} {def.Name} · {def.Vp} VP")</div><div>@def.Description</div><div>@contract.Progress.Detail</div> } else { <div>@(City.Mode == GameMode.Sandbox ? "No contract in Debug Sandbox." : "Pick a contract before the first round.")</div> }</div></ChildContent></PbPanel></div>
+ </div></div></ChildContent></PbPanel></div>
+</root>
+
+@code {
+	IReadOnlyList<PublicGoal> goals = Array.Empty<PublicGoal>();
+	ContractView contract;
+	bool dirty;
+	void Dirty() => dirty = true;
+	void Coin(ResourceChange change) => Dirty();
+	void Placed(BoardCell cell) => Dirty();
+	void Changed(Guid player) => Dirty();
+	void Phase(PhaseChange phase) => Dirty();
+	void Read() { goals = BoundMatch?.Goals.Active ?? Array.Empty<PublicGoal>(); contract = City?.OwnContract; dirty = false; Refresh(); }
+	protected override void Subscribe() { if (BoundMatch != null) { BoundMatch.Events.PublicGoalsChanged += Dirty; BoundMatch.Events.ContractChanged += Changed; BoundMatch.Events.CoinsChanged += Coin; BoundMatch.Events.CardPlaced += Placed; BoundMatch.Events.CellUpdated += Placed; BoundMatch.Events.PhaseChanged += Phase; } Read(); }
+	protected override void Unsubscribe() { if (BoundMatch != null) { BoundMatch.Events.PublicGoalsChanged -= Dirty; BoundMatch.Events.ContractChanged -= Changed; BoundMatch.Events.CoinsChanged -= Coin; BoundMatch.Events.CardPlaced -= Placed; BoundMatch.Events.CellUpdated -= Placed; BoundMatch.Events.PhaseChanged -= Phase; } }
+	public override void Tick()
+	{
+		base.Tick(); if (dirty) Read(); if (City?.Screens.Top != GameScreen.Goals) return;
+		var direction = (Input.Pressed("CursorDown") ? 1 : 0)-(Input.Pressed("CursorUp") ? 1 : 0);
+		if (direction != 0 && Descendants.FirstOrDefault(p => p.HasClass("goals-body")) is { } body) body.ScrollTo(body.ScrollOffset+new Vector2(0,direction*100));
+	}
+}
+

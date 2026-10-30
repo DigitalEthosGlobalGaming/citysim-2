@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <UseAppHost>false</UseAppHost>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../code/Cards/**/*.cs" />
+    <Compile Include="../code/Match/**/*.cs" />
+    <Compile Include="../code/Ai/**/*.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="AnalyticsChecks.cs" />
+  </ItemGroup>
+</Project>
+

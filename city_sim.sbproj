@@ -1,0 +1,39 @@
+{
+  "Title": "City Sim",
+  "Type": "game",
+  "Org": "degg",
+  "Ident": "city_sim",
+  "Schema": 1,
+  "IncludeSourceFiles": false,
+  "Resources": "",
+  "PublishUsedAssetsOnly": true,
+  "PackageReferences": [],
+  "EditorReferences": null,
+  "Mounts": null,
+  "IsStandaloneOnly": false,
+  "AI": {
+    "EnableMcpCommunication": true
+  },
+  "Metadata": {
+    "MaxPlayers": 64,
+    "MinPlayers": 1,
+    "TickRate": 50,
+    "MapSelect": "Unrestricted",
+    "MapList": [
+      "facepunch.flatgrass"
+    ],
+    "RankType": "None",
+    "PerMapRanking": false,
+    "LeaderboardType": "None",
+    "CsProjName": "",
+    "StartupScene": "scenes/minimal.scene",
+    "LaunchMode": "Normal",
+    "MapSettings": {
+      "UseCreateGameModal": false,
+      "NeedsMap": false,
+      "ShowChangeMap": false,
+      "DefaultMap": null,
+      "MapTarget": null
+    }
+  }
+}

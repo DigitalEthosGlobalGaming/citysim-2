@@ -1,0 +1,24 @@
+@namespace CitySim.Punchboard
+@using Sandbox.UI
+@inherits Panel
+
+<root class="pb-meter @Tone.Css()">
+	@if ( !string.IsNullOrEmpty( Label ) )
+	{
+		<div class="pb-meter-head"><span>@Label</span><span class="pb-meter-text">@Text</span></div>
+	}
+	<div class="pb-meter-track"><div class="pb-meter-fill" style="width: @(Pb.F( Math.Clamp( Value, 0f, 1f ) * 100f ))%;"></div></div>
+</root>
+
+@code
+{
+	/// <summary>0 to 1.</summary>
+	[Parameter] public float Value { get; set; }
+	[Parameter] public string Label { get; set; }
+
+	/// <summary>Optional value text on the right of the label, such as "3 / 5".</summary>
+	[Parameter] public string Text { get; set; }
+	[Parameter] public PbTone Tone { get; set; } = PbTone.Accent;
+
+	protected override int BuildHash() => HashCode.Combine( Value, Label, Text, Tone );
+}

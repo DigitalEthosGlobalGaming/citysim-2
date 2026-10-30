@@ -1,0 +1,33 @@
+@import "/Ui/Punchboard/_tokens.scss";
+
+// A live catalogue of every Punchboard component. Add it to a GameObject next to a ScreenPanel.
+PbShowcase
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: $pb-table;
+	font-family: $pb-font-body;
+	color: $pb-ink;
+	pointer-events: all;
+
+	.pb-sc-scroll { flex-direction: column; width: 100%; height: 100%; padding: 28px 40px 120px 40px; gap: 26px; overflow: scroll; }
+	.pb-sc-scroll > * { flex-shrink: 0; }
+
+	.pb-sc-title { font-family: $pb-font-display; font-size: 44px; color: $pb-panel; text-shadow: 2px 2px 0 rgba($pb-ink, 0.5); }
+	.pb-sc-note { font-size: 18px; color: rgba($pb-panel, 0.8); margin-top: -18px; }
+
+	.pb-sc-row { gap: 26px; align-items: flex-start; flex-wrap: wrap; }
+	.pb-sc-line { gap: 12px; align-items: center; flex-wrap: wrap; }
+	.pb-sc-col { flex-direction: column; gap: 4px; }
+	.pb-sc-caption { font-size: 13px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: $pb-ink-soft; }
+	.pb-sc-big { font-family: $pb-font-display; font-size: 28px; }
+	.pb-sc-name { font-family: $pb-font-display; font-size: 20px; }
+
+	.pb-sc-row > PbPanel { max-width: 720px; }
+
+	// The hand sits on the bottom edge of the screen, as it would in a game.
+	.pb-sc-hand { position: absolute; left: 0; right: 0; bottom: 0; height: 280px; justify-content: center; align-items: flex-end; pointer-events: none; }
+}

@@ -1,0 +1,21 @@
+@import "/Ui/Punchboard/_tokens.scss";
+
+PbRarityMarker
+{
+	flex-shrink: 0;
+	align-items: center;
+	gap: 5px;
+	color: $pb-ink-soft;
+	font-family: $pb-font-body;
+	font-size: 18px;
+	font-weight: 800;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+
+	.pb-rarity-shape { font-size: 19px; color: $pb-r-common; }
+
+	&.uncommon .pb-rarity-shape { color: $pb-r-uncommon; }
+	&.rare .pb-rarity-shape { color: $pb-r-rare; }
+	&.legendary .pb-rarity-shape { color: $pb-r-legendary; }
+}
+.large-text PbRarityMarker { font-size: 27px; .pb-rarity-shape { font-size: 28px; } }

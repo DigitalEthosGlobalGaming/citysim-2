@@ -1,0 +1,72 @@
+@namespace CitySim
+@using Sandbox.UI
+@using CitySim.Match
+@using CitySim.Punchboard
+@inherits MatchPanel
+<root class="contract-stage overlay">
+ @if (view != null) {
+ <div class="pb-contract-layout"><PbPanel Title="LET'S BEGIN" Kind=@(PbPanelKind.Raised)><ChildContent><div class="pb-contract-content">
+  <div class="opening-summary"><div>@($"{City.Match.Settings.StartingCoins} starting coins · {City.Match.Settings.Rounds} rounds")</div><div>@string.Join(" · ",City.Match.Players.Values.Select(p=>p.Name))</div></div>
+  <div class="pb-contract-title">@(Kept ? "Your plan is ready" : "Choose your secret plan")</div>
+  <div>@(Kept ? "Waiting for the other players. Only you can see your plan." : "Choose one. Complete its goal to earn bonus points at the end of the game.")</div>
+  <div class="pb-contract-scroll"><div class="pb-contract-choices">
+  @for (var i=0;i<view.Choices.Count;i++) {
+   var index=i; var card=Contracts.Get(view.Choices[i]);
+   @if (!Kept || view.Selected==card.Id) {
+   <div class="pb-contract-card"><PbCard SelectionSound=@false CssClass="contract-choice" ShowRarity=@false Title=@card.Name Icon=@card.Icon Text=@card.Description TypeLabel="SECRET PLAN" Requirement=@($"+{card.Vp} VP bonus") Disabled=@(Kept || confirming) Size=@(PbSize.Big) Selected=@(index==selected) Clicked=@(() => Select(index)) /></div>
+   }
+  }
+  </div>
+  @if (confirming || Kept) { <div class="contract-stamp">✓ KEPT SECRET</div> }
+  <div class="pb-contract-subtitle">GOALS FOR EVERYONE</div>
+  <div class="goal-reward-note"><div>@($"Complete a goal first to earn {City.Match.Settings.GoalVp} VP.")</div><div>@($"Finish in the same round as another player? You each earn {City.Match.Settings.TiedGoalVp} VP.")</div></div>
+  <div class="pb-contract-goals">@foreach (var goal in City.Match.Goals.Active) { var def=GoalLibrary.Get(goal.GoalId); <div class="pb-contract-goal"><PbPanel Title=@def.Name><ChildContent><div>@($"{def.Icon} {def.Description}")</div></ChildContent></PbPanel></div> }</div>
+  </div>
+  <div class="pb-contract-actions"><PbButton Text=@(City.Multiplayer ? "Leave match" : "Back to menu") Kind=@(PbButtonKind.Ghost) Clicked=@(() => City.RequestMenu()) />
+  @if (!Kept && view.Choices.Count>0) { <PbButton CssClass="primary keep-contract" Text=@($"Choose {Contracts.Get(view.Choices[selected]).Name} · Enter / A") Disabled=@confirming Clicked=@Confirm /> }
+  </div>
+ </div></ChildContent></PbPanel></div>
+ }
+</root>
+
+@code {
+ ContractView view;
+ int selected;
+ bool confirming;
+ float age, sealAge;
+ string pendingContract;
+ int pendingDraft;
+ bool Kept => view?.Selected!=null;
+ void Read() { view=City?.OwnContract; selected=Math.Clamp(selected,0,Math.Max(0,(view?.Choices.Count ?? 0)-1)); if (Kept) selected=Math.Max(0,view.Choices.ToList().IndexOf(view.Selected)); Refresh(); }
+ void Select(int index) { if (Kept || confirming || selected==index) return; selected=index; TabletopAudio.Card(); Refresh(); }
+ void Confirm() {
+  if (view==null || Kept || confirming || selected>=view.Choices.Count) return;
+  pendingContract=view.Choices[selected]; pendingDraft=view.DraftId; confirming=true; sealAge=0;
+  City.Feedback.RevealContract(); Input.Clear("ConfirmCard"); Input.Clear("ReadyRound"); Refresh();
+ }
+ protected override void Subscribe() { age=0; confirming=false; if (BoundMatch!=null) BoundMatch.Events.ContractChanged+=Changed; Read(); if (view != null && !Kept) TabletopAudio.Fan(); }
+ protected override void Unsubscribe() { if (BoundMatch!=null) BoundMatch.Events.ContractChanged-=Changed; }
+ void Changed(Guid owner) { if (owner==CityGame.Me) Read(); }
+ public override void Tick() {
+  base.Tick(); if (City?.Screens.Top!=GameScreen.ContractPick || view==null) return;
+  age+=Time.Delta;
+  var layout=Descendants.FirstOrDefault(p=>p.HasClass("pb-contract-layout"));
+  if (layout!=null && !City.Feedback.ReduceFlashing) { var t=Math.Clamp(age/0.35f,0,1); layout.Style.Set("transform",FormattableString.Invariant($"translateY({16*MathF.Pow(1-t,3):0.##}px)")); }
+  if (confirming) {
+   sealAge+=Time.Delta;
+   if (!City.Feedback.ReduceFlashing && Descendants.FirstOrDefault(p=>p.HasClass("pb-contract-choices")) is { } cards) {
+    var t=Math.Clamp(sealAge/0.5f,0,1); var ease=t*t*(3-2*t);
+    cards.Style.Set("transform",FormattableString.Invariant($"translateY({8*ease:0.##}px) scale({1-0.04f*ease:0.###})"));
+   }
+   if (sealAge>=0.5f) { confirming=false; City.KeepContract(pendingDraft,pendingContract); Refresh(); }
+   return;
+  }
+  if (Descendants.FirstOrDefault(p=>p.HasClass("pb-contract-choices")) is { } restingCards) restingCards.Style.Set("transform","scale(1)");
+  if (Kept || view.Choices.Count==0) return;
+  var choices=Descendants.OfType<PbCard>().ToArray();
+  for(var i=0;i<choices.Length;i++) if (choices[i].HasFocus && selected!=i) Select(i);
+  var direction=(Input.Pressed("CursorRight") ? 1 : 0)-(Input.Pressed("CursorLeft") ? 1 : 0);
+  if(direction!=0) { City.Scene.GetAllComponents<Hud>().FirstOrDefault()?.FocusBoard(); Select((selected+direction+view.Choices.Count)%view.Choices.Count); }
+  if(Input.Pressed("ConfirmCard") || Input.Pressed("ReadyRound")) Confirm();
+ }
+}

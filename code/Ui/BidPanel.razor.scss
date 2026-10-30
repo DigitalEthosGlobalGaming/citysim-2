@@ -1,0 +1,28 @@
+@import "/Ui/Punchboard/_tokens.scss";
+BidPanel { position: absolute; left: 0; right: 0; top: 0; bottom: 0; z-index: 20; pointer-events: none; justify-content: center; align-items: center;
+ .peek-toolbar { position: absolute; top: 0; right: 0; pointer-events: all; align-items: center; gap: 10px; }
+ .peek-status { padding: 6px 10px; color: $pb-ink; background-color: $pb-panel; border: 2px solid $pb-ink; font-size: 18px; font-weight: 800; }
+ .auction-sheet { width: 96%; max-width: 1900px; height: 820px; max-height: 92%; flex-direction: column; pointer-events: all; }
+ .bid-window { width: 100%; min-height: 0; flex: 1; flex-direction: column; gap: 10px; color: $pb-ink; font-size: 18px; }
+ .bid-heading { justify-content: space-between; align-items: center; gap: 20px; padding: 2px 8px 8px 8px; border-bottom: 3px solid $pb-core; }
+ .market-heading-copy { flex-direction: column; gap: 2px; }
+ .market-kicker { color: $pb-ink-soft; font-size: 13px; font-weight: 800; letter-spacing: 1px; }
+ .heading-actions { align-items: center; gap: 15px; }
+ .bid-title { font-family: $pb-font-display; font-size: 28px; font-weight: 800; @include pb-printed-text; }
+ .bid-budget { font-size: 22px; font-weight: 800; padding: 5px 12px; @include pb-recessed; }
+ .auction-table { flex: 1; min-height: 0; gap: 14px; }
+ .player-rail { align-self: flex-start; width: 185px; flex-shrink: 0; flex-direction: column; gap: 10px; padding: 12px; background-color: $pb-panel-deep; border: 2px solid $pb-ink; box-shadow: $pb-edge; }
+ .rail-title { font-size: 13px; font-weight: 800; }
+ .ready-pip { align-items: center; gap: 6px; font-size: 17px; font-weight: 700; padding: 4px; background-color: $pb-card; border: 1px solid $pb-core; }
+ .seat-token { width: 28px; height: 28px; justify-content: center; align-items: center; border: 2px solid $pb-ink; border-radius: 14px; color: $pb-ink; background-color: #e78875; }
+ .seat-1 .seat-token { background-color: #7dbaca; } .seat-2 .seat-token { background-color: #8cbd80; } .seat-3 .seat-token { background-color: #d5ad5d; } .seat-4 .seat-token { background-color: #ba9bcc; } .seat-5 .seat-token { background-color: #d88fb3; }
+ .seat-6 .seat-token { background-color: #d48d4d; } .seat-7 .seat-token { background-color: #6b9e9e; }
+ .player-name { flex: 1; } .player-status { font-size: 22px; }
+ .rail-legend { margin-top: 8px; flex-direction: column; gap: 4px; font-size: 14px; color: $pb-ink-soft; }
+ .auction-lots { justify-content: flex-start; align-items: flex-start; gap: 16px; flex: 1; min-width: 0; min-height: 0; overflow: scroll; padding: 16px 8px 12px 8px; }
+ .bid-footer { justify-content: flex-end; align-items: center; gap: 16px; min-height: 50px; }
+ .auction-summary, .auction-timer { font-size: 22px; font-weight: 800; }
+ .auction-timer { padding: 5px 10px; background-color: $pb-panel-deep; border: 2px solid $pb-ink; }
+ .auction-timer.urgent { color: $pb-bad; border-color: $pb-bad; }
+}
+Hud.large-text BidPanel { .ready-pip, .rail-legend, .auction-summary, .auction-timer { font-size: 27px; } .bid-title { font-size: 39px; } .bid-budget { font-size: 33px; } }

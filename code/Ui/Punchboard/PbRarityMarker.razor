@@ -1,0 +1,19 @@
+@namespace CitySim.Punchboard
+@using Sandbox.UI
+@inherits Panel
+
+<root class="pb-rarity @Rarity.Css()">
+	<span class="pb-rarity-shape">@Pb.Glyph( Rarity )</span>
+	@if ( ShowLabel )
+	{
+		<span class="pb-rarity-name">@Pb.Label( Rarity )</span>
+	}
+</root>
+
+@code
+{
+	[Parameter] public PbRarity Rarity { get; set; }
+	[Parameter] public bool ShowLabel { get; set; } = true;
+
+	protected override int BuildHash() => HashCode.Combine( Rarity, ShowLabel );
+}

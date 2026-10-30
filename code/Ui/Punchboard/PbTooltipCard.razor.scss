@@ -1,0 +1,22 @@
+@import "/Ui/Punchboard/_tokens.scss";
+
+PbTooltipCard
+{
+	flex-shrink: 0;
+	width: 280px;
+
+	.pb-tip-title { font-family: $pb-font-display; font-size: 22px; @include pb-printed-text; }
+	.pb-tip-tags { flex-wrap: wrap; gap: 5px; }
+	.pb-tip-text { font-size: 15px; font-weight: 600; color: $pb-ink-soft; }
+
+	.pb-tip-live
+	{
+		padding: 6px 10px;
+		background-color: mix($pb-good, $pb-panel, 22%);
+		border: 1.5px solid $pb-good;
+		border-radius: $pb-radius;
+		font-size: 15px;
+		font-weight: 800;
+		color: $pb-ink;
+	}
+}

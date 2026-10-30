@@ -1,0 +1,26 @@
+@namespace CitySim.Punchboard
+@using Sandbox.UI
+@inherits Panel
+
+<root class="pb-banner @Tone.Css()">
+	@if ( !string.IsNullOrEmpty( Caption ) )
+	{
+		<div class="pb-banner-caption">@Caption</div>
+	}
+	<div class="pb-banner-title">@Title</div>
+	@ChildContent
+</root>
+
+@code
+{
+	/// <summary>Content placed inside the component.</summary>
+	[Parameter] public new RenderFragment ChildContent { get; set; }
+
+	[Parameter] public string Caption { get; set; }
+	[Parameter] public string Title { get; set; }
+
+	/// <summary>Accent (mustard) for phases, Teal for goals, Good for rewards, Bad for warnings.</summary>
+	[Parameter] public PbTone Tone { get; set; } = PbTone.Accent;
+
+	protected override int BuildHash() => HashCode.Combine( Caption, Title, Tone );
+}

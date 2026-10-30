@@ -1,0 +1,44 @@
+@namespace CitySim.Punchboard
+@using Sandbox.UI
+@inherits Panel
+
+<PbPanel Kind=@(PbPanelKind.Tooltip) Corner=@true>
+<ChildContent>
+	@if ( ShowRarity )
+	{
+		<PbRarityMarker Rarity=@Rarity />
+	}
+	<div class="pb-tip-title">@Title</div>
+	@if ( Tags != null && Tags.Any() )
+	{
+		<div class="pb-tip-tags">
+			@foreach ( var tag in Tags )
+			{
+				<PbTagPill Tag=@tag />
+			}
+		</div>
+	}
+	@if ( !string.IsNullOrEmpty( Text ) )
+	{
+		<div class="pb-tip-text">@Text</div>
+	}
+	@if ( !string.IsNullOrEmpty( Live ) )
+	{
+		<div class="pb-tip-live">@Live</div>
+	}
+</ChildContent>
+</PbPanel>
+
+@code
+{
+	[Parameter] public string Title { get; set; }
+	[Parameter] public string Text { get; set; }
+	[Parameter] public PbRarity Rarity { get; set; }
+	[Parameter] public bool ShowRarity { get; set; } = true;
+	[Parameter] public IEnumerable<PbTag> Tags { get; set; }
+
+	/// <summary>A live value strip such as "+2 coins per round here". Leave empty to hide.</summary>
+	[Parameter] public string Live { get; set; }
+
+	protected override int BuildHash() => HashCode.Combine( Title, Text, Rarity, ShowRarity, Live, Tags == null ? 0 : string.Join( ",", Tags ).GetHashCode() );
+}

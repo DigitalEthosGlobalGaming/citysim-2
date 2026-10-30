@@ -1,0 +1,6 @@
+@import "/Ui/Punchboard/_tokens.scss";
+ResourcePanel EffectTray { width: 100%; gap: 4px; }
+EffectTray .builder-choice { flex-wrap: wrap; gap: 6px; }
+EffectTray .builder-choice > div { width: 100%; font-size: 18px; }
+EffectTray { flex-direction: column; .tray-owners, .effect-icons, .tag-row { gap: 4px; flex-wrap: wrap; flex-shrink: 0; } .builder-choice { gap: 4px; align-items: center; flex-wrap: wrap; font-size: 18px; } .effect-detail { flex-direction: column; gap: 2px; font-size: 16px; } .effect-name { font-weight: 800; } .effect-note { font-size: 18px; } .tag-chip { pointer-events: all; cursor: help; padding: 2px 5px; border: 2px solid $pb-ink; border-radius: 3px; background-color: $pb-panel-deep; color: $pb-ink; font-size: 16px; } .tag-chip:hover, .tag-chip:focus { background-color: $pb-accent; } }
+Hud.large-text EffectTray { .effect-detail, .effect-note, .tag-chip { font-size: 27px; } }

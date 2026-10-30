@@ -1,0 +1,36 @@
+@namespace CitySim.Punchboard
+@using Sandbox.UI
+@inherits Panel
+
+<root class="pb-panel pb-kind-@Kind.Css() @(Fill ? "fill" : "") @(Corner ? "corner" : "")">
+	<div class="pb-paper"></div>
+	<div class="pb-frame"></div>
+	@if ( !string.IsNullOrEmpty( Title ) )
+	{
+		<div class="pb-label">@Title</div>
+	}
+	<div class="pb-body">@ChildContent</div>
+	@if ( Corner )
+	{
+		<div class="pb-corner"></div>
+	}
+</root>
+
+@code
+{
+	/// <summary>Optional heading shown on a label tab.</summary>
+	/// <summary>Content placed inside the component.</summary>
+	[Parameter] public new RenderFragment ChildContent { get; set; }
+
+	[Parameter] public string Title { get; set; }
+
+	/// <summary>Standard, Raised (larger edge, for overlays) or Tooltip.</summary>
+	[Parameter] public PbPanelKind Kind { get; set; } = PbPanelKind.Standard;
+
+	/// <summary>Adds a turned-up paper corner.</summary>
+	[Parameter] public bool Corner { get; set; }
+	/// <summary>Occupies a constrained layout area; body can contain a scroll region.</summary>
+	[Parameter] public bool Fill { get; set; }
+
+	protected override int BuildHash() => HashCode.Combine( Title, Kind, Corner, Fill );
+}

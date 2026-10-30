@@ -1,0 +1,8 @@
+Layer0
+{
+ shader "shaders/complex.shader"
+ TextureColor "raw/kenney/cars/colormap.png"
+ g_flMetalness "0"
+ TextureRoughness "[0.9 0.9 0.9 0]"
+ g_flModelTintAmount "1"
+}

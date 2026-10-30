@@ -1,0 +1,23 @@
+@namespace CitySim
+@using CitySim.Match
+@using Sandbox.UI
+@inherits Panel
+
+<root class="interaction-chip @(Heading ? "interaction-heading" : "interaction-target")">@Label</root>
+@code {
+    [Parameter] public CityGame City { get; set; }
+    [Parameter] public string Label { get; set; }
+    [Parameter] public IReadOnlyList<InteractionTarget> Targets { get; set; }
+    [Parameter] public bool Heading { get; set; }
+    bool CanHighlight => Targets != null && Targets.Any(t => t.Kind != InteractionKind.None);
+    protected override void OnParametersSet() {
+        base.OnParametersSet(); AcceptsFocus = CanHighlight;
+    }
+    void Show() { if (CanHighlight) City?.HighlightInteractions(this,Targets,Heading ? "Interactions" : Label); }
+    void Clear() => City?.ClearInteractionHighlight(this);
+    protected override void OnMouseOver(MousePanelEvent e) { base.OnMouseOver(e); Show(); }
+    protected override void OnMouseOut(MousePanelEvent e) { base.OnMouseOut(e); if (!HasFocus) Clear(); }
+    protected override void OnFocus(PanelEvent e) { base.OnFocus(e); Show(); }
+    protected override void OnBlur(PanelEvent e) { base.OnBlur(e); if (!HasHovered) Clear(); }
+    public override void OnDeleted() { Clear(); base.OnDeleted(); }
+}

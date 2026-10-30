@@ -1,0 +1,796 @@
+<!doctype html>
+<html lang="en" data-theme="kraft">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>City Sim UI Styles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Baloo+2:wght@500;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&family=Josefin+Sans:wght@400;600;700&family=Lilita+One&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   THEMES. Every colour, border, shadow and font comes from these.
+   Add a new theme by copying one block and changing the values.
+   ============================================================ */
+:root[data-theme="kraft"] {
+  --name: "Kraft";
+  --page: #8a6a45; --page-2: #7a5c3b;
+  --stage: #b98f58; --stage-pattern: repeating-linear-gradient(90deg, rgba(0,0,0,.035) 0 2px, transparent 2px 6px);
+  --panel: #f2e4c4; --panel-2: #e8d6ae; --panel-edge: #4a3320; --edge-w: 2px; --radius: 6px;
+  --shadow: 3px 3px 0 rgba(74,51,32,.45); --shadow-lg: 6px 6px 0 rgba(74,51,32,.4);
+  --stitch: 1px dashed rgba(74,51,32,.45);
+  --ink: #3b2814; --ink-soft: #7a6244; --on-accent: #fff6e4;
+  --accent: #b8432a; --accent-2: #3f7d6d; --accent-3: #d9a441;
+  --good: #3f7d6d; --bad: #b8432a;
+  --font-display: "Alfa Slab One", Georgia, serif; --font-body: "Nunito", system-ui, sans-serif;
+  --display-case: uppercase; --display-track: .04em;
+  --tile-empty: #c9a46a; --tile-road: #5b4a38; --tile-house: #d1583d; --tile-shop: #e0a53a; --tile-park: #6c9a56; --tile-farm: #b9b24a; --tile-edge: rgba(74,51,32,.55);
+  --tag-home:#d1583d; --tag-trade:#d9a441; --tag-nature:#6c9a56; --tag-industry:#7b6f63; --tag-culture:#8a5a9a; --tag-civic:#3f7d6d;
+  --r-common:#8d7a5c; --r-uncommon:#5b8f5b; --r-rare:#3f78a8; --r-legend:#c4902b;
+  --card: #fbf2da; --noise: .5;
+}
+:root[data-theme="punch"] {
+  --name: "Punchboard";
+  --page: #1f5559; --page-2: #17454a;
+  --stage: #2f7f84; --stage-pattern: radial-gradient(rgba(255,255,255,.07) 1.5px, transparent 2px) 0 0/16px 16px;
+  --panel: #fff1c9; --panel-2: #ffe29a; --panel-edge: #1d1d1d; --edge-w: 3px; --radius: 14px;
+  --shadow: 0 5px 0 #1d1d1d; --shadow-lg: 0 8px 0 #1d1d1d;
+  --stitch: 0 solid transparent;
+  --ink: #1d1d1d; --ink-soft: #5a4f3a; --on-accent: #1d1d1d;
+  --accent: #ffcf33; --accent-2: #ff5a4f; --accent-3: #3ba7ff;
+  --good: #36b36b; --bad: #ff5a4f;
+  --font-display: "Lilita One", system-ui, sans-serif; --font-body: "Nunito", system-ui, sans-serif;
+  --display-case: none; --display-track: .02em;
+  --tile-empty: #f0c870; --tile-road: #3a3a3a; --tile-house: #ff5a4f; --tile-shop: #ffcf33; --tile-park: #4cc36b; --tile-farm: #b6e04a; --tile-edge: #1d1d1d;
+  --tag-home:#ff5a4f; --tag-trade:#ffcf33; --tag-nature:#4cc36b; --tag-industry:#8e8e99; --tag-culture:#b57bff; --tag-civic:#3ba7ff;
+  --r-common:#9a9a9a; --r-uncommon:#36b36b; --r-rare:#3ba7ff; --r-legend:#ffb000;
+  --card: #fffaf0; --noise: 0;
+}
+:root[data-theme="punch2"] {
+  --name: "Punchboard Deluxe";
+  --page: #174346; --page-2: #123539;
+  --stage: #2a7377; --stage-pattern: radial-gradient(rgba(255,255,255,.06) 1.5px, transparent 2px) 0 0/18px 18px;
+  --panel: #f7ecd2; --panel-2: #ecdcb2; --panel-edge: #2a2118; --edge-w: 3px; --radius: 4px;
+  --shadow: 0 2px 0 #efe2c0, 0 3px 0 #b8935c, 0 5px 0 #dcc592, 0 6px 0 #a88252, 0 8px 0 #2a2118, 0 12px 14px rgba(0,0,0,.22);
+  --shadow-lg: 0 2px 0 #efe2c0, 0 3px 0 #b8935c, 0 5px 0 #dcc592, 0 6px 0 #a88252, 0 8px 0 #efe2c0, 0 9px 0 #b8935c, 0 11px 0 #2a2118, 0 22px 26px rgba(0,0,0,.32);
+  --stitch: 0 solid transparent;
+  --ink: #2a2118; --ink-soft: #6a5a40; --on-accent: #2a2118;
+  --accent: #f0b83a; --accent-2: #d9483b; --accent-3: #3a9bb8;
+  --mottle: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='.03' numOctaves='3' seed='4' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .45  0 0 0 0 .32  0 0 0 0 .18  0 0 0 .22 -.04'/></filter><rect width='100%25' height='100%25' filter='url(%23m)'/></svg>");
+  --fleck: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='f'><feTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='1' seed='9' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .62  0 0 0 0 .48  0 0 0 0 .3  0 0 0 4 -2.9'/></filter><rect width='100%25' height='100%25' filter='url(%23f)'/></svg>");
+  --good: #3f9a5a; --bad: #d9483b;
+  --font-display: "Lilita One", system-ui, sans-serif; --font-body: "Nunito", system-ui, sans-serif;
+  --display-case: none; --display-track: .02em;
+  --core: #c79a5e; --paper: #f3e6c4;
+  --tile-empty: #c3d98f; --tile-road: #4a4036; --tile-house: #d9483b; --tile-shop: #f0b83a; --tile-park: #4aa564; --tile-farm: #c8c24a; --tile-edge: rgba(42,33,24,.5);
+  --tag-home:#d9483b; --tag-trade:#f0b83a; --tag-nature:#4aa564; --tag-industry:#8a8478; --tag-culture:#a468c8; --tag-civic:#3a8bd0;
+  --r-common:#9a8f7a; --r-uncommon:#3f9a5a; --r-rare:#3a8bd0; --r-legend:#e69a00;
+  --card: #fffaf0; --noise: 0;
+  --grain: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .3  0 0 0 0 .2  0 0 0 0 .1  0 0 0 .1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+:root[data-theme="linen"] {
+  --name: "Linen Box";
+  --page: #e4dccb; --page-2: #d9cfba;
+  --stage: #eee7d8; --stage-pattern: none;
+  --panel: #fcf9f2; --panel-2: #f3eddf; --panel-edge: #cbbfa6; --edge-w: 1px; --radius: 4px;
+  --shadow: 0 1px 2px rgba(60,48,30,.18), 0 6px 14px rgba(60,48,30,.08); --shadow-lg: 0 2px 4px rgba(60,48,30,.2), 0 14px 30px rgba(60,48,30,.12);
+  --stitch: 0 solid transparent;
+  --ink: #2f2a21; --ink-soft: #7c735f; --on-accent: #fcf9f2;
+  --accent: #3d5a80; --accent-2: #b5654a; --accent-3: #8c9a6a;
+  --good: #5d7f4a; --bad: #b5503a;
+  --font-display: "Fraunces", Georgia, serif; --font-body: "Inter", system-ui, sans-serif;
+  --display-case: none; --display-track: 0;
+  --tile-empty: #e6dcc5; --tile-road: #a69a82; --tile-house: #c98a73; --tile-shop: #d6b56d; --tile-park: #9db27c; --tile-farm: #c9c178; --tile-edge: rgba(90,75,50,.35);
+  --tag-home:#c98a73; --tag-trade:#d6b56d; --tag-nature:#9db27c; --tag-industry:#9a9486; --tag-culture:#a58bb5; --tag-civic:#7c9bb5;
+  --r-common:#a39b88; --r-uncommon:#7e9a6a; --r-rare:#5f84a8; --r-legend:#b8933f;
+  --card: #fffdf8; --noise: 0;
+}
+:root[data-theme="night"] {
+  --name: "Midnight Box";
+  --page: #121826; --page-2: #0d121d;
+  --stage: #1d2740; --stage-pattern: repeating-linear-gradient(45deg, rgba(255,255,255,.025) 0 2px, transparent 2px 8px);
+  --panel: #2a3556; --panel-2: #222c4a; --panel-edge: #e0b84c; --edge-w: 1.5px; --radius: 10px;
+  --shadow: 0 4px 0 rgba(0,0,0,.35); --shadow-lg: 0 10px 0 rgba(0,0,0,.35);
+  --stitch: 1px solid rgba(224,184,76,.28);
+  --ink: #f3ecd8; --ink-soft: #aab1c9; --on-accent: #2a2210;
+  --accent: #e0b84c; --accent-2: #6fb7c9; --accent-3: #d9806b;
+  --good: #7fcf9a; --bad: #f08a76;
+  --font-display: "Josefin Sans", system-ui, sans-serif; --font-body: "Josefin Sans", system-ui, sans-serif;
+  --display-case: uppercase; --display-track: .12em;
+  --tile-empty: #34416a; --tile-road: #12182a; --tile-house: #d9806b; --tile-shop: #e0b84c; --tile-park: #5aa77a; --tile-farm: #a9b45a; --tile-edge: rgba(224,184,76,.4);
+  --tag-home:#d9806b; --tag-trade:#e0b84c; --tag-nature:#5aa77a; --tag-industry:#9aa0b4; --tag-culture:#b490d9; --tag-civic:#6fb7c9;
+  --r-common:#8f97b3; --r-uncommon:#6fcf8f; --r-rare:#6fb7ff; --r-legend:#ffd35c;
+  --card: #323f66; --noise: 0;
+}
+:root[data-theme="sticker"] {
+  --name: "Sticker Sheet";
+  --page: #f6e8ee; --page-2: #efd9e3;
+  --stage: #fdf6e9; --stage-pattern: radial-gradient(rgba(255,143,171,.18) 2px, transparent 2.5px) 0 0/22px 22px;
+  --panel: #ffffff; --panel-2: #fff3f6; --panel-edge: #ffffff; --edge-w: 5px; --radius: 22px;
+  --shadow: 0 0 0 1.5px rgba(58,58,74,.18), 0 6px 12px rgba(58,58,74,.18); --shadow-lg: 0 0 0 1.5px rgba(58,58,74,.18), 0 14px 26px rgba(58,58,74,.22);
+  --stitch: 0 solid transparent;
+  --ink: #3a3a4a; --ink-soft: #85859a; --on-accent: #ffffff;
+  --accent: #ff7fa3; --accent-2: #6cc7a8; --accent-3: #ffc857;
+  --good: #3fb68b; --bad: #ff6b6b;
+  --font-display: "Baloo 2", system-ui, sans-serif; --font-body: "Baloo 2", system-ui, sans-serif;
+  --display-case: none; --display-track: 0;
+  --tile-empty: #ffe9c9; --tile-road: #b9b2c9; --tile-house: #ff9aa8; --tile-shop: #ffc857; --tile-park: #8fd6a8; --tile-farm: #d9e37a; --tile-edge: rgba(58,58,74,.2);
+  --tag-home:#ff9aa8; --tag-trade:#ffc857; --tag-nature:#8fd6a8; --tag-industry:#b9b2c9; --tag-culture:#c9a7ff; --tag-civic:#8ec5ff;
+  --r-common:#b0b0c0; --r-uncommon:#5fcf9a; --r-rare:#5fa8ff; --r-legend:#ffb347;
+  --card: #ffffff; --noise: 0;
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--page); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.35;
+  min-height: 100vh; transition: background .25s;
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 2px; }
+.display { font-family: var(--font-display); text-transform: var(--display-case); letter-spacing: var(--display-track); font-weight: 400; }
+.icon { width: 1em; height: 1em; fill: currentColor; flex: none; }
+
+/* Page chrome (the style switcher; not part of the game UI) */
+.chrome {
+  position: sticky; top: 0; z-index: 50; display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center;
+  padding: 10px 20px; background: rgba(20,20,20,.82); color: #fff; backdrop-filter: blur(6px); font-family: system-ui, sans-serif; font-size: 14px;
+}
+.chrome h1 { margin: 0; font-size: 15px; font-weight: 700; margin-right: 6px; }
+.chrome .group { display: flex; gap: 4px; align-items: center; }
+.chrome .label { opacity: .6; font-size: 12px; margin-right: 4px; text-transform: uppercase; letter-spacing: .08em; }
+.chrome button { border: 1px solid rgba(255,255,255,.25); background: transparent; color: #fff; padding: 6px 12px; border-radius: 8px; }
+.chrome button[aria-pressed="true"] { background: #fff; color: #111; border-color: #fff; font-weight: 700; }
+.chrome .hint { opacity: .55; font-size: 12px; margin-left: auto; }
+.wrap { max-width: 1280px; margin: 0 auto; padding: 22px 16px 60px; }
+.section-title { margin: 34px 0 12px; font-size: 22px; }
+.note { color: var(--ink); opacity: .75; margin: 0 0 14px; font-family: system-ui, sans-serif; font-size: 14px; }
+html[data-theme="night"] .note, html[data-theme="kraft"] .note, html[data-theme="punch"] .note, html[data-theme="punch2"] .note { color: #fff; opacity: .8; }
+
+/* ============================================================
+   UI building blocks
+   ============================================================ */
+.panel {
+  position: relative; background: var(--panel); border: var(--edge-w) solid var(--panel-edge); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 12px 14px; color: var(--ink);
+}
+.panel.raised { box-shadow: var(--shadow-lg); }
+.panel.stitched::after { content: ""; position: absolute; inset: 4px; border: var(--stitch); border-radius: calc(var(--radius) - 2px); pointer-events: none; }
+html[data-theme="kraft"] .panel, html[data-theme="kraft"] .card { background-image: radial-gradient(rgba(74,51,32,.06) 1px, transparent 1.3px); background-size: 5px 5px; }
+.panel h3 { margin: 0 0 6px; font-size: 13px; color: var(--ink-soft); font-family: var(--font-display); text-transform: var(--display-case); letter-spacing: .08em; font-weight: 400; }
+.num { font-family: var(--font-display); font-variant-numeric: tabular-nums; }
+.muted { color: var(--ink-soft); }
+
+/* Buttons */
+.btn {
+  --bg: var(--accent); --fg: var(--on-accent);
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 9px 18px; min-height: 40px;
+  background: var(--bg); color: var(--fg); border: var(--edge-w) solid var(--panel-edge); border-radius: var(--radius);
+  box-shadow: var(--shadow); font-family: var(--font-display); text-transform: var(--display-case); letter-spacing: var(--display-track);
+  font-size: 15px; transition: transform .08s ease, box-shadow .08s ease, filter .15s;
+}
+html[data-theme="linen"] .btn { font-weight: 600; font-size: 14px; }
+html[data-theme="night"] .btn { font-weight: 700; }
+.btn:hover { filter: brightness(1.06); transform: translateY(-1px); }
+.btn:active { transform: translateY(2px); box-shadow: 0 0 0 transparent; }
+.btn.secondary { --bg: var(--accent-2); --fg: #fff; }
+html[data-theme="punch"] .btn.secondary { --fg: #1d1d1d; }
+html[data-theme="linen"] .btn.secondary { --fg: #fff; }
+.btn.tertiary { --bg: var(--accent-3); --fg: var(--ink); }
+.btn.ghost { --bg: transparent; --fg: var(--ink); box-shadow: none; border-style: dashed; }
+html[data-theme="sticker"] .btn.ghost { border-style: solid; border-color: rgba(58,58,74,.2); }
+.btn.danger { --bg: var(--bad); --fg: #fff; }
+.btn.big { padding: 14px 34px; font-size: 20px; min-height: 54px; }
+.btn.small { padding: 5px 12px; min-height: 30px; font-size: 13px; }
+.btn.square { width: 40px; padding: 0; }
+.btn:disabled { opacity: .45; cursor: not-allowed; transform: none; filter: grayscale(.6); }
+.btn[aria-pressed="true"] { --bg: var(--good); --fg: #fff; }
+
+/* Tags and rarity (shape + colour, never colour alone) */
+.tag { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 800; padding: 2px 8px 2px 6px; border-radius: 999px; background: color-mix(in srgb, var(--c) 28%, var(--panel)); border: 1.5px solid var(--c); color: var(--ink); text-transform: uppercase; letter-spacing: .04em; font-family: var(--font-body); }
+.tag svg { width: 11px; height: 11px; fill: var(--c); }
+.tag.home { --c: var(--tag-home); } .tag.trade { --c: var(--tag-trade); } .tag.nature { --c: var(--tag-nature); }
+.tag.industry { --c: var(--tag-industry); } .tag.culture { --c: var(--tag-culture); } .tag.civic { --c: var(--tag-civic); }
+.rarity { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--c); }
+.rarity svg { width: 13px; height: 13px; fill: var(--c); }
+.rarity.common { --c: var(--r-common); } .rarity.uncommon { --c: var(--r-uncommon); } .rarity.rare { --c: var(--r-rare); } .rarity.legendary { --c: var(--r-legend); }
+.chip { display: inline-flex; align-items: center; gap: 5px; font-weight: 800; padding: 3px 10px; border-radius: 999px; border: var(--edge-w) solid var(--panel-edge); background: var(--panel-2); font-size: 14px; }
+.chip.coin svg { fill: var(--accent-3); stroke: var(--panel-edge); stroke-width: 1.2; }
+.chip.vp svg { fill: var(--accent-2); }
+.chip.plus { background: var(--good); color: #fff; }
+
+/* Cards */
+.card {
+  position: relative; width: 132px; flex: none; background: var(--card); border: var(--edge-w) solid var(--panel-edge); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 8px; display: flex; flex-direction: column; gap: 6px; text-align: left; color: var(--ink);
+  transition: transform .14s cubic-bezier(.3,1.6,.5,1), box-shadow .14s;
+}
+.card::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px; background: var(--rc); border-radius: calc(var(--radius) - 2px) calc(var(--radius) - 2px) 0 0; }
+.card.common { --rc: var(--r-common); } .card.uncommon { --rc: var(--r-uncommon); } .card.rare { --rc: var(--r-rare); } .card.legendary { --rc: var(--r-legend); }
+.card .art { height: 58px; margin-top: 4px; border-radius: calc(var(--radius) - 2px); background: color-mix(in srgb, var(--ac) 40%, var(--panel)); border: 1.5px solid color-mix(in srgb, var(--ink) 25%, transparent); display: grid; place-items: center; }
+.card .art svg { width: 34px; height: 34px; fill: var(--ac); filter: drop-shadow(0 1.5px 0 rgba(0,0,0,.3)); stroke: var(--panel-edge); stroke-width: .6; }
+.card .name { font-family: var(--font-display); text-transform: var(--display-case); letter-spacing: var(--display-track); font-size: 14px; line-height: 1.1; }
+.card .text { font-size: 11.5px; line-height: 1.25; color: var(--ink-soft); min-height: 44px; }
+.card .row { display: flex; align-items: center; justify-content: space-between; gap: 4px; flex-wrap: wrap; }
+.card.legendary { box-shadow: var(--shadow), 0 0 0 2px var(--r-legend) inset; }
+.card:hover { transform: translateY(-6px) rotate(-1deg); }
+.card.selected { transform: translateY(-14px); box-shadow: var(--shadow-lg); outline: 3px solid var(--accent-2); outline-offset: 2px; }
+.card .key { position: absolute; top: -9px; left: -7px; min-width: 22px; height: 22px; padding: 0 5px; display: grid; place-items: center; font-size: 12px; font-weight: 800; border-radius: 6px; background: var(--ink); color: var(--panel); }
+
+/* Tooltip */
+.tooltip { width: 250px; padding: 12px 14px; }
+.tooltip .t-name { font-size: 18px; margin: 2px 0 6px; }
+.tooltip p { margin: 8px 0 0; font-size: 13px; }
+.tooltip .live { margin-top: 10px; padding: 6px 10px; border-radius: var(--radius); background: color-mix(in srgb, var(--good) 22%, var(--panel)); border: 1.5px solid var(--good); font-weight: 800; font-size: 14px; }
+
+/* Bars, toggles, sliders, tabs */
+.bar { height: 14px; border-radius: 999px; border: var(--edge-w) solid var(--panel-edge); background: var(--panel-2); overflow: hidden; }
+.bar > i { display: block; height: 100%; width: var(--v, 60%); background: var(--accent); }
+.timer { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: conic-gradient(var(--accent) calc(var(--p, 70) * 1%), var(--panel-2) 0); border: var(--edge-w) solid var(--panel-edge); box-shadow: var(--shadow); position: relative; }
+.timer::before { content: ""; position: absolute; inset: 7px; border-radius: 50%; background: var(--panel); border: 1.5px solid color-mix(in srgb, var(--ink) 20%, transparent); }
+.timer b { position: relative; font-size: 20px; }
+.toggle { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 700; }
+.toggle input { position: absolute; opacity: 0; }
+.toggle .track { width: 46px; height: 26px; border-radius: 999px; border: var(--edge-w) solid var(--panel-edge); background: var(--panel-2); position: relative; transition: background .15s; }
+.toggle .track::after { content: ""; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: var(--ink); transition: transform .18s cubic-bezier(.3,1.6,.5,1); }
+.toggle input:checked + .track { background: var(--good); }
+.toggle input:checked + .track::after { transform: translateX(20px); background: #fff; }
+.toggle input:focus-visible + .track { outline: 3px solid var(--accent-2); outline-offset: 2px; }
+input[type=range] { accent-color: var(--accent); width: 100%; }
+.tabs { display: inline-flex; border: var(--edge-w) solid var(--panel-edge); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); background: var(--panel-2); }
+.tabs button { border: 0; background: transparent; padding: 8px 16px; font-weight: 800; color: var(--ink-soft); }
+.tabs button + button { border-left: var(--edge-w) solid var(--panel-edge); }
+.tabs button[aria-selected="true"] { background: var(--accent); color: var(--on-accent); }
+
+/* Banner */
+.banner { display: inline-flex; flex-direction: column; align-items: center; padding: 10px 40px; background: var(--accent); color: var(--on-accent); border: var(--edge-w) solid var(--panel-edge); box-shadow: var(--shadow-lg); border-radius: var(--radius); clip-path: none; }
+.banner small { font-size: 12px; letter-spacing: .12em; opacity: .85; text-transform: uppercase; font-weight: 800; font-family: var(--font-body); }
+.banner b { font-size: 30px; line-height: 1.05; font-weight: 400; }
+html[data-theme="kraft"] .banner { border-radius: 0; background-image: linear-gradient(90deg, rgba(0,0,0,.08), transparent 12%, transparent 88%, rgba(0,0,0,.08)); }
+
+/* ============================================================
+   The game scene mock-up
+   ============================================================ */
+.stage {
+  position: relative; aspect-ratio: 16 / 10; width: 100%; overflow: hidden; border-radius: calc(var(--radius) + 6px);
+  background: var(--stage-pattern), var(--stage); border: var(--edge-w) solid var(--panel-edge); box-shadow: var(--shadow-lg);
+}
+.board-wrap { position: absolute; inset: 0; display: grid; place-items: center; perspective: 1400px; }
+.board {
+  display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; width: 44%; aspect-ratio: 1; padding: 8px;
+  transform: rotateX(56deg) rotateZ(-38deg) translateY(2%); transform-style: preserve-3d;
+  background: color-mix(in srgb, var(--panel-edge) 55%, var(--stage)); border-radius: 10px; box-shadow: 14px 14px 0 rgba(0,0,0,.18);
+}
+.tile { background: var(--tile-empty); border-radius: 3px; border: 1px solid var(--tile-edge); position: relative; transform-style: preserve-3d; }
+.tile.road { background: var(--tile-road); }
+.tile.b::after { content: ""; position: absolute; inset: 14%; background: var(--bc); border: 1.5px solid var(--tile-edge); border-radius: 2px; transform: translateZ(10px); box-shadow: -3px 3px 0 rgba(0,0,0,.28); }
+.tile.house { --bc: var(--tile-house); } .tile.shop { --bc: var(--tile-shop); } .tile.park { --bc: var(--tile-park); } .tile.farm { --bc: var(--tile-farm); }
+.tile.park::after { border-radius: 50%; }
+.tile.ghost::after { content: ""; position: absolute; inset: 14%; background: color-mix(in srgb, var(--good) 70%, transparent); border: 2px dashed var(--good); transform: translateZ(14px); }
+.hud { position: absolute; inset: 0; padding: 2.4%; pointer-events: none; display: grid; grid-template-columns: 1fr auto 1fr; grid-template-rows: auto 1fr auto; gap: 12px; }
+.hud > * { pointer-events: auto; }
+.hud .tl { grid-column: 1; grid-row: 1; justify-self: start; display: flex; flex-direction: column; gap: 10px; }
+.hud .tc { grid-column: 2; grid-row: 1; display: flex; align-items: flex-start; gap: 12px; }
+.hud .tr { grid-column: 3; grid-row: 1; justify-self: end; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
+.hud .ml { grid-column: 1; grid-row: 2; align-self: center; justify-self: start; }
+.hud .mc { position: absolute; left: 50%; top: 53%; transform: translate(-50%, -50%); width: min(780px, 76%); z-index: 5; }
+.hud .mc .bid { width: 100%; }
+.lots { align-items: stretch; }
+.lots .lot .card { flex: 1; }
+.lots .card { width: 122px; }
+.lots .card .text { min-height: 0; }
+.lots .card .art { height: 46px; }
+.hud .mr { grid-column: 3; grid-row: 2; align-self: end; justify-self: end; }
+.hud .bc { grid-column: 1 / 4; grid-row: 3; display: flex; justify-content: center; align-items: flex-end; gap: 14px; }
+.tray { display: flex; gap: 6px; padding: 8px; }
+.tray .slot { width: 40px; height: 40px; display: grid; place-items: center; border-radius: var(--radius); background: var(--panel-2); border: 1.5px solid var(--panel-edge); position: relative; color: var(--ink); }
+.tray .slot svg { width: 22px; height: 22px; fill: var(--c, var(--ink)); }
+.tray .slot em { position: absolute; right: -6px; bottom: -6px; font-style: normal; font-size: 11px; font-weight: 800; background: var(--ink); color: var(--panel); border-radius: 999px; padding: 0 5px; }
+.tray .slot.empty { opacity: .35; border-style: dashed; }
+.res { display: flex; gap: 8px; padding: 8px 10px; }
+.res .big { font-size: 26px; line-height: 1; }
+.res .stat { display: flex; align-items: center; gap: 8px; padding: 2px 8px; }
+.res .stat svg { width: 22px; height: 22px; }
+.score { width: 210px; }
+.score .line { display: flex; align-items: center; gap: 8px; padding: 4px 0; font-weight: 700; font-size: 14px; }
+.score .line + .line { border-top: 1px dashed color-mix(in srgb, var(--ink) 25%, transparent); }
+.score .dot { width: 20px; height: 20px; fill: var(--c); stroke: var(--panel-edge); stroke-width: 1.3; paint-order: stroke fill; flex: none; }
+.rounds { display: flex; gap: 4px; margin-top: 5px; }
+.rounds i { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--panel-edge); background: var(--panel-2); }
+.rounds i.done { background: var(--ink); }
+.rounds i.now { background: var(--accent); transform: scale(1.35); }
+.score .you { background: color-mix(in srgb, var(--accent) 22%, transparent); margin: 0 -6px; padding-left: 6px; padding-right: 6px; border-radius: 4px; }
+.score .ready { margin-left: auto; width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--panel-edge); background: var(--panel-2); }
+.score .ready.on { background: var(--good); }
+.goals { width: 220px; display: flex; flex-direction: column; gap: 8px; }
+.goal { font-size: 12.5px; display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; padding: 6px 8px; border-radius: var(--radius); background: var(--panel-2); border: 1.5px solid color-mix(in srgb, var(--ink) 25%, transparent); }
+.goal b { font-family: var(--font-display); font-weight: 400; text-transform: var(--display-case); letter-spacing: var(--display-track); font-size: 13px; }
+.goal.claimed { opacity: .55; text-decoration: line-through; }
+.goal.secret { border-style: dashed; }
+.hand { display: flex; gap: 12px; align-items: flex-end; padding-bottom: 4px; }
+
+/* Bid overlay */
+.bid { width: min(760px, 78%); padding: 16px 18px 18px; }
+.bid-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 12px; }
+.bid-head .title { font-size: 22px; }
+.lots { display: flex; gap: 14px; justify-content: center; }
+.lot { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.lot .card { cursor: pointer; }
+.lot .stack { min-height: 28px; display: flex; gap: 3px; flex-wrap: wrap; justify-content: center; max-width: 132px; }
+.lot .stack .coin { width: 22px; height: 22px; animation: pop .18s cubic-bezier(.3,1.8,.5,1); }
+@keyframes pop { from { transform: scale(.3); } to { transform: scale(1); } }
+.coin { display: inline-block; border-radius: 50%; background: var(--accent-3); border: 2px solid var(--panel-edge); box-shadow: inset 0 -2px 0 rgba(0,0,0,.18); }
+.lot .min { font-size: 12px; color: var(--ink-soft); font-weight: 700; }
+.lot .mine { font-size: 15px; font-weight: 800; }
+.bid-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; gap: 12px; }
+.purse { display: flex; align-items: center; gap: 10px; font-weight: 800; }
+
+/* Components sheet */
+.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.sheet { background: var(--stage-pattern), var(--stage); padding: 22px; border-radius: calc(var(--radius) + 6px); border: var(--edge-w) solid var(--panel-edge); box-shadow: var(--shadow-lg); }
+.sheet .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 8px 0; }
+.sw { width: 54px; height: 54px; border-radius: var(--radius); border: var(--edge-w) solid var(--panel-edge); display: grid; place-items: end start; font: 700 9px system-ui; padding: 3px; color: #000; box-shadow: var(--shadow); }
+.end-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.end-table th { text-align: left; font-family: var(--font-display); text-transform: var(--display-case); font-weight: 400; color: var(--ink-soft); font-size: 12px; padding: 4px 8px; letter-spacing: .06em; }
+.end-table td { padding: 8px; border-top: 1px dashed color-mix(in srgb, var(--ink) 30%, transparent); font-weight: 700; }
+.end-table tr.win td { background: color-mix(in srgb, var(--accent-3) 30%, transparent); }
+.hidden { display: none !important; }
+/* ============================================================
+   Punchboard Deluxe: extra "physical object" detail.
+   Everything here only applies to that theme.
+   ============================================================ */
+html[data-theme="punch2"] body { background: var(--grain), radial-gradient(ellipse at 50% 15%, #2b6c6f, #123a3d 85%); }
+/* the table inside a cardboard box lid */
+html[data-theme="punch2"] .stage {
+  border: 16px solid transparent; border-radius: 3px;
+  background: var(--grain) border-box, radial-gradient(ellipse at 50% 40%, rgba(255,255,255,.07), rgba(0,0,0,.3) 100%) padding-box, var(--stage-pattern) padding-box, linear-gradient(var(--stage), var(--stage)) padding-box, linear-gradient(var(--core), var(--core)) border-box;
+  box-shadow: inset 0 0 0 3px var(--ink), 0 0 0 3px var(--ink), 0 11px 0 3px var(--ink), 0 26px 40px rgba(0,0,0,.4);
+}
+html[data-theme="punch2"] .board-wrap { z-index: 0; }
+html[data-theme="punch2"] .hud { z-index: 2; }
+/* a printed board on thick cardboard, folded in the middle */
+html[data-theme="punch2"] .board {
+  position: relative; background: var(--grain), var(--paper); gap: 2px; padding: 8px; border: 4px solid var(--ink); border-radius: 3px;
+  box-shadow: 6px 6px 0 var(--core), 9px 9px 0 var(--ink), 24px 24px 22px rgba(0,0,0,.35);
+}
+html[data-theme="punch2"] .board::after {
+  content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 10px; transform: translateX(-50%) translateZ(1px); pointer-events: none;
+  background: linear-gradient(90deg, rgba(0,0,0,.2), rgba(255,255,255,.38) 45%, rgba(0,0,0,.16));
+}
+html[data-theme="punch2"] .tile { border: 1.5px solid rgba(42,33,24,.5); border-radius: 2px; }
+html[data-theme="punch2"] .tile.road { background: repeating-linear-gradient(90deg, rgba(255,235,190,.6) 0 5px, transparent 5px 10px) center / 100% 2px no-repeat, var(--tile-road); }
+/* buildings are punched tokens with visible cardboard thickness */
+html[data-theme="punch2"] .tile.b::after {
+  inset: 12%; border: 2px solid var(--ink); border-radius: 3px; transform: translateZ(8px);
+  box-shadow: -1px 1px 0 var(--core), -2px 2px 0 var(--core), -3px 3px 0 var(--core), -4px 4px 0 var(--ink);
+}
+/* panels are chipboard tiles with a printed inner frame */
+html[data-theme="punch2"] .panel { background: var(--fleck), var(--grain), var(--mottle), var(--panel); border-radius: 4px; }
+html[data-theme="punch2"] .panel::after {
+  content: ""; position: absolute; inset: 5px; border: 1.5px solid color-mix(in srgb, var(--accent-2) 65%, transparent); border-radius: 3px; pointer-events: none;
+}
+html[data-theme="punch2"] .panel h3 {
+  display: inline-block; background: var(--ink); color: var(--panel); padding: 2px 10px 1px; border-radius: 4px; transform: rotate(-1.5deg);
+  margin: 0 0 9px -4px; letter-spacing: .1em; position: relative; z-index: 1;
+}
+html[data-theme="punch2"] .display, html[data-theme="punch2"] .card .name { text-shadow: 1.5px 1.5px 0 rgba(217,72,59,.28); }
+/* buttons are thick press-out tokens */
+html[data-theme="punch2"] .btn { border-radius: 4px; margin-bottom: 8px; box-shadow: 0 5px 0 color-mix(in srgb, var(--bg) 55%, #000), 0 8px 0 var(--ink); }
+html[data-theme="punch2"] .btn:hover { transform: translateY(-1px); }
+html[data-theme="punch2"] .btn:active { transform: translateY(5px); box-shadow: 0 0 0 color-mix(in srgb, var(--bg) 55%, #000), 0 3px 0 var(--ink); }
+html[data-theme="punch2"] .btn.ghost { box-shadow: none; }
+html[data-theme="punch2"] .btn:disabled { box-shadow: 0 4px 0 rgba(0,0,0,.2), 0 7px 0 var(--ink); }
+/* cards are real playing cards: card stock, printed rarity frame, grain */
+html[data-theme="punch2"] .card {
+  background: var(--fleck), var(--grain), var(--mottle), var(--card); border: 2px solid var(--ink); border-radius: 4px; padding: 11px 11px 10px;
+  box-shadow: 0 2px 0 rgba(42,33,24,.6), 0 7px 12px rgba(0,0,0,.3);
+}
+html[data-theme="punch2"] .card::before { top: 4px; left: 4px; right: 4px; bottom: 4px; height: auto; background: none; border: 2.5px solid var(--rc); border-radius: 3px; pointer-events: none; }
+html[data-theme="punch2"] .card .art { height: 50px; border: 2px solid var(--ink); background: var(--grain), color-mix(in srgb, var(--ac) 50%, var(--card)); }
+html[data-theme="punch2"] .card.legendary { box-shadow: 0 2px 0 rgba(42,33,24,.6), 0 7px 12px rgba(0,0,0,.3), 0 0 16px rgba(230,154,0,.55); }
+html[data-theme="punch2"] .card .key { background: var(--ink); color: var(--panel); border-radius: 50%; min-width: 24px; height: 24px; top: -10px; left: -9px; z-index: 2; }
+/* the hand is fanned like cards held in your hand */
+html[data-theme="punch2"] .hand { gap: 0; padding-bottom: 0; margin-bottom: -28px; }
+html[data-theme="punch2"] .hand .card { transform-origin: 50% 120%; margin-left: -10px; }
+html[data-theme="punch2"] .hand .card:nth-child(1) { transform: rotate(-7deg) translateY(10px); margin-left: 0; }
+html[data-theme="punch2"] .hand .card:nth-child(2) { transform: rotate(-2.5deg) translateY(2px); }
+html[data-theme="punch2"] .hand .card:nth-child(3) { transform: rotate(2.5deg) translateY(2px); }
+html[data-theme="punch2"] .hand .card:nth-child(4) { transform: rotate(7deg) translateY(10px); }
+html[data-theme="punch2"] .hand .card .text { display: none; }
+html[data-theme="punch2"] .hand .card:hover .text, html[data-theme="punch2"] .hand .card.selected .text { display: block; min-height: 0; }
+html[data-theme="punch2"] .hand .card:hover { transform: rotate(0) translateY(-16px); z-index: 5; }
+html[data-theme="punch2"] .hand .card.selected { transform: rotate(0) translateY(-26px); z-index: 6; outline: none; box-shadow: 0 0 0 3px var(--accent), 0 2px 0 rgba(42,33,24,.6), 0 14px 16px rgba(0,0,0,.35); }
+/* small tokens and dials */
+html[data-theme="punch2"] .timer { box-shadow: 0 4px 0 var(--core), 0 7px 0 var(--ink); }
+/* ---- more cardboard: recessed (debossed) windows, speckled paper, folded corners ---- */
+html[data-theme="punch2"] .tray .slot, html[data-theme="punch2"] .goal, html[data-theme="punch2"] .chip, html[data-theme="punch2"] .bar, html[data-theme="punch2"] .toggle .track {
+  background: var(--grain), color-mix(in srgb, var(--panel-2) 80%, #fff);
+  border: 2px solid rgba(42,33,24,.65);
+  box-shadow: inset 0 3px 4px rgba(42,33,24,.32), inset 0 0 0 1px rgba(42,33,24,.12), 0 1.5px 0 rgba(255,255,255,.65);
+}
+html[data-theme="punch2"] .tray .slot { border-radius: 4px; }
+html[data-theme="punch2"] .chip.plus { background: var(--good); box-shadow: inset 0 -2px 0 rgba(0,0,0,.2); }
+/* coins and VP sit in die-cut windows with a raised teal rim, like the numbers in the reference */
+html[data-theme="punch2"] .res { gap: 14px; padding: 10px 14px; }
+html[data-theme="punch2"] .res .stat {
+  background: var(--grain), #fbf4e0; border: 2px solid var(--ink); border-radius: 3px; padding: 3px 10px;
+  box-shadow: inset 0 3px 5px rgba(42,33,24,.35), 0 0 0 3px var(--accent-3), 0 0 0 5px var(--ink);
+}
+html[data-theme="punch2"] .res .big { color: var(--accent-2); text-shadow: 0 1px 0 rgba(255,255,255,.6); }
+/* printed text sits slightly pressed into the paper */
+html[data-theme="punch2"] .card .name, html[data-theme="punch2"] .panel .num { text-shadow: 0 1px 0 rgba(255,255,255,.55), 1.5px 1.5px 0 rgba(217,72,59,.25); }
+/* perforated dividers */
+html[data-theme="punch2"] .bid-head { padding-bottom: 10px; border-bottom: 3px dotted rgba(42,33,24,.4); }
+html[data-theme="punch2"] .score .line + .line { border-top: 3px dotted rgba(42,33,24,.3); }
+html[data-theme="punch2"] .end-table td { border-top: 3px dotted rgba(42,33,24,.3); }
+/* a turned-up corner on the paper panels */
+html[data-theme="punch2"] .chip.coin svg, html[data-theme="punch2"] .res .stat:first-child svg { fill: var(--accent) !important; }
+html[data-theme="punch2"] .tooltip::before, html[data-theme="punch2"] .goals::before {
+  content: ""; position: absolute; right: -3px; bottom: -3px; width: 26px; height: 26px; border-bottom-right-radius: 4px; pointer-events: none; z-index: 2;
+  background: linear-gradient(135deg, transparent 50%, #cbb687 50%, #f4e9c9 100%); border-left: 2px solid rgba(42,33,24,.55); border-top: 2px solid rgba(42,33,24,.55); border-radius: 3px 0 12px 0;
+  box-shadow: -3px -3px 5px rgba(42,33,24,.25);
+}
+/* card stock and tiles get the same fibre texture */
+html[data-theme="punch2"] .btn { background: var(--grain), var(--bg); }
+html[data-theme="punch2"] .tile:not(.road) { background-image: var(--grain), var(--mottle); }
+html[data-theme="punch2"] .tile.b::after { background: var(--grain), var(--bc); }
+html[data-theme="punch2"] .lot .stack .coin, html[data-theme="punch2"] .coin { background: var(--grain), var(--accent); }
+/* the box lid is corrugated board */
+html[data-theme="punch2"] .stage {
+  background: var(--grain) border-box, radial-gradient(ellipse at 50% 40%, rgba(255,255,255,.07), rgba(0,0,0,.3) 100%) padding-box, var(--stage-pattern) padding-box, linear-gradient(var(--stage), var(--stage)) padding-box, repeating-linear-gradient(90deg, rgba(42,33,24,.09) 0 2px, transparent 2px 6px) border-box, var(--mottle) border-box, linear-gradient(var(--core), var(--core)) border-box;
+}
+html[data-theme="punch2"] .lot .stack .coin { box-shadow: inset 0 0 0 3px rgba(0,0,0,.14), 0 2px 0 var(--ink); width: 24px; height: 24px; }
+html[data-theme="punch2"] .banner { border-radius: 3px; box-shadow: 0 5px 0 color-mix(in srgb, var(--accent) 55%, #000), 0 8px 0 var(--ink), 0 18px 20px rgba(0,0,0,.25); }
+html[data-theme="punch2"] .tabs { box-shadow: 0 4px 0 var(--core), 0 7px 0 var(--ink); }
+html[data-theme="punch2"] .tag, html[data-theme="punch2"] .chip, html[data-theme="punch2"] .bar, html[data-theme="punch2"] .toggle .track { border-radius: 4px; }
+html[data-theme="punch2"] .bar > i { border-radius: 2px; }
+html[data-theme="punch2"] .toggle .track::after { border-radius: 2px; }
+html[data-theme="punch2"] .tabs, html[data-theme="punch2"] .goal, html[data-theme="punch2"] .tooltip .live { border-radius: 4px; }
+html[data-theme="punch2"] .score .line.you { border-radius: 2px; }
+@media (max-width: 900px) { .card { width: 104px; } .card .text { display: none; } .score, .goals { display: none; } .bid { width: 94%; } .banner b { font-size: 22px; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+
+<!-- Icons -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-house" viewBox="0 0 24 24"><path d="M12 3 2 12h3v9h5v-6h4v6h5v-9h3z"/></symbol>
+  <symbol id="i-shop" viewBox="0 0 24 24"><path d="M3 9 5 3h14l2 6v2a3 3 0 0 1-5 2 3 3 0 0 1-4 0 3 3 0 0 1-4 0 3 3 0 0 1-4-2zM5 15v6h14v-6a5 5 0 0 1-3-1 5 5 0 0 1-8 0 5 5 0 0 1-3 1z"/></symbol>
+  <symbol id="i-tree" viewBox="0 0 24 24"><path d="M12 2a6 6 0 0 0-5 9 5 5 0 0 0 4 8v3h2v-3a5 5 0 0 0 4-8 6 6 0 0 0-5-9z"/></symbol>
+  <symbol id="i-factory" viewBox="0 0 24 24"><path d="M2 21V9l6 3V9l6 3V4h4v8h4v9z"/></symbol>
+  <symbol id="i-bank" viewBox="0 0 24 24"><path d="M12 2 2 8v2h20V8zM4 12v7H3v2h18v-2h-1v-7h-3v7h-2v-7h-3v7h-2v-7H9v7H7v-7z"/></symbol>
+  <symbol id="i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6.2" fill="none" stroke="rgba(0,0,0,.25)" stroke-width="1.6"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 3 7 7 .6-5.3 4.7L18.2 22 12 18l-6.2 4 1.5-7.7L2 9.6 9 9z"/></symbol>
+  <symbol id="i-wheat" viewBox="0 0 24 24"><path d="M11 22V9H9L7 5l3 1V3l2 3 2-3v3l3-1-2 4h-2v13z"/></symbol>
+  <symbol id="i-road" viewBox="0 0 24 24"><path d="M8 2h8l3 20h-3.5l-.6-4h-5.8l-.6 4H5zm3.2 3-.3 3h2.2l-.3-3zM10.6 11l-.4 3h3.6l-.4-3z"/></symbol>
+  <symbol id="i-museum" viewBox="0 0 24 24"><path d="M12 2 2 7v2h20V7zM5 10v8H3v3h18v-3h-2v-8h-3v8h-2v-8h-4v8H8v-8z"/></symbol>
+  <symbol id="i-meeple" viewBox="0 0 24 24"><path d="M12 2c1.7 0 3 1.3 3 3 0 1-.5 1.8-1.2 2.4C16.5 8 19 8.6 21 11l2 6h-5l-1-2 1.5 7H6.5L8 15l-1 2H2l2-6c2-2.4 4.5-3 7.2-3.6C10.5 6.8 9 6 9 5c0-1.7 1.3-3 3-3z"/></symbol>
+  <!-- rarity shapes -->
+  <symbol id="s-common" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5"/></symbol>
+  <symbol id="s-uncommon" viewBox="0 0 12 12"><path d="M6 0.5 11.5 6 6 11.5 0.5 6z"/></symbol>
+  <symbol id="s-rare" viewBox="0 0 12 12"><path d="M6 0.5 11.5 10.5H0.5z"/></symbol>
+  <symbol id="s-legendary" viewBox="0 0 12 12"><path d="m6 .3 1.6 3.6 3.9.4-2.9 2.6.9 3.9L6 8.8 2.5 10.8l.9-3.9L.5 4.3l3.9-.4z"/></symbol>
+  <!-- tag shapes -->
+  <symbol id="t-home" viewBox="0 0 12 12"><path d="M6 1 .8 6H2v5h3V8h2v3h3V6h1.2z"/></symbol>
+  <symbol id="t-trade" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5"/></symbol>
+  <symbol id="t-nature" viewBox="0 0 12 12"><path d="M6 .5C3 2 2 5 4 7.5c.5.6 1.2 1 1.6 1.5V11.5h.8V9c.4-.5 1.1-.9 1.6-1.5C10 5 9 2 6 .5z"/></symbol>
+  <symbol id="t-industry" viewBox="0 0 12 12"><path d="M1 11V5l3 1.5V4.5L7 6V1h3v10z"/></symbol>
+  <symbol id="t-culture" viewBox="0 0 12 12"><path d="M6 .5 11 3v1H1V3zM2 5h1.6v4H2zm3.2 0h1.6v4H5.2zM8.4 5H10v4H8.4zM1 10h10v1.5H1z"/></symbol>
+  <symbol id="t-civic" viewBox="0 0 12 12"><path d="M6 .5 10.5 2v4c0 2.6-1.8 4.5-4.5 5.5C3.3 10.5 1.5 8.6 1.5 6V2z"/></symbol>
+</svg>
+
+<header class="chrome">
+  <h1>City Sim UI styles</h1>
+  <div class="group" role="group" aria-label="Style"><span class="label">Style</span><span id="themeButtons"></span></div>
+  <div class="group" role="group" aria-label="View"><span class="label">View</span>
+    <button data-view="build" aria-pressed="true">Build phase</button>
+    <button data-view="bid" aria-pressed="false">Bid phase</button>
+    <button data-view="parts" aria-pressed="false">All parts</button>
+  </div>
+  <span class="hint">Keys 1-6: style &nbsp; B: view &nbsp; (a mock-up only, not in the game)</span>
+</header>
+
+<main class="wrap">
+
+  <!-- ==================== Scene ==================== -->
+  <section id="scene">
+    <p class="note" id="sceneNote"></p>
+    <div class="stage">
+      <div class="board-wrap"><div class="board" id="board" aria-hidden="true"></div></div>
+
+      <div class="hud">
+        <div class="tl">
+          <div class="panel tray" aria-label="Your effects">
+            <div class="slot" style="--c:var(--tag-trade)" title="Bank"><svg><use href="#i-bank"/></svg><em>2</em></div>
+            <div class="slot" style="--c:var(--tag-culture)" title="Museum"><svg><use href="#i-museum"/></svg></div>
+            <div class="slot" style="--c:var(--tag-nature)" title="Gardener's Guild"><svg><use href="#i-tree"/></svg></div>
+            <div class="slot empty"></div>
+          </div>
+        </div>
+
+        <div class="tc">
+          <div class="panel raised" style="display:flex;align-items:center;gap:14px;padding:8px 16px">
+            <div>
+              <div class="muted display" style="font-size:12px">Round</div>
+              <div class="num" style="font-size:26px;line-height:1">3<span class="muted" style="font-size:16px"> / 8</span></div>
+              <div class="rounds" aria-hidden="true"><i class="done"></i><i class="done"></i><i class="now"></i><i></i><i></i><i></i><i></i><i></i></div>
+            </div>
+            <div class="timer" id="timer" style="--p:70"><b class="num" id="timerText">28</b></div>
+            <div>
+              <div class="muted display" style="font-size:12px">Phase</div>
+              <div class="display" style="font-size:20px;line-height:1.1" id="phaseName">Build</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tr">
+          <div class="panel res">
+            <div class="stat"><svg class="icon" style="fill:var(--accent-3);stroke:var(--panel-edge);stroke-width:1.2"><use href="#i-coin"/></svg><span class="num big" id="coins">9</span></div>
+            <div class="stat"><svg class="icon" style="fill:var(--accent-2)"><use href="#i-star"/></svg><span class="num big">24</span></div>
+          </div>
+          <div class="panel score" aria-label="Scoreboard">
+            <h3>Players</h3>
+            <div class="line you"><svg class="dot" style="--c:var(--accent-2)"><use href="#i-meeple"/></svg>You<span class="num" style="margin-left:auto">24</span><span class="ready on" title="Ready"></span></div>
+            <div class="line"><svg class="dot" style="--c:var(--accent-3)"><use href="#i-meeple"/></svg>Maya<span class="num" style="margin-left:auto">27</span><span class="ready on"></span></div>
+            <div class="line"><svg class="dot" style="--c:var(--accent)"><use href="#i-meeple"/></svg>Bot Ben<span class="num" style="margin-left:auto">19</span><span class="ready"></span></div>
+          </div>
+        </div>
+
+        <div class="ml">
+          <div class="panel goals" aria-label="Goals">
+            <h3>Goals</h3>
+            <div class="goal"><b>Neighbourhood</b><span class="chip" style="padding:0 8px">5</span><span class="muted" style="grid-column:1/3">4 connected houses</span></div>
+            <div class="goal claimed"><b>High Street</b><span class="chip" style="padding:0 8px">5</span><span class="muted" style="grid-column:1/3">Maya claimed it</span></div>
+            <div class="goal"><b>Green Thumb</b><span class="chip" style="padding:0 8px">5</span><span class="muted" style="grid-column:1/3">4 tiles in one park</span></div>
+            <div class="goal secret"><b>Your contract</b><span class="chip" style="padding:0 8px">6</span><span class="muted" style="grid-column:1/3">Cultured: 5 Culture buildings (2/5)</span></div>
+          </div>
+        </div>
+
+        <div class="mc" id="bidOverlay">
+          <div class="panel raised bid stitched">
+            <div class="bid-head">
+              <div><div class="display title">Auction 2 of 3</div><div class="muted" style="font-size:13px">Click a card to add a coin. Right-click to take one back.</div></div>
+              <div class="timer" style="--p:45;width:54px;height:54px"><b class="num" style="font-size:17px">6</b></div>
+            </div>
+            <div class="lots" id="lots"></div>
+            <div class="bid-foot">
+              <div class="purse"><span class="muted display" style="font-size:12px">Spare coins</span><span class="chip coin"><svg class="icon"><use href="#i-coin"/></svg><span class="num" id="spare">9</span></span></div>
+              <div style="display:flex;gap:10px"><button class="btn ghost" id="clearBids">Clear</button><button class="btn big" id="readyBtn" aria-pressed="false">Ready</button></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mr" id="tooltipSlot">
+          <div class="panel tooltip raised" role="tooltip">
+            <span class="rarity uncommon"><svg><use href="#s-uncommon"/></svg>Uncommon</span>
+            <div class="display t-name">Cafe</div>
+            <div style="display:flex;gap:6px"><span class="tag trade"><svg><use href="#t-trade"/></svg>Trade</span><span class="tag culture"><svg><use href="#t-culture"/></svg>Culture</span></div>
+            <p>Pays 1 coin per adjacent house or shop (max 3). +2 VP at game end if next to a park.</p>
+            <div class="live">+2 coins per round here</div>
+          </div>
+        </div>
+
+        <div class="bc">
+          <div class="hand" id="hand"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== Components sheet ==================== -->
+  <section id="parts" class="hidden">
+    <p class="note">Every piece below is built from the same style settings, so switching style changes all of them together.</p>
+    <div class="sheet">
+      <div class="grid">
+        <div class="panel"><h3>Buttons</h3>
+          <div class="row"><button class="btn">Primary</button><button class="btn secondary">Secondary</button><button class="btn tertiary">Accent</button></div>
+          <div class="row"><button class="btn ghost">Ghost</button><button class="btn danger">Danger</button><button class="btn" disabled>Disabled</button></div>
+          <div class="row"><button class="btn small">Small</button><button class="btn square" aria-label="Settings">&#9881;</button><button class="btn big">Big call to action</button></div>
+          <div class="row"><button class="btn" id="toggleDemo" aria-pressed="false">Toggle me (Ready)</button></div>
+        </div>
+
+        <div class="panel"><h3>Tags</h3>
+          <div class="row">
+            <span class="tag home"><svg><use href="#t-home"/></svg>Home</span><span class="tag trade"><svg><use href="#t-trade"/></svg>Trade</span><span class="tag nature"><svg><use href="#t-nature"/></svg>Nature</span>
+            <span class="tag industry"><svg><use href="#t-industry"/></svg>Industry</span><span class="tag culture"><svg><use href="#t-culture"/></svg>Culture</span><span class="tag civic"><svg><use href="#t-civic"/></svg>Civic</span>
+          </div>
+          <h3 style="margin-top:14px">Rarity</h3>
+          <div class="row">
+            <span class="rarity common"><svg><use href="#s-common"/></svg>Common</span><span class="rarity uncommon"><svg><use href="#s-uncommon"/></svg>Uncommon</span>
+            <span class="rarity rare"><svg><use href="#s-rare"/></svg>Rare</span><span class="rarity legendary"><svg><use href="#s-legendary"/></svg>Legendary</span>
+          </div>
+          <h3 style="margin-top:14px">Numbers</h3>
+          <div class="row"><span class="chip coin"><svg class="icon"><use href="#i-coin"/></svg>12</span><span class="chip vp"><svg class="icon"><use href="#i-star"/></svg>24</span><span class="chip plus">+3 coins</span><span class="chip plus">+2 VP</span></div>
+        </div>
+
+        <div class="panel"><h3>Settings controls</h3>
+          <div class="row"><label class="toggle"><input type="checkbox" checked><span class="track"></span>Reduce screen shake</label></div>
+          <div class="row"><label class="toggle"><input type="checkbox"><span class="track"></span>Reduce flashing</label></div>
+          <div class="row" style="display:block"><div style="font-weight:700;margin-bottom:4px">Text size</div><input type="range" min="100" max="150" value="115"></div>
+          <div class="row"><div class="tabs" role="tablist"><button role="tab" aria-selected="true">Audio</button><button role="tab" aria-selected="false">Video</button><button role="tab" aria-selected="false">Input</button></div></div>
+        </div>
+
+        <div class="panel"><h3>Progress</h3>
+          <div class="row" style="display:block"><div style="font-weight:700;margin-bottom:4px">Hand 3 / 5</div><div class="bar" style="--v:60%"><i></i></div></div>
+          <div class="row" style="display:block"><div style="font-weight:700;margin-bottom:4px">Park size 6 / 10</div><div class="bar"><i style="--v:60%;background:var(--accent-2)"></i></div></div>
+          <div class="row"><div class="timer" style="--p:85"><b class="num">34</b></div><div class="timer" style="--p:30"><b class="num">12</b></div><div class="timer" style="--p:8"><b class="num">3</b></div></div>
+        </div>
+
+        <div class="panel"><h3>Banners</h3>
+          <div class="row"><div class="banner"><small>Round 4</small><b class="display">Bid!</b></div></div>
+          <div class="row"><div class="banner" style="background:var(--accent-2);color:#fff"><small>Goal claimed</small><b class="display">Neighbourhood +5</b></div></div>
+        </div>
+
+        <div class="panel"><h3>Colour palette</h3>
+          <div class="row">
+            <div class="sw" style="background:var(--stage)">stage</div><div class="sw" style="background:var(--panel)">panel</div><div class="sw" style="background:var(--panel-2)">panel 2</div>
+            <div class="sw" style="background:var(--accent)">accent</div><div class="sw" style="background:var(--accent-2)">accent 2</div><div class="sw" style="background:var(--accent-3)">accent 3</div>
+            <div class="sw" style="background:var(--good)">good</div><div class="sw" style="background:var(--bad)">bad</div><div class="sw" style="background:var(--ink);color:#fff">ink</div>
+          </div>
+          <div class="row">
+            <div class="sw" style="background:var(--tile-house)">house</div><div class="sw" style="background:var(--tile-shop)">shop</div><div class="sw" style="background:var(--tile-park)">park</div>
+            <div class="sw" style="background:var(--tile-farm)">farm</div><div class="sw" style="background:var(--tile-road);color:#fff">road</div><div class="sw" style="background:var(--tile-empty)">empty</div>
+          </div>
+        </div>
+
+        <div class="panel"><h3>Type</h3>
+          <div class="display" style="font-size:34px;line-height:1.05">City Sim</div>
+          <div class="display" style="font-size:20px;margin-top:6px">Round 3 &middot; Build</div>
+          <p style="margin:8px 0 0">Body text sits here. Houses link to shops within two tiles and each Link pays both owners a coin.</p>
+          <p class="muted" style="margin:6px 0 0;font-size:13px">Small print for tooltips and card rules.</p>
+        </div>
+
+        <div class="panel" style="grid-column: span 2; min-width: 300px">
+          <h3>End of game</h3>
+          <table class="end-table">
+            <thead><tr><th>#</th><th>Player</th><th>Buildings</th><th>Goals</th><th>Parks</th><th>VP</th></tr></thead>
+            <tbody>
+              <tr class="win"><td>1</td><td>Maya</td><td class="num">22</td><td class="num">8</td><td class="num">14</td><td class="num">58</td></tr>
+              <tr><td>2</td><td>You</td><td class="num">19</td><td class="num">5</td><td class="num">16</td><td class="num">52</td></tr>
+              <tr><td>3</td><td>Bot Ben</td><td class="num">17</td><td class="num">3</td><td class="num">9</td><td class="num">41</td></tr>
+            </tbody>
+          </table>
+          <div class="row" style="justify-content:flex-end;margin-top:10px"><button class="btn secondary">Main menu</button><button class="btn">Play again</button></div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="display section-title">Cards</h2>
+    <div class="sheet"><div class="row" id="cardRow" style="gap:18px;align-items:flex-start"></div></div>
+  </section>
+</main>
+
+<script>
+const THEMES = [
+  { id: 'kraft',   label: 'Kraft',         blurb: 'Warm brown cardboard, stamped ink outlines, dashed stitching. Cosy and tactile.' },
+  { id: 'punch',   label: 'Punchboard',    blurb: 'Chunky die-cut tokens, thick black outlines and hard shadows. Loud, bold and friendly.' },
+  { id: 'punch2',  label: 'Punchboard Deluxe', blurb: 'The Punchboard look with real board-game parts: a box-lid table, thick die-cut cardboard edges, a folded printed board, a fanned hand of cards, meeples and a round tracker.' },
+  { id: 'linen',   label: 'Linen Box',    blurb: 'Quiet cream paper, hairlines and a serif. The most minimal, like a premium Euro game.' },
+  { id: 'night',   label: 'Midnight Box',  blurb: 'Dark navy board with gold foil edges. Calm and a bit luxurious, easy on the eyes.' },
+  { id: 'sticker', label: 'Sticker Sheet', blurb: 'Soft pastel stickers with white outlines and rounded corners. Light and playful.' },
+];
+const CARDS = [
+  { n: 'House',      r: 'common',    icon: 'i-house',   ac: 'var(--tile-house)', tags: ['home'],             text: 'Pays 1 coin per Link. +1 VP per adjacent house.' },
+  { n: 'Shop',       r: 'common',    icon: 'i-shop',    ac: 'var(--tile-shop)',  tags: ['trade'],            text: 'Links up to 3 houses and a farm. Each Link pays both owners 1 coin.' },
+  { n: 'Park',       r: 'common',    icon: 'i-tree',    ac: 'var(--tile-park)',  tags: ['nature'],           text: 'Joins the park. Everyone in it scores.' },
+  { n: 'Cafe',       r: 'uncommon',  icon: 'i-shop',    ac: 'var(--tag-culture)', tags: ['trade','culture'], text: '+1 coin per adjacent house or shop (max 3).' },
+  { n: 'Bank',       r: 'rare',      icon: 'i-bank',    ac: 'var(--tag-trade)',  tags: ['trade'],            text: '+2 coins at every payout. Stackable, max 3.' },
+  { n: 'Monument',   r: 'legendary', icon: 'i-star',    ac: 'var(--tag-culture)', tags: ['culture'],         text: '+6 VP at game end.' },
+];
+const LOTS = [CARDS[1], CARDS[3], CARDS[4], CARDS[5]];
+const MIN = { common: 1, uncommon: 2, rare: 3, legendary: 5 };
+const RLABEL = { common: 'Common', uncommon: 'Uncommon', rare: 'Rare', legendary: 'Legendary' };
+const TLABEL = { home: 'Home', trade: 'Trade', nature: 'Nature', industry: 'Industry', culture: 'Culture', civic: 'Civic' };
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const save = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
+const load = (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+
+function cardHtml(c, key) {
+  return `<div class="card ${c.r}" style="--ac:${c.ac}">
+    ${key ? `<span class="key">${key}</span>` : ''}
+    <div class="art"><svg><use href="#${c.icon}"/></svg></div>
+    <div class="name">${c.n}</div>
+    <div class="row">${c.tags.map(t => `<span class="tag ${t}"><svg><use href="#t-${t}"/></svg>${TLABEL[t]}</span>`).join('')}</div>
+    <div class="text">${c.text}</div>
+    <div class="row"><span class="rarity ${c.r}"><svg><use href="#s-${c.r}"/></svg>${RLABEL[c.r]}</span></div>
+  </div>`;
+}
+
+/* ---- board ---- */
+const MAP = [
+  '............','..r.........','..rhhs..pp..','..r.ssr.pp..','rrrrrrrrrrrr','..r..hr.ff..',
+  '.hhr.hr.ff..','.hsr..r.....','..rr..r.pp..','..r...r.pp..','..r.hhr.....','..r.....s...',
+];
+const board = $('#board');
+board.innerHTML = MAP.map((row, y) => [...row].map((ch, x) => {
+  const cls = { r: 'road', h: 'b house', s: 'b shop', p: 'b park', f: 'b farm' }[ch] || '';
+  const ghost = (x === 3 && y === 6) ? ' ghost' : '';
+  return `<div class="tile ${cls}${ghost}"></div>`;
+}).join('')).join('');
+
+/* ---- hand ---- */
+const hand = $('#hand');
+hand.innerHTML = [CARDS[0], CARDS[2], CARDS[3], CARDS[1]].map((c, i) => cardHtml(c, i + 1)).join('');
+hand.addEventListener('click', e => {
+  const card = e.target.closest('.card'); if (!card) return;
+  const was = card.classList.contains('selected');
+  $$('.card', hand).forEach(c => c.classList.remove('selected'));
+  if (!was) card.classList.add('selected');
+});
+$('.card', hand).classList.add('selected');
+$('#cardRow').innerHTML = CARDS.map(c => cardHtml(c)).join('');
+
+/* ---- bidding ---- */
+const START_COINS = 9; let bids = LOTS.map(() => 0);
+const lots = $('#lots');
+function renderLots() {
+  lots.innerHTML = LOTS.map((c, i) => `
+    <div class="lot" data-i="${i}">
+      ${cardHtml(c)}
+      <div class="stack">${'<span class="coin"></span>'.repeat(bids[i])}</div>
+      <div class="mine">${bids[i] ? 'Your bid: ' + bids[i] : '&nbsp;'}</div>
+      <div class="min">Min bid ${MIN[c.r]}</div>
+    </div>`).join('');
+  $('#spare').textContent = START_COINS - bids.reduce((a, b) => a + b, 0);
+}
+lots.addEventListener('click', e => {
+  const lot = e.target.closest('.lot'); if (!lot) return;
+  if (parseInt($('#spare').textContent) > 0) { bids[lot.dataset.i]++; renderLots(); }
+});
+lots.addEventListener('contextmenu', e => {
+  const lot = e.target.closest('.lot'); if (!lot) return;
+  e.preventDefault(); if (bids[lot.dataset.i] > 0) { bids[lot.dataset.i]--; renderLots(); }
+});
+$('#clearBids').onclick = () => { bids = LOTS.map(() => 0); renderLots(); };
+$('#readyBtn').onclick = e => { const b = e.currentTarget; const on = b.getAttribute('aria-pressed') !== 'true'; b.setAttribute('aria-pressed', on); b.textContent = on ? 'Ready!' : 'Ready'; };
+$('#toggleDemo').onclick = e => { const b = e.currentTarget; b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') !== 'true'); };
+$$('.tabs button').forEach(b => b.onclick = () => { $$('.tabs button').forEach(x => x.setAttribute('aria-selected', 'false')); b.setAttribute('aria-selected', 'true'); });
+renderLots();
+
+/* ---- style switcher ---- */
+const tb = $('#themeButtons');
+tb.innerHTML = THEMES.map((t, i) => `<button data-theme-id="${t.id}" aria-pressed="false" title="Key ${i + 1}">${i + 1} ${t.label}</button>`).join('');
+function setTheme(id) {
+  document.documentElement.dataset.theme = id;
+  $$('#themeButtons button').forEach(b => b.setAttribute('aria-pressed', b.dataset.themeId === id));
+  save('cs-theme', id); updateNote();
+}
+tb.addEventListener('click', e => { const b = e.target.closest('button'); if (b) setTheme(b.dataset.themeId); });
+
+/* ---- views ---- */
+let view = 'build';
+function setView(v) {
+  view = v;
+  $$('[data-view]').forEach(b => b.setAttribute('aria-pressed', b.dataset.view === v));
+  $('#scene').classList.toggle('hidden', v === 'parts');
+  $('#parts').classList.toggle('hidden', v !== 'parts');
+  $('#bidOverlay').classList.toggle('hidden', v !== 'bid');
+  $('#tooltipSlot').classList.toggle('hidden', v === 'bid');
+  $('#hand').classList.toggle('hidden', v === 'bid');
+  $('#phaseName').textContent = v === 'bid' ? 'Bid' : 'Build';
+  save('cs-view', v); updateNote();
+}
+$$('[data-view]').forEach(b => b.onclick = () => setView(b.dataset.view));
+function updateNote() {
+  const t = THEMES.find(t => t.id === document.documentElement.dataset.theme);
+  $('#sceneNote').innerHTML = `<b>${t.label}:</b> ${t.blurb}`;
+}
+document.addEventListener('keydown', e => {
+  if (e.target.matches('input, textarea')) return;
+  const n = parseInt(e.key);
+  if (n >= 1 && n <= THEMES.length) setTheme(THEMES[n - 1].id);
+  if (e.key.toLowerCase() === 'b') setView(view === 'build' ? 'bid' : view === 'bid' ? 'parts' : 'build');
+});
+
+/* ---- countdown so it feels alive ---- */
+let s = 28; setInterval(() => { s = s <= 0 ? 40 : s - 1; $('#timerText').textContent = s; $('#timer').style.setProperty('--p', Math.round(s / 40 * 100)); }, 1000);
+
+setTheme(load('cs-theme') && THEMES.some(t => t.id === load('cs-theme')) ? load('cs-theme') : 'kraft');
+setView(load('cs-view') || 'build');
+</script>
+</body>
+</html>

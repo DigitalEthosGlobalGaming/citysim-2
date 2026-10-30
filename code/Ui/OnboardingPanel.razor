@@ -1,0 +1,7 @@
+@namespace CitySim
+@using CitySim.Punchboard
+@using CitySim.Match
+@inherits MatchPanel
+<root class="onboarding-hint">
+ <PbPanel Title="FIRST MATCH"><ChildContent><div class="hint-content"><div>Buy cards from the market, then build beside roads. Compare each card's income and VP before buying. Buildings are free to place.</div><div>Space / Y passes or readies. Goals: Tab / View. Dismiss: H / left stick.</div><PbButton Text="Got it · H / LS" Size=@(PbSize.Small) Kind=@(PbButtonKind.Secondary) Clicked=@(() => { City.DismissHints(); }) /></div></ChildContent></PbPanel>
+</root>

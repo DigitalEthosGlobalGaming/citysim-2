@@ -1,0 +1,24 @@
+@namespace CitySim
+@using CitySim.Punchboard
+@using CitySim.Match
+@inherits MatchPanel
+
+<root class="scoreboard"><PbPanel Title="CITY STANDINGS"><ChildContent>
+@foreach (var p in players) { <StandingRow Player=@p Match=@BoundMatch Ready=@IsReady(p) Offline=@IsOffline(p) Hovered=@Hover Left=@Leave /> }
+@if (City.Session?.IsSpectator==true) { <div class="standing-note">👁 Watching · join the next match</div> }
+</ChildContent></PbPanel></root>
+
+@code {
+ PublicPlayer[] players=Array.Empty<PublicPlayer>();
+ bool IsOffline(PublicPlayer p) => City.Multiplayer && City.Session?.Lobby?.Members.FirstOrDefault(m=>m.Id==p.Id)?.Connected==false;
+ bool IsReady(PublicPlayer p) => p.BuildReady && BoundMatch?.Phase==MatchPhase.Build || City.OwnAuction?.Players.FirstOrDefault(v=>v.Player==p.Id)?.Ready==true;
+ void Hover(object source,Guid id) => City.HighlightPlayer(source,id);
+ void Leave(object source) => City.ClearPlayerHighlight(source);
+ void Read() { players=City.Multiplayer ? City.Session?.Snapshot?.Public.Players ?? Array.Empty<PublicPlayer>() : BoundMatch?.Players.Values.Select(p=>new PublicPlayer(p.Id,p.Name,p.Coins,p.Vp,p.Hand.Count,City.Rounds?.IsBuildReady(p.Id)==true,false)).ToArray() ?? Array.Empty<PublicPlayer>(); Refresh(); }
+ void Resource(ResourceChange _) => Read();
+ void PlayerChanged(Guid _) => Read();
+ void Phase(PhaseChange _) => Read();
+ protected override void Subscribe() { if (City!=null) City.UiChanged+=Read; if (BoundMatch!=null) { BoundMatch.Events.HandChanged+=PlayerChanged; BoundMatch.Events.VpChanged+=Resource; BoundMatch.Events.PlayerReadyChanged+=PlayerChanged; BoundMatch.Events.PhaseChanged+=Phase; } Read(); }
+ protected override void Unsubscribe() { if (City!=null) City.UiChanged-=Read; if (BoundMatch!=null) { BoundMatch.Events.HandChanged-=PlayerChanged; BoundMatch.Events.VpChanged-=Resource; BoundMatch.Events.PlayerReadyChanged-=PlayerChanged; BoundMatch.Events.PhaseChanged-=Phase; } }
+}
+

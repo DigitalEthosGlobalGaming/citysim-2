@@ -1,0 +1,24 @@
+@namespace CitySim.Punchboard
+@using Sandbox.UI
+@inherits Panel
+
+<root class="pb-dial @(Alert ? "alert" : "")" style="background-image: conic-gradient( @Ring 0%, @Ring @(Percent)%, #ecdcb2 @(Percent)%, #ecdcb2 100% );">
+	<div class="pb-dial-face"><span class="pb-dial-text">@Text</span></div>
+</root>
+
+@code
+{
+	/// <summary>0 to 1, how much of the ring is filled.</summary>
+	[Parameter] public float Fill { get; set; } = 1f;
+
+	/// <summary>The number or short text in the middle, such as seconds left.</summary>
+	[Parameter] public string Text { get; set; }
+
+	/// <summary>Turns the ring red, for the last seconds.</summary>
+	[Parameter] public bool Alert { get; set; }
+
+	string Ring => Alert ? "#d9483b" : "#f0b83a";
+	string Percent => Pb.F( Math.Clamp( Fill, 0f, 1f ) * 100f );
+
+	protected override int BuildHash() => HashCode.Combine( (int)(Fill * 100f), Text, Alert );
+}

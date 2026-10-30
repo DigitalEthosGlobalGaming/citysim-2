@@ -1,0 +1,20 @@
+@namespace CitySim.Punchboard
+@using Sandbox.UI
+@inherits Panel
+
+<root class="pb-tag @Tag.Css() @(Compact ? "compact" : "")">
+	<span class="pb-tag-icon">@Pb.Icon( Tag )</span>
+	@if ( !IconOnly ) { <span class="pb-tag-name">@(Label ?? Tag.ToString())</span> }
+</root>
+
+@code
+{
+	[Parameter] public PbTag Tag { get; set; }
+	[Parameter] public bool Compact { get; set; }
+	[Parameter] public bool IconOnly { get; set; }
+
+	/// <summary>Overrides the visible text (for localisation).</summary>
+	[Parameter] public string Label { get; set; }
+
+	protected override int BuildHash() => HashCode.Combine( Tag, Label, Compact, IconOnly );
+}

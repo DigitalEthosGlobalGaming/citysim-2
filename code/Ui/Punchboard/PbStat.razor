@@ -1,0 +1,52 @@
+@namespace CitySim.Punchboard
+@using Sandbox.UI
+@inherits Panel
+
+<root class="pb-stat @Tone.Css() @(Compact ? "compact" : "")">
+	<div class="pb-stat-ring">
+		<div class="pb-stat-window">
+			<div class="pb-stat-icon"><PbIcon Icon=@Icon /></div>
+			<span class="pb-stat-value">@Value</span>
+		</div>
+	</div>
+	@if ( !string.IsNullOrEmpty( Label ) )
+	{
+		<span class="pb-stat-label">@Label</span>
+	}
+</root>
+
+@code
+{
+	/// <summary>An emoji, glyph or texture path.</summary>
+	[Parameter] public string Icon { get; set; }
+
+	/// <summary>The number or short text to show. Changing it plays a small pop.</summary>
+	[Parameter] public string Value { get; set; }
+
+	[Parameter] public string Label { get; set; }
+	/// <summary>Keep only the labelled token window visible; the label remains available as a tooltip.</summary>
+	[Parameter] public bool Compact { get; set; }
+	[Parameter] public PbTone Tone { get; set; } = PbTone.Red;
+
+	string lastValue;
+	float pop = 1f;
+
+	protected override void OnParametersSet()
+	{
+		base.OnParametersSet();
+		Tooltip = Compact ? Label : null;
+		TooltipClass = "city-tooltip";
+		if ( lastValue != null && lastValue != Value ) pop = 0f;
+		lastValue = Value;
+	}
+
+	public override void Tick()
+	{
+		base.Tick();
+		if ( pop >= 1f ) return;
+		pop = Math.Min( 1f, pop + Time.Delta / 0.25f );
+		Style.Set( "transform", $"scale({Pb.F( 0.8f + 0.2f * Pb.BackOut( pop ) )})" );
+	}
+
+	protected override int BuildHash() => HashCode.Combine( Icon, Value, Label, Tone, Compact );
+}

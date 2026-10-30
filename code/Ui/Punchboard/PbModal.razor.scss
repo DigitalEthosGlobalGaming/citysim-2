@@ -1,0 +1,26 @@
+@import "/Ui/Punchboard/_tokens.scss";
+
+PbModal
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	justify-content: center;
+	align-items: center;
+	z-index: 100;
+
+	.pb-scrim { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(18, 10, 4, 0.5); pointer-events: all; }
+
+	PbPanel { min-width: 420px; max-width: 80%; max-height: 90%; gap: 10px; pointer-events: all; }
+
+	.pb-modal-actions
+	{
+		justify-content: flex-end;
+		gap: 14px;
+		padding-top: 10px;
+		margin-top: 6px;
+		border-top: 3px dotted rgba($pb-ink, 0.35);
+	}
+}

@@ -1,0 +1,12 @@
+@import "/Ui/Punchboard/_tokens.scss";
+
+PbRoundTrack
+{
+	flex-shrink: 0;
+	align-items: center;
+	gap: 5px;
+
+	.pb-pip { width: 10px; height: 10px; border: 1.5px solid $pb-ink; border-radius: 5px; background-color: $pb-panel-deep; }
+	.pb-pip.done { background-color: $pb-ink; }
+	.pb-pip.now { background-color: $pb-accent; width: 14px; height: 14px; border-radius: 7px; }
+}

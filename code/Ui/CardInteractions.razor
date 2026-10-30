@@ -1,0 +1,19 @@
+@namespace CitySim
+@using CitySim.Cards
+@using CitySim.Match
+@using Sandbox.UI
+@inherits Panel
+
+<root class="card-interactions">
+    @if (Targets.Count > 0)
+    {
+        <InteractionChip City=@City Label="INTERACTS WITH" Targets=@Targets Heading=@true />
+        <div class="interaction-list">@foreach (var target in Targets) { <InteractionChip City=@City Label=@target.Label Targets=@(new[] { target }) /> }</div>
+    }
+</root>
+@code {
+    [Parameter] public CityGame City { get; set; }
+    [Parameter] public CardDef Card { get; set; }
+    IReadOnlyList<InteractionTarget> Targets => CardPresentation.Targets(Card);
+    protected override int BuildHash() => Card?.Id.GetHashCode() ?? 0;
+}

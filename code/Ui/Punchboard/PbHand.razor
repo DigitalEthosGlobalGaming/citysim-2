@@ -1,0 +1,58 @@
+@namespace CitySim.Punchboard
+@using Sandbox.UI
+@inherits Panel
+
+<root class="pb-hand"><div class="pb-hand-cards">@ChildContent</div></root>
+
+@code
+{
+	/// <summary>Degrees between neighbouring cards.</summary>
+	[Parameter] public float FanStep { get; set; } = 5f;
+
+	/// <summary>How far a hovered card rises, in pixels.</summary>
+	[Parameter] public float HoverLift { get; set; } = 18f;
+
+	/// <summary>How far a selected card rises, in pixels.</summary>
+	[Parameter] public float SelectedLift { get; set; } = 30f;
+
+	// Per-card eased rotation and vertical offset.
+	readonly Dictionary<Panel, (float rot, float y)> pose = new();
+
+	public override void Tick()
+	{
+		base.Tick();
+
+		// Updating a retiring card's transform keeps its CSS transition alive indefinitely.
+		// Hand exits use the game's card-flight feedback; retired faces can disappear immediately.
+		foreach (var retired in Descendants.OfType<PbCard>().Where(c=>c.IsDeleting).ToArray()) retired.Delete(true);
+		var cards = Descendants.OfType<PbCard>().Where(c=>!c.IsDeleting).Cast<Panel>().ToList();
+		var n = cards.Count;
+		
+
+		pose.Keys.Where( p => !cards.Contains( p ) ).ToList().ForEach( p => pose.Remove( p ) );
+
+		for ( var i = 0; i < n; i++ )
+		{
+			var card = cards[i];
+			var offset = i - (n - 1) * 0.5f;
+			// Hand slots remain stationary while their cards move, keeping hover stable.
+			var slot = card.Parent;
+			var inSlot = slot != null && slot.HasClass( "hand-slot" );
+			var active = card.HasClass( "selected" ) || card.HasFocus || card.Descendants.Any( p => p.HasFocus ) || (inSlot ? slot.HasHovered : card.HasHovered);
+			var targetRot = active ? 0f : offset * FanStep;
+			// Selected cards rise fully; hovering or focusing another card gives a smaller lift.
+			var targetY = active ? (card.HasClass("selected") ? -140f - SelectedLift : -90f - HoverLift) : 3f * offset * offset;
+
+			pose.TryGetValue( card, out var current );
+			if ( !pose.ContainsKey( card ) ) current = (targetRot, targetY);
+
+			var k = Pb.Smooth( active ? 24f : 17f, Time.Delta );
+			current = (current.rot + (targetRot - current.rot) * k, current.y + (targetY - current.y) * k);
+			pose[card] = current;
+
+			card.Style.Set( "transform", $"translateY({Pb.F( current.y )}px) rotate({Pb.F( current.rot )}deg)" );
+			if ( inSlot ) slot.Style.Set( "z-index", active ? "5" : "1" );
+			else card.Style.Set( "z-index", active ? "5" : "1" );
+		}
+	}
+}

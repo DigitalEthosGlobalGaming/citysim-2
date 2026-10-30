@@ -1,0 +1,11 @@
+RoundBar {
+ position: absolute; left: 0; bottom: 0; width: 240px; flex-direction: column; z-index: 0;
+ .round-content { gap: 10px; align-items: center; justify-content: space-between; }
+ .round-copy { flex-direction: column; gap: 6px; flex-grow: 1; min-width: 0; }
+ .round-phase { font-size: 26px; font-weight: 800; }
+ .round-status { font-size: 15px; }
+ .round-skip { flex-direction: column; gap: 5px; padding: 4px; flex-shrink: 0; }
+ .round-skip > * { pointer-events: none; }
+ .skip-label { font-size: 13px; white-space: nowrap; }
+}
+Hud.large-text RoundBar { .round-phase { font-size: 39px; } }

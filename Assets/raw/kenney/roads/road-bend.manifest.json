@@ -1,0 +1,8 @@
+{
+  "mesh": "raw/kenney/roads/road-bend.fbx",
+  "texture": "raw/kenney/roads/colormap.png",
+  "scale": 1.0,
+  "initialize_model": "models/kenney/suburban/building-type-a.vmdl",
+  "material": "materials/kenney/roads.vmat",
+  "model": "models/kenney/roads/road-bend.vmdl"
+}

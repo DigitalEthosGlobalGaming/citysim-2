@@ -1,0 +1,3 @@
+@import "/Ui/Punchboard/_tokens.scss";
+PlacementPanel { flex-direction: column; .placement-heading { font-size: 18px; font-weight: 800; flex-wrap: wrap; } .placement-note, .placement-valid, .placement-invalid { font-size: 18px; flex-wrap: wrap; } .interaction-note { font-size: 14px; flex-wrap: wrap; } .placement-valid { color: $pb-good; font-weight: 800; } .placement-invalid { color: $pb-red; font-weight: 800; } }
+Hud.large-text PlacementPanel { .placement-heading, .placement-note, .placement-valid, .placement-invalid { font-size: 27px; } }

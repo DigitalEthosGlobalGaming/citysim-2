@@ -1,0 +1,33 @@
+@namespace CitySim
+@using Sandbox.UI
+@using CitySim.Punchboard
+@using CitySim.Match
+@inherits Panel
+
+<root class="standing-button">
+ <div class="standing-row @(Player.Id == CityGame.Me ? "your-row" : "")">
+  <PbMeeple Tint=@(PlayerColours.For(Match,Player.Id)) />
+  <div class="standing-copy"><div class="standing-name">@Player.Name</div><div>@($"★ {Player.Vp}") @if (Offline) { <span class="standing-offline">· offline</span> }</div></div>
+  @if (Ready) { <span class="ready-marker" title="Finished">✓</span> }
+ </div>
+</root>
+@code {
+ [Parameter] public PublicPlayer Player { get; set; }
+ [Parameter] public MatchState Match { get; set; }
+ [Parameter] public bool Ready { get; set; }
+ [Parameter] public bool Offline { get; set; }
+ [Parameter] public Action<object,Guid> Hovered { get; set; }
+ [Parameter] public Action<object> Left { get; set; }
+ [Parameter] public Action<Guid> Clicked { get; set; }
+ protected override void OnParametersSet() { base.OnParametersSet(); AcceptsFocus=true; }
+ protected override void OnMouseOver(MousePanelEvent e) { base.OnMouseOver(e); Hovered?.Invoke(this,Player.Id); }
+ protected override void OnMouseOut(MousePanelEvent e) { base.OnMouseOut(e); if (!HasFocus) Left?.Invoke(this); }
+ protected override void OnFocus(PanelEvent e) { base.OnFocus(e); Hovered?.Invoke(this,Player.Id); }
+ protected override void OnBlur(PanelEvent e) { base.OnBlur(e); if (!HasHovered) Left?.Invoke(this); }
+ public override void OnDeleted() { Left?.Invoke(this); base.OnDeleted(); }
+ protected override void OnClick(MousePanelEvent e) { base.OnClick(e); Activate(); }
+ public override void OnButtonEvent(ButtonEvent e) { base.OnButtonEvent(e); if (HasFocus && e.Pressed && (e.Button=="enter" || e.Button=="space")) Activate(); }
+ float lastActivation = -100;
+ public void Activate() { if (lastActivation==Time.Now) return; lastActivation=Time.Now; Clicked?.Invoke(Player.Id); }
+}
+

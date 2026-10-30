@@ -1,0 +1,58 @@
+@namespace CitySim.Punchboard
+@using Sandbox.UI
+@inherits Panel
+
+<root class="pb-slot @CssClass @(Empty ? "empty" : "")">
+	@if ( !Empty )
+	{
+		<div class="pb-slot-icon"><PbIcon Icon=@Icon /></div>
+		@if ( Count > 1 )
+		{
+			<div class="pb-slot-count">@($"×{Count}")</div>
+		}
+	}
+</root>
+
+@code
+{
+	[Parameter] public string Icon { get; set; }
+	[Parameter] public string CssClass { get; set; }
+
+	/// <summary>Shows a count badge when above 1. Changing it plays a pop.</summary>
+	[Parameter] public int Count { get; set; } = 1;
+
+	/// <summary>An empty slot is drawn dashed and dim.</summary>
+	[Parameter] public bool Empty { get; set; }
+
+	/// <summary>Text shown by the engine tooltip.</summary>
+	[Parameter] public string TooltipText { get; set; }
+
+	/// <summary>Called when the pointer or keyboard focus lands on the slot, for custom tooltips.</summary>
+	[Parameter] public Action Inspected { get; set; }
+
+	int lastCount;
+	float pop = 1f;
+
+	protected override void OnParametersSet()
+	{
+		base.OnParametersSet();
+		AcceptsFocus = !Empty;
+		Tooltip = Empty ? null : TooltipText;
+		TooltipClass = "city-tooltip";
+		if ( lastCount != Count && lastCount != 0 ) pop = 0f;
+		lastCount = Count;
+	}
+
+	protected override void OnMouseOver( MousePanelEvent e ) { base.OnMouseOver( e ); if ( !Empty ) Inspected?.Invoke(); }
+	protected override void OnFocus( PanelEvent e ) { base.OnFocus( e ); if ( !Empty ) Inspected?.Invoke(); }
+
+	public override void Tick()
+	{
+		base.Tick();
+		if ( pop >= 1f ) return;
+		pop = Math.Min( 1f, pop + Time.Delta / 0.25f );
+		Style.Set( "transform", $"scale({Pb.F( 0.8f + 0.2f * Pb.BackOut( pop ) )})" );
+	}
+
+	protected override int BuildHash() => HashCode.Combine( Icon, Count, Empty, TooltipText, CssClass );
+}

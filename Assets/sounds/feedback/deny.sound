@@ -1,0 +1,9 @@
+{
+  "volume": 0.5,
+  "ui": true,
+  "sounds": [
+    "sounds/feedback/deny.wav"
+  ],
+  "selectionmode": "0",
+  "pitch": 1.0
+}

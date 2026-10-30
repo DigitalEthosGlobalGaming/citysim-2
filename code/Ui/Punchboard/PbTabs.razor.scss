@@ -1,0 +1,29 @@
+@import "/Ui/Punchboard/_tokens.scss";
+
+PbTabs
+{
+	flex-shrink: 0;
+	align-self: flex-start;
+	background-color: $pb-panel-deep;
+	border: $pb-border solid $pb-ink;
+	border-radius: $pb-radius;
+	box-shadow: 0 4px 0 $pb-core, 0 7px 0 $pb-ink;
+	margin-bottom: 8px;
+	overflow: hidden;
+	pointer-events: all;
+
+	.pb-tab
+	{
+		padding: 6px 18px;
+		color: $pb-ink-soft;
+		font-family: $pb-font-body;
+		font-size: 17px;
+		font-weight: 800;
+		cursor: pointer;
+		border-right: $pb-border solid $pb-ink;
+
+		&:last-child { border-right-width: 0px; }
+		&:hover { color: $pb-ink; }
+		&.selected { background-color: $pb-accent; color: $pb-ink; }
+	}
+}

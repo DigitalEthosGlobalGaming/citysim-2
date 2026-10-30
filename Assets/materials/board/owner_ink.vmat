@@ -1,0 +1,4 @@
+Layer0
+{
+    shader "shaders/owner_ink.shader"
+}

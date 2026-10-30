@@ -1,0 +1,78 @@
+// Punchboard Deluxe design tokens. Mirror of .claude/skills/punchboard-design-system/tokens.json.
+// Import with:  @import "/Ui/Punchboard/_tokens.scss";
+
+// ---- surfaces ----
+$pb-table: #2a7377;
+$pb-panel: #f7ecd2;
+$pb-panel-deep: #ecdcb2;
+$pb-card: #fffaf0;
+$pb-paper: #f3e6c4;
+$pb-core: #c79a5e;
+
+// ---- ink ----
+$pb-ink: #2a2118;
+$pb-ink-soft: #6a5a40;
+
+// ---- accents (printed inks) ----
+$pb-accent: #f0b83a;
+$pb-red: #d9483b;
+$pb-teal: #3a9bb8;
+$pb-good: #3f9a5a;
+$pb-bad: #d9483b;
+
+// ---- tags ----
+$pb-tag-home: #d9483b;
+$pb-tag-trade: #f0b83a;
+$pb-tag-nature: #4aa564;
+$pb-tag-industry: #8a8478;
+$pb-tag-culture: #a468c8;
+$pb-tag-civic: #3a8bd0;
+
+// ---- rarity ----
+$pb-r-common: #9a8f7a;
+$pb-r-uncommon: #3f9a5a;
+$pb-r-rare: #3a8bd0;
+$pb-r-legendary: #e69a00;
+
+// ---- shape ----
+$pb-radius: 4px;
+$pb-radius-lg: 8px;
+$pb-border: 3px;
+
+// ---- type (falls back to Poppins, which the project already ships) ----
+$pb-font-display: "Lilita One", Poppins;
+$pb-font-body: "Nunito", Poppins;
+
+// ---- layered cardboard edges ----
+$pb-edge: 0 2px 0 #efe2c0, 0 3px 0 #b8935c, 0 5px 0 #dcc592, 0 6px 0 #a88252, 0 8px 0 #2a2118;
+$pb-edge-large: 0 2px 0 #efe2c0, 0 3px 0 #b8935c, 0 5px 0 #dcc592, 0 6px 0 #a88252, 0 8px 0 #efe2c0, 0 9px 0 #b8935c, 0 11px 0 #2a2118;
+
+// ---- textures (paths are relative to the Assets folder) ----
+$pb-tex-paper: url("ui/punchboard/paper.png");
+$pb-tex-corrugation: url("ui/punchboard/corrugation.png");
+
+// An absolutely positioned texture layer that never takes the mouse.
+@mixin pb-paper-layer {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-image: $pb-tex-paper;
+	background-repeat: repeat;
+	background-size: 512px 512px;
+	pointer-events: none;
+}
+
+// Recessed (debossed) window: the inside of a die-cut slot.
+@mixin pb-recessed {
+	background-color: lighten($pb-panel-deep, 4%);
+	border: 2px solid rgba($pb-ink, 0.65);
+	border-radius: $pb-radius;
+	box-shadow: inset 0 3px 4px rgba($pb-ink, 0.32), 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+// Printed heading: pressed highlight plus an off-register colour shadow.
+@mixin pb-printed-text {
+	text-shadow: 1px 1px 0 rgba($pb-red, 0.28);
+}

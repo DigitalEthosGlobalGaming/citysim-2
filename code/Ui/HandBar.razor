@@ -1,0 +1,144 @@
+@namespace CitySim
+@using CitySim.Cards
+@using CitySim.Match
+@using CitySim.Punchboard
+@inherits MatchPanel
+
+<root class="hand-area @(BoundMatch?.Phase == MatchPhase.Payout ? "paying-out" : "")">
+	@if (City.Multiplayer && City.LocalPlayer == null)
+	{
+		<div class="hand-heading">👁 WATCHING · JOIN THE NEXT MATCH</div>
+	}
+	<div class="hand-cards">
+		@if (City.LocalPlayer is { } player)
+		{
+			<PbHand><ChildContent>
+				@for (var i = 0; i < player.Hand.Count; i++)
+				{
+					var slot = i;
+					var card = CardLibrary.Get(player.Hand[i]);
+					<div class="hand-slot"><PbCard City=@City Card=@card BuildOnly=@true SelectionSound=@false CssClass="hand-card" HotKey=@((slot+1).ToString()) Selected=@(slot == City.SelectedSlot) Compact=@true Size=@(PbSize.Big) Clicked=@(() => { City.SelectSlot(slot); }) Discarded=@(() => { City.DiscardSlot(slot); }) ShowDiscard=@(slot == City.SelectedSlot && City.Mode != GameMode.Sandbox) DiscardDisabled=@(!City.BoardInput || City.RenovationArmed) /></div>
+				}
+			</ChildContent></PbHand>
+			@if (player.Hand.Count == 0) { <div class="empty-hand">Hand empty.</div> }
+		}
+	</div>
+	@foreach (var flight in flights)
+	{
+		<div class="hand-flight flight-@flight.Id @(flight.Discard ? "discard" : "placed")" style="left: @(Pb.F(flight.X))px; top: @(Pb.F(flight.Y))px; width: @(Pb.F(flight.Width))px; height: @(Pb.F(flight.Height))px; transform: rotate(@(Pb.F(flight.Rotation))deg);"><PbCard Card=@CardLibrary.Get(flight.CardId) City=@City BuildOnly=@true CssClass="flight-face" Size=@(PbSize.Big) Disabled=@true />@if (flight.Discard) { <div class="flight-piece piece-a"></div><div class="flight-piece piece-b"></div> }</div>
+	}
+	<div class="hand-actions">
+        @if (City.SelectedCard is { } selected && BoundMatch != null && City.LocalPlayer is { } owner && BoundMatch.Settings.BuildCost(selected) > 0) { <div class="surface">@(BoundMatch.Settings.BuildCost(selected) > owner.Coins ? $"Need {BoundMatch.Settings.BuildCost(selected)} coins to build; you have {owner.Coins}. Keep this card to build later." : $"Build {selected.Name}: {BoundMatch.Settings.BuildCost(selected)} coins")</div> }
+		@if (City.RenovationArmed) { <div class="renovation-hint">@(City.RenovationReplacement == null ? "Renovation: select a building card" : $"Renovation → {City.RenovationReplacement.Name}: select your building")</div><PbButton Text="Cancel renovation · B" Size=@(PbSize.Small) Kind=@(PbButtonKind.Ghost) Clicked=@(() => { City.Deselect(); }) /> }
+		@if (!City.RenovationArmed && City.SelectedImmediateEvent && BoundMatch?.Phase == MatchPhase.Build) { <PbButton Text=@($"Play {City.SelectedCard.Name} · Enter / A") Disabled=@(City.SelectedCardId=="rush-hour" && BoundMatch.RushHourActive(CityGame.Me)) Clicked=@(() => { City.PlaySelectedEvent(); }) /> }
+		@if (City.SelectedCardId == "land-claim" && BoundMatch?.Phase == MatchPhase.Build) { <div class="surface">🚩 Click an empty tile to reserve it.</div> }
+	</div>
+</root>
+
+@code {
+	record Removed(string CardId, int Slot, int Count, long Version, float At);
+	sealed record Geometry(float X, float Y, float Width, float Height, float Rotation);
+	sealed record Flight(int Id, string CardId, float X, float Y, float Width, float Height, float Rotation, bool Discard, float Started);
+	readonly List<Flight> flights = new();
+	List<string> previousHand = new();
+	long previousVersion;
+	Removed removed;
+	(int Slot, string Card, long Version, float At, Geometry Geometry)? discardIntent;
+	int nextFlight;
+	protected override void Subscribe()
+	{
+		RememberHand();
+		if (BoundMatch != null) { BoundMatch.Events.HandChanged += Changed; BoundMatch.Events.CoinsChanged += CoinsChanged; BoundMatch.Events.PhaseChanged += Phase; BoundMatch.Events.CardPlaced += Placed; BoundMatch.Events.EventPlayed += Played; BoundMatch.Events.CardDiscarded += Discarded; }
+		if (City != null) { City.UiChanged += Refresh; City.DiscardRequested += DiscardRequested; }
+	}
+	protected override void Unsubscribe()
+	{
+		if (BoundMatch != null) { BoundMatch.Events.HandChanged -= Changed; BoundMatch.Events.CoinsChanged -= CoinsChanged; BoundMatch.Events.PhaseChanged -= Phase; BoundMatch.Events.CardPlaced -= Placed; BoundMatch.Events.EventPlayed -= Played; BoundMatch.Events.CardDiscarded -= Discarded; }
+		if (City != null) { City.UiChanged -= Refresh; City.DiscardRequested -= DiscardRequested; }
+		removed = null; discardIntent = null; flights.Clear();
+	}
+	void RememberHand() { previousHand = City?.LocalPlayer?.Hand.ToList() ?? new(); previousVersion = City?.LocalPlayer?.HandVersion ?? 0; }
+	void DiscardRequested(int slot, string card, long version)
+	{
+		if (discardIntent is { } pending && pending.Version == version && Time.Now - pending.At < 3f) return;
+		removed = null; discardIntent = null;
+		var hand = Descendants.OfType<PbHand>().FirstOrDefault();
+		var face = hand?.Descendants.OfType<PbCard>().Where(c => !c.IsDeleting).ElementAtOrDefault(slot);
+		if (face == null) return;
+		var size = face.Box.Rect.Size;
+		if (size.x <= 0 || size.y <= 0 || ScaleToScreen <= 0) return;
+		// These conversions include the face and ancestor transforms; local positions are in screen pixels.
+		Vector2 Local(Vector2 p) => ScreenPositionToPanelPosition(face.PanelPositionToScreenPosition(p)) * ScaleFromScreen;
+		var a = Local(new Vector2(0, 0));
+		var b = Local(new Vector2(size.x, 0));
+		var c = Local(new Vector2(0, size.y));
+		var centre = Local(size * 0.5f);
+		var width = (b - a).Length; var height = (c - a).Length;
+		var rotation = MathF.Atan2(b.y - a.y, b.x - a.x) * 180f / MathF.PI;
+		var geometry = new Geometry(centre.x-width*0.5f, centre.y-height*0.5f, width, height, rotation);
+		discardIntent = (slot, card, version, Time.Now, geometry);
+	}
+	void CoinsChanged(ResourceChange change) { if (change.Player == CityGame.Me) Refresh(); }
+	void Changed(Guid player)
+	{
+		if (player != CityGame.Me || City.LocalPlayer == null) return;
+		var hand = City.LocalPlayer.Hand;
+		removed = null;
+		if (City.LocalPlayer.HandVersion > previousVersion && previousHand.Count == hand.Count + 1)
+		{
+			// A single removal must reproduce the new hand exactly, including duplicate cards.
+			var slot = discardIntent is { } intent && intent.Version == previousVersion && intent.Slot >= 0 && intent.Slot < previousHand.Count && previousHand[intent.Slot] == intent.Card && previousHand.Where((_, i) => i != intent.Slot).SequenceEqual(hand) ? intent.Slot : -1;
+			if (slot < 0) for (var i = 0; i < previousHand.Count; i++) if (previousHand.Where((_, n) => n != i).SequenceEqual(hand)) { slot = i; break; }
+			if (slot >= 0) removed = new(previousHand[slot], slot, previousHand.Count, previousVersion, Time.Now);
+		}
+		RememberHand(); Refresh();
+	}
+	void Placed(BoardCell cell) { if (cell.Owner == CityGame.Me) Confirm(cell.CardId, false); }
+	void Played(CardEventResult result) { if (result.Player == CityGame.Me) Confirm(result.CardId, false); }
+	void Discarded(HandCardChange change) { if (change.Player == CityGame.Me) Confirm(change.CardId, true); }
+	void Confirm(string cardId, bool discard)
+	{
+		if (removed == null || removed.CardId != cardId || Time.Now - removed.At > 0.5f) return;
+		var card = CardLibrary.Get(cardId);
+		Geometry g;
+		if (discard)
+		{
+			if (discardIntent is not { } intent || intent.Version != removed.Version || intent.Slot != removed.Slot || intent.Card != cardId || Time.Now - intent.At > 3f) { removed = null; return; }
+			g = intent.Geometry;
+		}
+		else
+		{
+			var left = 50f + (removed.Slot - (removed.Count - 1) * 0.5f) * Math.Min(20f, 80f / Math.Max(1, removed.Count));
+			g = new Geometry(Box.Rect.Size.x / PlayerPreferences.UiScale * left / 100f - 85f, Box.Rect.Size.y / PlayerPreferences.UiScale - 230f, 170f, 220f, 0f);
+		}
+		flights.Add(new(++nextFlight, cardId, g.X, g.Y, g.Width, g.Height, g.Rotation, discard, Time.Now));
+		if (discard) TabletopAudio.Switch();
+		if (flights.Count > 6) flights.RemoveAt(0);
+		removed = null; discardIntent = null; Refresh();
+	}
+	public override void Tick()
+	{
+		base.Tick();
+		if (removed != null && discardIntent is { } intent && intent.Version == removed.Version && intent.Slot == removed.Slot && intent.Card == removed.CardId && Time.Now - intent.At < 3f) { Confirm(removed.CardId, true); discardIntent = null; }
+		if (discardIntent is { } d && Time.Now - d.At > 3f) discardIntent = null;
+		if (removed != null && Time.Now - removed.At > 0.5f) removed = null;
+		var changed = flights.RemoveAll(f => Time.Now - f.Started >= 0.4f) > 0;
+		foreach (var f in flights)
+		{
+			var panel = Descendants.FirstOrDefault(p => p.HasClass($"flight-{f.Id}"));
+			if (panel == null) continue;
+			var t = Math.Clamp((Time.Now - f.Started) / 0.4f, 0f, 1f);
+			var eased = 1f - (1f-t)*(1f-t);
+			var reduced = PlayerPreferences.Current.ReduceShake || PlayerPreferences.Current.ReduceFlashing;
+			panel.Style.Opacity = 1f - t;
+			if (f.Discard && !reduced)
+			{
+				panel.Descendants.FirstOrDefault(p => p.HasClass("piece-a"))?.Style.Set("transform", $"translateX({Pb.F(-45f*eased)}px) translateY({Pb.F(-35f*eased)}px) rotate({Pb.F(-100f*eased)}deg)");
+				panel.Descendants.FirstOrDefault(p => p.HasClass("piece-b"))?.Style.Set("transform", $"translateX({Pb.F(50f*eased)}px) translateY({Pb.F(20f*eased)}px) rotate({Pb.F(120f*eased)}deg)");
+			}
+			panel.Style.Set("transform", reduced ? $"rotate({Pb.F(f.Rotation)}deg)" : $"translateY({Pb.F(f.Discard ? 55f*eased : -130f*eased)}px) rotate({Pb.F(f.Rotation + (f.Discard ? 18f*eased : -8f*eased))}deg) scale({Pb.F(1f-(f.Discard ? 0.65f : 0.35f)*eased)})");
+		}
+		if (changed) Refresh();
+	}
+	void Phase(PhaseChange phase) { if (phase.Phase != MatchPhase.Build) { flights.Clear(); removed = null; discardIntent = null; } Refresh(); }
+}

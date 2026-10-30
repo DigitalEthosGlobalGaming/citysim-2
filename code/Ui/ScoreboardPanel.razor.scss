@@ -1,0 +1,5 @@
+@import "/Ui/Punchboard/_tokens.scss";
+ScoreboardPanel { flex-direction: column; StandingRow { pointer-events: all; width: 100%; min-height: 40px; padding: 2px 4px; cursor: pointer; } StandingRow:hover, StandingRow:focus { background-color: rgba(42,33,24,0.08); } .standing-row { pointer-events: none; width: 100%; gap: 8px; align-items: center; font-size: 18px; } .standing-copy { flex-direction: column; flex-grow: 1; min-width: 0; } .standing-name { font-weight: 800; } .ready-marker { flex-shrink: 0; color: $pb-ink; font-size: 36px; font-weight: 900; } .your-row .standing-name { color: $pb-red; } .standing-note { font-size: 18px; } }
+Hud.large-text ScoreboardPanel { .standing-row, .standing-note { font-size: 27px; } }
+
+

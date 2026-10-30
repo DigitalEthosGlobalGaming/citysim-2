@@ -1,0 +1,21 @@
+@namespace CitySim.Punchboard
+@using Sandbox.UI
+@inherits Panel
+
+<root class="pb-round-track">
+	@for ( var i = 1; i <= Total; i++ )
+	{
+		<div class="pb-pip @(i < Current ? "done" : i == Current ? "now" : "")"></div>
+	}
+</root>
+
+@code
+{
+	/// <summary>Number of rounds in the match.</summary>
+	[Parameter] public int Total { get; set; } = 8;
+
+	/// <summary>The current round, 1-based.</summary>
+	[Parameter] public int Current { get; set; } = 1;
+
+	protected override int BuildHash() => HashCode.Combine( Total, Current );
+}

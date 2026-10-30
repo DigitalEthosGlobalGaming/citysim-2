@@ -1,0 +1,26 @@
+@namespace CitySim
+@using CitySim.Punchboard
+@inherits MatchPanel
+
+<root class="placement"><PbPanel Title="PLACEMENT"><ChildContent>
+@if (City.Match?.Phase == CitySim.Match.MatchPhase.Bid) { <div class="placement-heading">BUILD AFTER THE MARKET</div><div class="placement-note">Keep unplayed cards for later rounds.</div> }
+else if (City.RenovationArmed) {
+<div class="placement-heading">RENOVATION · @(City.RenovationReplacement?.Name ?? "CHOOSE A BUILDING")</div>
+<div class="@(City.Player.HoveredValid ? "placement-valid" : "placement-invalid")">@(City.Player.HoveredValid ? $"✓{VpText}" : $"⊘ {City.Player.HoveredReason}")</div>
+@foreach (var interaction in City.Player.Interactions) { <div class="interaction-note">@interaction.Detail</div> }
+<div class="placement-note">Choose an owned building · B / right-click cancels</div> }
+else if (City.SelectedCard is { } card) {
+<div class="placement-heading">@($"SELECTED · {card.Name}")</div>
+<div class="@(City.Player.HoveredValid ? "placement-valid" : "placement-invalid")">@(City.Player.HoveredValid ? City.SelectedCardId == "land-claim" ? "🚩 Reserve until next round" : $"✓{VpText}" : $"⊘ {City.Player.HoveredReason}")</div>
+@foreach (var interaction in City.Player.Interactions) { <div class="interaction-note">@interaction.Detail</div> }
+<div class="placement-note">@card.Rules</div>
+<div class="placement-note">@(card.Id == "street" ? "Must touch a road or the board edge" : card.NeedsRoad ? "Must touch a road" : "No road needed")</div> }
+else { <div class="placement-note">Select a card to build</div> }
+</ChildContent></PbPanel></root>
+
+@code {
+	string VpText => City.Player.HoveredGain == 0 ? "" : $" · {City.Player.HoveredGain:+#;-#} VP";
+	protected override void Subscribe() { if (City?.Player != null) City.Player.PreviewChanged += Refresh; if (City != null) City.UiChanged += Refresh; }
+	protected override void Unsubscribe() { if (City?.Player != null) City.Player.PreviewChanged -= Refresh; if (City != null) City.UiChanged -= Refresh; }
+}
+

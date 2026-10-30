@@ -1,0 +1,67 @@
+@namespace CitySim
+@using Sandbox.UI
+@using CitySim.Cards
+@using CitySim.Match
+@using CitySim.Punchboard
+@inherits Panel
+
+<root class="auction-lot @(Bid.Amount > 0 ? "has-bid" : "")">
+	<PbCard City=@City Card=@Card CssClass="lot-face" Size=@(PbSize.Big) Cost=@(Bid.Lot.MinimumBid) Selected=@Selected Disabled=@(Auction.Ready || Auction.Resolving || !Auction.Eligible || !Bid.Allowed) Clicked=@(() => { Buy(); }) />
+	<div class="buyers">@for (var i=0; i<Auction.Players.Count; i++) { var person=Auction.Players[i]; var seat=i; if (person.SelectedLot == LotIndex) { <div class="buyer-token @(person.Player == CityGame.Me ? "own" : "")" style="background-color: @Pb.Rgba(PlayerColours.For(City.Match,person.Player))">@(seat+1)</div> } }</div>
+	@if (!Bid.Allowed && Auction.Eligible && !Auction.Ready && !Auction.Resolving) { <div class="bid-warning">@(Auction.AvailableCoins < Bid.Lot.MinimumBid ? "Not enough coins" : "Ownership limit reached")</div> }
+	else if (Bid.Allowed && !Auction.Ready && !Auction.Resolving && Auction.AvailableCoins < Bid.Lot.MinimumBid + City.Match.Settings.BuildCost(Card)) { <div class="bid-warning">Can buy now; save coins to build later.</div> }
+	<div class="legendary-glint">✦</div>
+</root>
+
+@code {
+	[Parameter] public CityGame City { get; set; }
+	[Parameter] public AuctionView Auction { get; set; }
+	[Parameter] public OwnLotBid Bid { get; set; }
+	[Parameter] public AuctionWin Winner { get; set; }
+	[Parameter] public bool Selected { get; set; }
+	[Parameter] public bool SkipReveal { get; set; }
+	[Parameter] public Action<int> Picked { get; set; }
+	public int LotIndex => Bid.Lot.Index;
+	CardDef Card => CardLibrary.Get(Bid.Lot.CardId);
+	string Marker => Card.Rarity switch { Rarity.Common => "◇", Rarity.Uncommon => "⬟", Rarity.Rare => "◆", _ => "★" };
+	int previousId = -1, previousAmount = -1, previousBuyerCount = -1;
+	float revealAge, chipAge = 10, buyersAge = 10;
+	bool revealed;
+	protected override void OnParametersSet()
+	{
+		base.OnParametersSet();
+		if (previousId != Auction.Id) { previousId = Auction.Id; revealAge = SkipReveal ? 1 : -LotIndex*0.15f; revealed = SkipReveal; previousAmount = Bid.Amount; Style.Opacity = SkipReveal ? 1 : 0; previousBuyerCount = -1; }
+		if (previousAmount != Bid.Amount) { previousAmount = Bid.Amount; chipAge = 0; }
+		var buyerCount = Auction.Players.Count(p => p.SelectedLot == LotIndex);
+		if (previousBuyerCount >= 0 && buyerCount > previousBuyerCount) buyersAge = 0;
+		previousBuyerCount = buyerCount;
+	}
+	void Buy() { Picked?.Invoke(LotIndex); if (!Auction.Resolving && !Auction.Ready && Auction.Eligible && Bid.Allowed) City.BuyMarketCard(Auction.Id,LotIndex); }
+	public override void Tick()
+	{
+		base.Tick();
+		revealAge += Time.Delta;
+		if (revealAge < 0) return;
+		if (!revealed) { revealed = true; City.Feedback.RevealCard(Card.Rarity); }
+		var duration = Card.Rarity == Rarity.Legendary ? 0.6f : 0.25f;
+		var t = Math.Clamp(revealAge/duration,0,1);
+		Style.Opacity = 1;
+		var ease = 1-MathF.Pow(1-t,3);
+		Style.Set("transform",FormattableString.Invariant($"translateY({(1-ease)*26:0.###}px)"));
+		buyersAge += Time.Delta;
+		if (Descendants.FirstOrDefault(p => p.HasClass("buyers")) is { } buyers)
+		{
+			var pop = Math.Clamp(buyersAge/0.22f,0,1);
+			buyers.Style.Set("transform",FormattableString.Invariant($"scale({1+0.18f*MathF.Sin(pop*MathF.PI):0.###})"));
+		}
+		chipAge += Time.Delta;
+		if (Descendants.FirstOrDefault(p => p.HasClass("purchase-state")) is { } chip)
+		{
+			var p = Math.Clamp(chipAge/0.12f,0,1)-1;
+			var chipEase = 1+2.70158f*p*p*p+1.70158f*p*p;
+			chip.Style.Set("transform",FormattableString.Invariant($"scale({1+0.12f*(1-chipEase):0.###})"));
+		}
+		if (Descendants.FirstOrDefault(p => p.HasClass("legendary-glint")) is { } glint)
+			glint.Style.Opacity = !City.Feedback.ReduceFlashing && Card.Rarity == Rarity.Legendary && revealAge < 1 ? MathF.Sin(Math.Clamp(revealAge,0,1)*MathF.PI) : 0;
+	}
+}

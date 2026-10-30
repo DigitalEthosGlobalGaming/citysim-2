@@ -1,0 +1,9 @@
+{
+  "volume": 1.0,
+  "ui": true,
+  "sounds": [
+    "sounds/tabletop/click-1.ogg"
+  ],
+  "selectionmode": "0",
+  "pitch": 1.0
+}

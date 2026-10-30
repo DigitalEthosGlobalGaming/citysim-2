@@ -1,0 +1,63 @@
+@namespace CitySim.Punchboard
+@using Sandbox.UI
+@inherits Panel
+
+<root class="pb-btn @Kind.Css() @Size.Css() @CssClass @(Disabled ? "disabled" : "") @(Toggled ? "toggled" : "")">
+	@if ( !string.IsNullOrEmpty( Icon ) )
+	{
+		<span class="pb-btn-icon">@Icon</span>
+	}
+	@if ( !string.IsNullOrEmpty( Text ) )
+	{
+		<span class="pb-btn-text">@Text</span>
+	}
+	@ChildContent
+</root>
+
+@code
+{
+	/// <summary>Content placed inside the component.</summary>
+	[Parameter] public new RenderFragment ChildContent { get; set; }
+
+	[Parameter] public string Text { get; set; }
+	[Parameter] public string CssClass { get; set; }
+	[Parameter] public string Icon { get; set; }
+	[Parameter] public string Help { get; set; }
+
+	/// <summary>Primary is the one main action on a screen. Use Ghost for cancel, Danger for destructive.</summary>
+	[Parameter] public PbButtonKind Kind { get; set; } = PbButtonKind.Primary;
+	[Parameter] public PbSize Size { get; set; } = PbSize.Normal;
+	[Parameter] public bool Disabled { get; set; }
+
+	/// <summary>Shows the pressed-in "on" state, for toggles such as a Ready button.</summary>
+	[Parameter] public bool Toggled { get; set; }
+
+	/// <summary>Called on click and on Enter or Space while focused.</summary>
+	[Parameter] public Action Clicked { get; set; }
+
+	protected override void OnParametersSet()
+	{
+		base.OnParametersSet();
+		AcceptsFocus = !Disabled;
+		Tooltip = Help;
+		TooltipClass = "city-tooltip";
+	}
+
+	protected override void OnClick( MousePanelEvent e )
+	{
+		base.OnClick( e );
+		Activate();
+	}
+
+	public override void OnButtonEvent( ButtonEvent e )
+	{
+		base.OnButtonEvent( e );
+		if ( Disabled || !HasFocus || !e.Pressed ) return;
+		if ( e.Button == "enter" || e.Button == "space" ) Activate();
+	}
+	float lastActivation = -100;
+	/// <summary>Shared semantic activation path; prevents pointer/key adapters firing twice in one frame.</summary>
+	public void Activate() { if (Disabled || lastActivation==Time.Now) return; lastActivation=Time.Now; TabletopAudio.Click(); Clicked?.Invoke(); }
+
+	protected override int BuildHash() => HashCode.Combine( Text, Icon, Kind, Size, Disabled, Toggled, CssClass );
+}

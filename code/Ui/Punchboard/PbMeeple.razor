@@ -1,0 +1,17 @@
+@namespace CitySim.Punchboard
+@using Sandbox.UI
+@inherits Panel
+
+<root class="pb-meeple">
+	<div class="pb-meeple-head" style="background-color: @Pb.Rgba( Tint )"></div>
+	<div class="pb-meeple-arms" style="background-color: @Pb.Rgba( Tint )"></div>
+	<div class="pb-meeple-base" style="background-color: @Pb.Rgba( Tint )"></div>
+</root>
+
+@code
+{
+	/// <summary>The player's colour.</summary>
+	[Parameter] public Color Tint { get; set; } = new Color( 0.85f, 0.28f, 0.23f );
+
+	protected override int BuildHash() => HashCode.Combine( Tint );
+}

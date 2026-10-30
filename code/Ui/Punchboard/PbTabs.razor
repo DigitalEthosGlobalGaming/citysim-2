@@ -1,0 +1,27 @@
+@namespace CitySim.Punchboard
+@using Sandbox.UI
+@inherits Panel
+
+<root class="pb-tabs">
+	@if ( Items != null )
+	{
+		@for ( var i = 0; i < Items.Count; i++ )
+		{
+			var index = i;
+			<div class="pb-tab @(index == Selected ? "selected" : "")" onclick=@(() => Select(index))>@Items[index]</div>
+		}
+	}
+</root>
+
+@code
+{
+	[Parameter] public List<string> Items { get; set; }
+	[Parameter] public int Selected { get; set; }
+
+	/// <summary>Called with the index of the clicked tab. Update Selected in the parent.</summary>
+	[Parameter] public Action<int> SelectedChanged { get; set; }
+
+	void Select(int index) { if (index == Selected) return; TabletopAudio.Switch(); SelectedChanged?.Invoke(index); }
+
+	protected override int BuildHash() => HashCode.Combine( Selected, Items == null ? 0 : string.Join( "|", Items ).GetHashCode() );
+}

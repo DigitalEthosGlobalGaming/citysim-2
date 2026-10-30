@@ -1,0 +1,29 @@
+@namespace CitySim
+@using CitySim.Punchboard
+@using CitySim.Match
+@inherits MatchPanel
+
+<root class="overlay settings-stage">
+ <div class="settings-layout"><PbPanel Title="SETTINGS" Kind=@(PbPanelKind.Raised)><ChildContent>
+  <div class="settings-content">
+   <div class="settings-title">Make it yours</div>
+   <div class="settings-volume"><div>UI scale: @($"{PlayerPreferences.Current.UiScale}%")</div><div class="settings-buttons">
+    <PbButton Text="Smaller" Kind=@(PbButtonKind.Secondary) Disabled=@(PlayerPreferences.Current.UiScale<=60) Clicked=@(() => { Scale(-10); }) />
+    <PbButton Text="Larger" Kind=@(PbButtonKind.Secondary) Disabled=@(PlayerPreferences.Current.UiScale>=120) Clicked=@(() => { Scale(10); }) />
+   </div></div>
+   <div class="settings-volume"><div>Effects volume: @PlayerPreferences.EffectsLabel</div><div class="settings-buttons">
+    <PbButton Text="Quieter" Kind=@(PbButtonKind.Secondary) Disabled=@(PlayerPreferences.Current.EffectsLevel==0) Clicked=@(() => { Level(-1); }) />
+    <PbButton Text="Louder" Kind=@(PbButtonKind.Secondary) Disabled=@(PlayerPreferences.Current.EffectsLevel==4) Clicked=@(() => { Level(1); }) />
+   </div></div>
+   <PbToggle Label="Reduce screen shake" Value=@PlayerPreferences.Current.ReduceShake ValueChanged=@((Action<bool>)(value => { City.SetPreferences(PlayerPreferences.Current with {ReduceShake=value}); })) />
+   <PbToggle Label="Reduce flashing" Value=@PlayerPreferences.Current.ReduceFlashing ValueChanged=@((Action<bool>)(value => { City.SetPreferences(PlayerPreferences.Current with {ReduceFlashing=value}); })) />
+   <PbButton CssClass="primary" Text="Back · Esc / B" Kind=@(PbButtonKind.Ghost) Clicked=@(() => { City.Screens.Pop(); }) />
+  </div>
+ </ChildContent></PbPanel></div>
+</root>
+@code {
+ void Scale(int delta) => City.SetPreferences(PlayerPreferences.Current with {UiScale=PlayerPreferences.Current.UiScale+delta});
+ void Level(int delta) => City.SetPreferences(PlayerPreferences.Current with {EffectsLevel=PlayerPreferences.Current.EffectsLevel+delta});
+ protected override void Subscribe() { if (City!=null) City.UiChanged+=Refresh; }
+ protected override void Unsubscribe() { if (City!=null) City.UiChanged-=Refresh; }
+}

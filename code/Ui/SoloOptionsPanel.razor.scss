@@ -1,0 +1,14 @@
+@import "/Ui/Punchboard/_tokens.scss";
+
+SoloOptionsPanel
+{
+	flex-direction: column;
+	gap: 8px;
+	font-size: 18px;
+	color: $pb-ink;
+
+	.solo-option-row { align-items: center; gap: 10px; flex-wrap: wrap; }
+	.solo-label { width: 90px; font-weight: 800; }
+	.solo-choices { gap: 7px; flex-wrap: wrap; }
+	.solo-hint { color: $pb-ink-soft; font-size: 18px; }
+}

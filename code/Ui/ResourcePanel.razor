@@ -1,0 +1,25 @@
+@namespace CitySim
+@using CitySim.Punchboard
+@using CitySim.Match
+@inherits MatchPanel
+
+<root class="resources"><PbPanel Title=@(City.Multiplayer && City.LocalPlayer==null ? "SPECTATING" : "YOUR CITY")><ChildContent>
+@if (City.Multiplayer && City.LocalPlayer==null) { <div class="resource-note">👁 Watching the city</div> }
+else { <div class="resource-stats"><PbStat Icon="🪙" Value=@DisplayedCoins.ToString() Tone=@(PbTone.Accent) Label="Coins" Compact=@true /><PbStat Icon="★" Value=@Vp.ToString() Tone=@(PbTone.Red) Label="VP" Compact=@true /></div> }
+<div class="resource-note">@(City.LocalPlayer is { } player && City.OwnAuction is { } bid ? $"{player.Coins} coins available" : "Save coins for your next build")</div>
+@if (City.LocalPlayer != null) { <EffectTray City=@City /> }
+</ChildContent></PbPanel></root>
+
+@code {
+	int Coins => City?.Feedback?.PresentedCoins ?? City?.OwnAuction?.AvailableCoins ?? City?.LocalPlayer?.Coins ?? 0;
+	int Vp => City?.LocalPlayer?.Vp ?? 0;
+	float coinRoll;
+	int DisplayedCoins => (int)MathF.Round(coinRoll);
+	protected override void Subscribe() { coinRoll = Coins; if (BoundMatch != null) { BoundMatch.Events.CoinsChanged += Changed; BoundMatch.Events.VpChanged += Changed; BoundMatch.Events.BidChanged += Bid; BoundMatch.Events.PhaseChanged += Phase; } }
+	protected override void Unsubscribe() { if (BoundMatch != null) { BoundMatch.Events.CoinsChanged -= Changed; BoundMatch.Events.VpChanged -= Changed; BoundMatch.Events.BidChanged -= Bid; BoundMatch.Events.PhaseChanged -= Phase; } }
+	void Bid(Guid owner) { if (owner == CityGame.Me) Refresh(); }
+	void Phase(PhaseChange change) => Refresh();
+	void Changed(ResourceChange change) { if (change.Player == CityGame.Me) Refresh(); }
+	public override void Tick() { base.Tick(); if (MathF.Abs(coinRoll-Coins) < 0.01f) return; var previous = DisplayedCoins; coinRoll += (Coins-coinRoll)*(1-MathF.Exp(-10*Time.Delta)); if (previous != DisplayedCoins) Refresh(); }
+}
+

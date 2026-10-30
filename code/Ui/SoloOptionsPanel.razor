@@ -1,0 +1,31 @@
+@namespace CitySim
+@using CitySim.Ai
+@using CitySim.Punchboard
+@inherits MatchPanel
+
+<root class="solo-options">
+	<div class="solo-option-row">
+		<div class="solo-label">Rivals</div>
+		<div class="solo-choices">
+			<PbButton Text="1" Size=@(PbSize.Small) Kind=@(PbButtonKind.Secondary) Toggled=@(City.SoloRivals == 1) Clicked=@(() => { City.ConfigureSolo(1, City.SoloDifficulty); }) />
+			<PbButton Text="2" Size=@(PbSize.Small) Kind=@(PbButtonKind.Secondary) Toggled=@(City.SoloRivals == 2) Clicked=@(() => { City.ConfigureSolo(2, City.SoloDifficulty); }) />
+			<PbButton Text="3" Size=@(PbSize.Small) Kind=@(PbButtonKind.Secondary) Toggled=@(City.SoloRivals == 3) Clicked=@(() => { City.ConfigureSolo(3, City.SoloDifficulty); }) />
+		</div>
+	</div>
+	<div class="solo-option-row">
+		<div class="solo-label">Difficulty</div>
+		<div class="solo-choices">
+			<PbButton Text="Easy" Size=@(PbSize.Small) Kind=@(PbButtonKind.Secondary) Toggled=@(City.SoloDifficulty == BotDifficulty.Easy) Clicked=@(() => { City.ConfigureSolo(City.SoloRivals, BotDifficulty.Easy); }) />
+			<PbButton Text="Normal" Size=@(PbSize.Small) Kind=@(PbButtonKind.Secondary) Toggled=@(City.SoloDifficulty == BotDifficulty.Normal) Clicked=@(() => { City.ConfigureSolo(City.SoloRivals, BotDifficulty.Normal); }) />
+			<PbButton Text="Hard" Size=@(PbSize.Small) Kind=@(PbButtonKind.Secondary) Toggled=@(City.SoloDifficulty == BotDifficulty.Hard) Clicked=@(() => { City.ConfigureSolo(City.SoloRivals, BotDifficulty.Hard); }) />
+		</div>
+	</div>
+	<div class="solo-hint">@Hint</div>
+</root>
+
+@code {
+	CityGame subscribedCity;
+	string Hint => City.SoloDifficulty switch { BotDifficulty.Easy => "Gentler bids and more unpredictable plans.", BotDifficulty.Hard => "Competes for valuable cards and plans further ahead.", _ => "Balanced bids, income and victory points." };
+	protected override void Subscribe() { subscribedCity = City; if (subscribedCity != null) subscribedCity.UiChanged += Refresh; }
+	protected override void Unsubscribe() { if (subscribedCity != null) subscribedCity.UiChanged -= Refresh; subscribedCity = null; }
+}

@@ -1,0 +1,13 @@
+@import "/Ui/Punchboard/_tokens.scss";
+AuctionLotPanel { position: relative; flex-direction: column; flex-shrink: 0; gap: 7px; align-items: center; color: $pb-ink; font-size: 18px;
+ .buyers { min-height: 40px; align-items: center; justify-content: center; gap: 4px; }
+ .buyer-token { width: 26px; height: 26px; align-items: center; justify-content: center; border: 2px solid $pb-ink; border-radius: 13px; background-color: #e78875; font-size: 15px; font-weight: 800; }
+ .buyer-token.own { width: 40px; height: 40px; border-radius: 20px; font-size: 23px; }
+ .seat-1 { background-color: #7dbaca; } .seat-2 { background-color: #8cbd80; } .seat-3 { background-color: #d5ad5d; } .seat-4 { background-color: #ba9bcc; } .seat-5 { background-color: #d88fb3; }
+ .seat-6 { background-color: #d48d4d; } .seat-7 { background-color: #6b9e9e; }
+ .purchase-state { color: $pb-good; padding: 4px 9px; background-color: $pb-card; border: 2px solid $pb-good; }
+ .purchase-state, .bid-warning { font-size: 17px; font-weight: 800; }
+ .legendary-glint { position: absolute; right: 8px; top: 10px; color: $pb-accent; font-size: 32px; pointer-events: none; }
+}
+Hud.large-text AuctionLotPanel { .purchase-state { color: $pb-good; padding: 4px 9px; background-color: $pb-card; border: 2px solid $pb-good; }
+ .purchase-state, .bid-warning { font-size: 27px; } }

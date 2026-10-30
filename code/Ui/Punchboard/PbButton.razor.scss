@@ -1,0 +1,70 @@
+@import "/Ui/Punchboard/_tokens.scss";
+
+// Face colour, text colour. The darker underside is derived from the face.
+@mixin pb-btn-colors($face, $text)
+{
+	background-color: $face;
+	color: $text;
+	box-shadow: 0 5px 0 mix($face, #000000, 55%), 0 8px 0 $pb-ink;
+
+	&:active { box-shadow: 0 0 0 mix($face, #000000, 55%), 0 3px 0 $pb-ink; }
+}
+
+PbButton
+{
+	position: relative;
+	flex-shrink: 0;
+	justify-content: center;
+	align-items: center;
+	gap: 8px;
+	min-height: 44px;
+	margin-bottom: 8px;
+	padding: 6px 22px;
+	border: $pb-border solid $pb-ink;
+	border-radius: $pb-radius-lg;
+	font-family: $pb-font-display;
+	font-size: 20px;
+	cursor: pointer;
+	pointer-events: all;
+	transition: transform 0.08s ease-out;
+
+	@include pb-btn-colors($pb-accent, $pb-ink);
+
+	&:hover { transform: translateY(-1px); }
+	// Keep the hit area stationary between mouse-down and mouse-up.
+	&:active { transform: translateY(-1px); }
+	&:focus { border-color: $pb-teal; }
+
+	&.secondary { @include pb-btn-colors($pb-teal, #ffffff); }
+	&.tertiary { @include pb-btn-colors(lighten($pb-accent, 22%), $pb-ink); }
+	&.danger { @include pb-btn-colors($pb-bad, #ffffff); }
+	&.toggled { @include pb-btn-colors($pb-good, #ffffff); }
+
+	&.ghost
+	{
+		background-color: rgba(0, 0, 0, 0);
+		color: $pb-ink;
+		border-style: dashed;
+		box-shadow: none;
+
+		&:active { box-shadow: none; }
+	}
+
+	&.small { min-height: 40px; padding: 3px 14px; font-size: 18px; }
+	&.big { min-height: 60px; padding: 10px 36px; font-size: 28px; }
+
+	&.disabled
+	{
+		opacity: 0.45;
+		cursor: default;
+
+		&:hover, &:active { transform: translateY(0px); }
+	}
+
+	.pb-btn-icon { font-size: 1em; }
+	// Labels and custom content are part of the button, not separate hit targets.
+	* { pointer-events: none; }
+}
+.large-text PbButton { font-size: 30px; min-height: 60px; }
+.large-text PbButton.small { font-size: 27px; min-height: 54px; }
+.large-text PbButton.big { font-size: 42px; min-height: 80px; }

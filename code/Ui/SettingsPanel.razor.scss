@@ -1,0 +1,9 @@
+@import "/Ui/Punchboard/_tokens.scss";
+SettingsPanel {
+ width: 100%; height: 100%; background-color: $pb-table; justify-content: center; align-items: center;
+ .settings-layout { width: 70%; max-width: 780px; max-height: 94%; overflow: scroll; pointer-events: all; flex-direction: column; }
+ .settings-content { flex-direction: column; gap: 18px; font-size: 20px; }
+ .settings-title { font-family: $pb-font-display; font-size: 34px; }
+ .settings-volume { flex-direction: column; gap: 10px; }
+ .settings-buttons { gap: 12px; flex-wrap: wrap; }
+}

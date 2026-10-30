@@ -1,0 +1,70 @@
+@import "/Ui/Punchboard/_tokens.scss";
+
+PbPanel
+{
+	position: relative;
+	flex-direction: column;
+	flex-shrink: 0;
+	padding: 14px;
+	background-color: $pb-panel;
+	border: $pb-border solid $pb-ink;
+	border-radius: $pb-radius;
+	box-shadow: $pb-edge;
+	color: $pb-ink;
+	font-family: $pb-font-body;
+	font-size: 18px;
+	font-weight: 600;
+
+	.pb-paper { @include pb-paper-layer; border-radius: $pb-radius; opacity: 0.45; }
+
+	// The thin printed frame inside the edge.
+	.pb-frame
+	{
+		position: absolute;
+		left: 5px;
+		top: 5px;
+		right: 5px;
+		bottom: 5px;
+		border: 1.5px solid rgba($pb-red, 0.6);
+		border-radius: 3px;
+		pointer-events: none;
+	}
+
+	.pb-label
+	{
+		position: relative;
+		align-self: flex-start;
+		margin: -4px 0 10px -8px;
+		padding: 3px 12px 2px 12px;
+		background-color: $pb-ink;
+		color: $pb-panel;
+		border-radius: 3px;
+		font-family: $pb-font-display;
+		font-size: 15px;
+		letter-spacing: 2px;
+		transform: rotate(-1.5deg);
+	}
+
+	.pb-body { position: relative; flex-direction: column; flex-grow: 1; gap: 8px; }
+
+	&.pb-kind-raised { box-shadow: $pb-edge-large; }
+
+	&.pb-kind-tooltip { max-width: 360px; }
+	&.fill { width: 100%; height: 100%; min-height: 0; flex-shrink: 1; .pb-body { min-height: 0; flex-shrink: 1; } }
+
+	// Turned-up bottom-right corner.
+	.pb-corner
+	{
+		position: absolute;
+		right: -3px;
+		bottom: -3px;
+		width: 26px;
+		height: 26px;
+		background-image: linear-gradient(135deg, rgba(0,0,0,0) 50%, #cbb687 50%, #f4e9c9 100%);
+		border-left: 2px solid rgba($pb-ink, 0.55);
+		border-top: 2px solid rgba($pb-ink, 0.55);
+		border-radius: 3px 0 4px 0;
+		pointer-events: none;
+	}
+}
+.large-text PbPanel { font-size: 27px; .pb-label { font-size: 23px; } }

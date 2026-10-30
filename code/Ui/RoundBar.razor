@@ -1,0 +1,31 @@
+@namespace CitySim
+@using CitySim.Punchboard
+@using CitySim.Match
+@inherits MatchPanel
+
+<root class="round-bar"><PbPanel Title=@(City.Mode == GameMode.Sandbox ? "DEBUG SANDBOX" : $"ROUND {Round} / {BoundMatch?.Settings.Rounds}")><ChildContent>
+<div class="round-content"><div class="round-copy"><div class="round-phase">@PhaseName</div>@if (City.BuildReady && phase?.Phase == MatchPhase.Build) { <div class="round-status">Waiting for rivals</div> }</div>
+@if (CanSkip) {
+<PbButton CssClass="round-skip" Help=@(phase?.Phase == MatchPhase.Payout ? "Skip the income animation." : "Finish building this round. Unplayed cards stay in your hand.") Kind=@(PbButtonKind.Ghost) Disabled=@(phase?.Phase == MatchPhase.Build && City.BuildReady) Clicked=@Skip><ChildContent><PbDial Text=@TimerText Fill=@TimerFill Alert=@(Seconds <= 10) /><span class="skip-label">@(phase?.Phase == MatchPhase.Payout ? "Skip tally" : City.BuildReady ? "✓" : "Skip · Space")</span></ChildContent></PbButton>
+} else { <PbDial Text=@TimerText Fill=@TimerFill Alert=@(Seconds <= 10 && TimerText != "—" && TimerText != "∞") /> }
+</div>
+</ChildContent></PbPanel></root>
+
+@code {
+	PhaseChange phase;
+	int Seconds;
+	double phaseRemainingAtChange;
+	string TimerText => City.Mode == GameMode.Sandbox ? "∞" : phase?.Phase is MatchPhase.Lobby or MatchPhase.EndGame || phase?.EndsAt < 0 ? "—" : Seconds.ToString();
+	float TimerFill => phaseRemainingAtChange > 0 ? (float)Math.Clamp(((phase?.EndsAt ?? 0)-City.Clock)/phaseRemainingAtChange,0,1) : 1f;
+	int Round => phase?.Round ?? 1;
+	string PhaseName => phase?.Phase switch { MatchPhase.Bid => City.OwnAuction?.Resolving == true ? "Results" : "Market", MatchPhase.Build => "Build", MatchPhase.Payout => "Payout", MatchPhase.EndGame => "Complete", _ => "Starting" };
+	bool CanSkip => City.Mode != GameMode.Sandbox && City.LocalPlayer != null && phase?.Phase is MatchPhase.Build or MatchPhase.Payout;
+	void Skip() { if (City.Screens.Top != GameScreen.Match) return; if (phase?.Phase == MatchPhase.Build && !City.BuildReady) City.Ready(); else if (phase?.Phase == MatchPhase.Payout) City.Feedback.SkipTally(); }
+	void ReadyChanged(Guid _) => Refresh();
+	protected override void Subscribe() { if (City != null) City.UiChanged += Refresh; if (BoundMatch != null) { BoundMatch.Events.PlayerReadyChanged += ReadyChanged; BoundMatch.Events.PhaseChanged += Changed; Changed(new(BoundMatch.Phase,BoundMatch.Round,BoundMatch.PhaseEndsAt)); } }
+	protected override void Unsubscribe() { if (City != null) City.UiChanged -= Refresh; if (BoundMatch != null) { BoundMatch.Events.PlayerReadyChanged -= ReadyChanged; BoundMatch.Events.PhaseChanged -= Changed; } }
+	void Changed(PhaseChange change) { phase = change; phaseRemainingAtChange = Math.Max(0, change.EndsAt-City.Clock); UpdateTimer(); Refresh(); }
+	void UpdateTimer() { Seconds = City.Mode == GameMode.Sandbox ? 0 : Math.Max(0,(int)Math.Ceiling((phase?.EndsAt ?? 0)-City.Clock)); }
+	public override void Tick() { base.Tick(); var before = Seconds; UpdateTimer(); if (before != Seconds) Refresh(); }
+}
+

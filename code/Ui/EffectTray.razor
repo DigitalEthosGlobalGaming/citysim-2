@@ -1,0 +1,31 @@
+@namespace CitySim
+@using CitySim.Punchboard
+@using CitySim.Cards
+@using CitySim.Match
+@inherits MatchPanel
+
+<root class="effect-tray">
+@if (icons.Count > 0 || tags != Tag.None) {
+<div class="effect-icons">@foreach (var icon in icons) { <PbSlot CssClass="effect-icon" Icon=@icon.Card.Icon Count=@icon.Count TooltipText=@($"{icon.Card.Name} ×{icon.Count}\n{icon.Card.Rules}") /> }</div>
+@if (icons.Any(i => i.Card.Id == "builders-yard")) {
+<div class="builder-choice"><div>Next round bonus:</div><PbButton Text="Street" Size=@(PbSize.Small) Kind=@(PbButtonKind.Secondary) Toggled=@(!BoundMatch.BuilderCommon(owner)) Clicked=@(() => { City.ChooseBuilderDefault(false); }) /><PbButton Text="Common" Size=@(PbSize.Small) Kind=@(PbButtonKind.Secondary) Toggled=@BoundMatch.BuilderCommon(owner) Clicked=@(() => { City.ChooseBuilderDefault(true); }) /></div>
+}
+<div class="tag-row">@foreach (var tag in TagChip.Values(tags)) { <TagChip City=@City Tag=@tag Owner=@owner /> }</div>
+}
+</root>
+
+@code {
+	sealed record IconCount(CardDef Card,int Count);
+	List<IconCount> icons = new();
+	Guid owner => CityGame.Me;
+	Tag tags;
+	void Read()
+	{
+		icons = BoundMatch?.Cells().Where(c => c.Owner == owner && CardLibrary.Get(c.CardId).EffectTray).GroupBy(c => c.CardId).Select(g => new IconCount(CardLibrary.Get(g.Key),g.Count())).ToList() ?? new();
+		tags = BoundMatch?.Cells().Where(c => c.Owner == owner).Aggregate(Tag.None,(all,c) => all | CardLibrary.Get(c.CardId).Tags) ?? Tag.None; Refresh();
+	}
+	protected override void Subscribe() { if (City != null) City.UiChanged += Read; if (BoundMatch != null) { BoundMatch.Events.EffectTrayChanged += Changed; BoundMatch.Events.CardPlaced += Placed; BoundMatch.Events.CellUpdated += Placed; } Read(); }
+	protected override void Unsubscribe() { if (City != null) City.UiChanged -= Read; if (BoundMatch != null) { BoundMatch.Events.EffectTrayChanged -= Changed; BoundMatch.Events.CardPlaced -= Placed; BoundMatch.Events.CellUpdated -= Placed; } }
+	void Changed(Guid id) { if (id == owner) Read(); }
+	void Placed(BoardCell cell) { if (cell.Owner == owner) Read(); }
+}

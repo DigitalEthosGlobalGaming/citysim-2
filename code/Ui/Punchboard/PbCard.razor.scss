@@ -1,0 +1,138 @@
+@import "/Ui/Punchboard/_tokens.scss";
+
+PbCard
+{
+	position: relative;
+	flex-direction: column;
+	flex-shrink: 0;
+	width: 156px;
+	gap: 6px;
+	padding: 12px 12px 10px 12px;
+	background-color: $pb-card;
+	border: 2px solid $pb-ink;
+	border-radius: $pb-radius-lg;
+	box-shadow: 0 2px 0 rgba($pb-ink, 0.6), 0 7px 12px rgba(0, 0, 0, 0.3);
+	color: $pb-ink;
+	font-family: $pb-font-body;
+	cursor: pointer;
+	pointer-events: all;
+	transition: transform 0.14s ease-out;
+
+	.pb-paper { @include pb-paper-layer; border-radius: $pb-radius; }
+
+	// The printed frame in the rarity colour.
+	.pb-rarity-frame
+	{
+		position: absolute;
+		left: 4px;
+		top: 4px;
+		right: 4px;
+		bottom: 4px;
+		border: 2.5px solid $pb-r-common;
+		border-radius: $pb-radius;
+		pointer-events: none;
+	}
+
+	.pb-key
+	{
+		position: absolute;
+		left: -10px;
+		top: -11px;
+		width: 26px;
+		height: 26px;
+		justify-content: center;
+		align-items: center;
+		background-color: $pb-ink;
+		color: $pb-panel;
+		border-radius: 13px;
+		font-family: $pb-font-display;
+		font-size: 15px;
+		z-index: 3;
+	}
+
+	.pb-cost
+	{
+		position: absolute; right: -7px; top: -9px; z-index: 4;
+		min-width: 48px; padding: 4px 7px; justify-content: center; align-items: center;
+		background-color: $pb-accent; color: $pb-ink; border: 2px solid $pb-ink;
+		border-radius: $pb-radius; box-shadow: 0 3px 0 $pb-core, 0 5px 0 $pb-ink;
+		font-family: $pb-font-display; font-size: 15px; font-weight: 800; pointer-events: none;
+	}
+	&.has-cost .pb-tags { padding-right: 78px; }
+	.pb-build-cost { position: relative; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+	.pb-park-help { position: relative; font-size: 12px; flex-shrink: 0; }
+
+	.pb-art
+	{
+		position: relative;
+		height: 58px;
+		justify-content: center;
+		align-items: center;
+		border: 2px solid $pb-ink;
+		border-radius: $pb-radius;
+		font-size: 32px;
+	}
+
+	.pb-name { position: relative; font-family: $pb-font-display; font-size: 18px; @include pb-printed-text; }
+	.pb-tags { position: relative; flex-wrap: wrap; gap: 4px; }
+	.pb-interactions { position: relative; flex-direction: column; border-top: 1px solid $pb-ink; padding-top: 3px; font-size: 14px; font-weight: 600; }
+	.pb-interaction-label { font-size: 11px; font-weight: 800; }
+	.pb-requirement { position: relative; font-size: 13px; font-weight: 700; }
+	.pb-text { position: relative; flex-direction: column; gap: 3px; color: $pb-ink-soft; font-size: 12px; font-weight: 600; }
+	.pb-rule-line { align-items: flex-start; gap: 4px; flex-shrink: 0; }
+	.pb-rule-copy { flex-grow: 1; flex-shrink: 1; min-width: 0; }
+	.pb-rule-line.timed { flex-direction: column; gap: 1px; align-items: stretch; }
+	.pb-rule-line.timed .pb-rule-copy { margin-left: 12px; flex-grow: 0; flex-shrink: 0; }
+	.pb-rarity-row { position: relative; margin-top: auto; align-self: flex-start; }
+	&.hand-card .pb-rarity-row { padding-right: 42px; min-height: 36px; }
+	.card-discard { position: absolute; right: 9px; bottom: 9px; width: 36px; height: 36px; min-height: 36px; padding: 4px; z-index: 6; }
+	.card-discard > * { pointer-events: none; }
+
+	// Market faces share a fixed height with room for the longest printed rules.
+	&.lot-face, &.hand-card.big
+	{
+		height: 480px;
+		min-height: 480px;
+		max-height: 480px;
+		flex-grow: 0;
+		flex-shrink: 0;
+		.pb-tags, .pb-art, .pb-name, .pb-interactions, .pb-text, .pb-requirement, .pb-rarity-row { flex-shrink: 0; }
+		.pb-interactions > *, .pb-text > * { flex-shrink: 0; }
+	}
+	&.uncommon .pb-rarity-frame { border-color: $pb-r-uncommon; }
+	&.rare .pb-rarity-frame { border-color: $pb-r-rare; }
+	&.legendary .pb-rarity-frame { border-color: $pb-r-legendary; }
+	&.legendary { box-shadow: 0 2px 0 rgba($pb-ink, 0.6), 0 7px 12px rgba(0, 0, 0, 0.3), 0 0 18px rgba($pb-r-legendary, 0.6); }
+
+	&:hover { transform: translateY(-6px); }
+	&:focus { border-color: $pb-teal; }
+
+	&.selected
+	{
+		transform: translateY(-12px);
+		box-shadow: 0 0 0 3px $pb-accent, 0 2px 0 rgba($pb-ink, 0.6), 0 14px 16px rgba(0, 0, 0, 0.35);
+	}
+
+	&.reference-match { border-color: $pb-ink; box-shadow: 0 0 0 3px $pb-accent, 0 4px 0 $pb-ink; }
+	&.disabled { opacity: 0.55; cursor: default; &:hover { transform: translateY(0px); } }
+
+	// Compact cards outside the hand retain their expandable rules; hand faces
+	// keep their complete printed content at rest and throughout the lift.
+	&.compact .pb-text { display: none; }
+	&.compact:focus .pb-text, &.compact:hover .pb-text, &.compact.selected .pb-text { display: flex; min-height: 0px; }
+	&.compact.hand-card .pb-text { display: flex; min-height: 0px; }
+	&.big { width: 310px; min-height: 280px; .pb-art { height: 80px; font-size: 44px; } .pb-name { font-size: 24px; } .pb-text { font-size: 16px; } .pb-key { font-size: 18px; width: 30px; height: 30px; } }
+	&.big.compact.hand-card { width: 310px; }
+	&.big.lot-face { width: 280px; }
+}
+
+.large-text PbCard { .pb-name { font-size: 27px; } .pb-text { font-size: 25px; } .pb-key { font-size: 27px; width: 42px; height: 42px; } }
+.large-text PbCard.big, .large-text PbCard.big.compact.hand-card { width: 390px; .pb-name { font-size: 36px; } }
+.large-text PbCard.big.lot-face { width: 360px; }
+
+// Keep enlarged text on equally sized market cards, with additional room for wrapping.
+.large-text PbCard.lot-face, .large-text PbCard.hand-card.big { height: 640px; min-height: 640px; max-height: 640px; }
+
+.large-text PbCard .pb-cost { font-size: 22px; min-width: 92px; }
+.large-text PbCard.has-cost .pb-tags { padding-right: 110px; }
+.large-text PbCard .pb-build-cost, .large-text PbCard .pb-park-help { font-size: 20px; }

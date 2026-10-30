@@ -1,0 +1,17 @@
+@namespace CitySim.Punchboard
+@using Sandbox.UI
+@inherits Panel
+
+<root class="rule-keyword">@Label:</root>
+
+@code {
+    [Parameter] public string Label { get; set; }
+    [Parameter] public string Help { get; set; }
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        Tooltip = Help;
+        TooltipClass = "city-tooltip";
+    }
+    protected override int BuildHash() => HashCode.Combine(Label, Help);
+}

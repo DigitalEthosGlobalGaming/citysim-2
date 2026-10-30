@@ -1,0 +1,21 @@
+PbHand
+{
+	width: 100%;
+	justify-content: center;
+	align-items: flex-end;
+	flex-shrink: 0;
+	pointer-events: none;
+	.pb-hand-cards { width: 100%; justify-content: center; align-items: flex-end; pointer-events: none; }
+	.hand-slot { position: relative; width: 20%; max-width: 300px; flex-shrink: 1; justify-content: center; align-items: flex-end; pointer-events: all; transform: translateY(140px); }
+	.hand-slot PbCard { margin-left: 0; }
+
+	// Cards overlap slightly and pivot about a point below themselves.
+	PbCard
+	{
+		margin-left: -12px;
+		transform-origin: 50% 120%;
+		transition: none;
+
+		&:first-child { margin-left: 0px; }
+	}
+}

@@ -1,0 +1,19 @@
+@namespace CitySim
+@using CitySim.Cards
+@using CitySim.Match
+@using Sandbox.UI
+@inherits Panel
+
+<root class="card-rule-content">
+    @foreach (var word in CardRuleText.Words(Text))
+    {
+        @if (word.Tag != Tag.None) { <TagChip City=@City Tag=@word.Tag Compact=@true Inline=@true Reference=@true /> }
+        else if (word.Shop) { <InteractionChip City=@City Label=@($"[🏪 {word.Text}]") Targets=@(new[] { new InteractionTarget(word.Text,InteractionKind.Shop) }) /> }
+        else { <span>@word.Text</span> }
+    }
+</root>
+@code {
+    [Parameter] public CityGame City { get; set; }
+    [Parameter] public string Text { get; set; }
+    protected override int BuildHash() => Text?.GetHashCode() ?? 0;
+}

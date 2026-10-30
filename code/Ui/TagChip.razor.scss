@@ -1,0 +1,4 @@
+TagChip { pointer-events: all; cursor: help; }
+TagChip:focus { outline: 2px solid #3a9bb8; }
+TagChip.inline-tag PbTagPill { font-size: 16px; padding: 0px 3px; gap: 2px; }
+TagChip.inline-tag PbTagPill .pb-tag-icon { font-size: 16px; }

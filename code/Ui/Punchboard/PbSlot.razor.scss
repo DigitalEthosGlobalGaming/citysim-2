@@ -1,0 +1,31 @@
+@import "/Ui/Punchboard/_tokens.scss";
+
+PbSlot
+{
+	position: relative;
+	flex-shrink: 0;
+	width: 46px;
+	height: 46px;
+	justify-content: center;
+	align-items: center;
+	pointer-events: all;
+	@include pb-recessed;
+
+	.pb-slot-icon { width: 26px; height: 26px; font-size: 24px; }
+
+	.pb-slot-count
+	{
+		position: absolute;
+		right: -7px;
+		bottom: -7px;
+		padding: 0px 5px;
+		background-color: $pb-ink;
+		color: $pb-panel;
+		border-radius: 8px;
+		font-family: $pb-font-display;
+		font-size: 12px;
+	}
+
+	&:focus { border-color: $pb-teal; }
+	&.empty { opacity: 0.4; border-style: dashed; pointer-events: none; }
+}

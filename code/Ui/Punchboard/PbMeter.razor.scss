@@ -1,0 +1,23 @@
+@import "/Ui/Punchboard/_tokens.scss";
+
+PbMeter
+{
+	flex-direction: column;
+	flex-shrink: 0;
+	gap: 4px;
+	font-family: $pb-font-body;
+	color: $pb-ink;
+
+	.pb-meter-head { justify-content: space-between; font-size: 18px; font-weight: 800; }
+	.pb-meter-text { color: $pb-ink-soft; }
+
+	.pb-meter-track { @include pb-recessed; height: 18px; padding: 2px; overflow: hidden; }
+	.pb-meter-fill { height: 100%; border-radius: 2px; background-color: $pb-accent; }
+
+	&.red .pb-meter-fill { background-color: $pb-red; }
+	&.teal .pb-meter-fill { background-color: $pb-teal; }
+	&.good .pb-meter-fill { background-color: $pb-good; }
+	&.bad .pb-meter-fill { background-color: $pb-bad; }
+	&.ink .pb-meter-fill { background-color: $pb-ink; }
+}
+.large-text PbMeter { .pb-meter-head { font-size: 27px; } .pb-meter-track { height: 27px; } }

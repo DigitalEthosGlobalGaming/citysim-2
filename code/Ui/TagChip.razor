@@ -1,0 +1,30 @@
+@namespace CitySim
+@using CitySim.Cards
+@using CitySim.Punchboard
+@using Sandbox.UI
+@inherits Panel
+
+<root class="@(Inline ? "inline-tag" : "")"><PbTagPill Tag=@PunchboardMapping.Tag(Tag) Compact=@Compact IconOnly=@(!Reference) /></root>
+
+@code {
+	[Parameter] public CityGame City { get; set; }
+	[Parameter] public Tag Tag { get; set; }
+	[Parameter] public bool Compact { get; set; }
+	[Parameter] public bool Reference { get; set; }
+	[Parameter] public bool Inline { get; set; }
+	[Parameter] public Guid Owner { get; set; } = CityGame.LocalPlayerId;
+	public static string Icon(Tag tag) => tag switch { Tag.Home => "🏠", Tag.Trade => "🪙", Tag.Nature => "🌿", Tag.Industry => "⚙", Tag.Culture => "🎭", _ => "🏛" };
+	public static IEnumerable<Tag> Values(Tag tags) => new[] { Tag.Home,Tag.Trade,Tag.Nature,Tag.Industry,Tag.Culture,Tag.Civic }.Where(t => tags.HasFlag(t));
+	protected override void OnParametersSet()
+	{
+		base.OnParametersSet(); AddClass("tag-chip"); AcceptsFocus = true;
+		Tooltip = Reference ? null : $"{Tag}\nHighlight {Tag} buildings belonging to {City?.Match?.Players.GetValueOrDefault(Owner)?.Name ?? "you"}."; TooltipClass = "city-tooltip";
+	}
+	void Show() { if (Reference) City?.HighlightReferenceTag(this,Tag); else City?.HighlightTag(Tag,Owner); }
+	void Clear() { if (Reference) City?.ClearInteractionHighlight(this); else if (City?.HighlightedTag == Tag && City.HighlightOwner == Owner) City.HighlightTag(Tag.None,Owner); }
+	protected override void OnMouseOver(MousePanelEvent e) { base.OnMouseOver(e); Show(); }
+	protected override void OnMouseOut(MousePanelEvent e) { base.OnMouseOut(e); if (!HasFocus) Clear(); }
+	protected override void OnFocus(PanelEvent e) { base.OnFocus(e); Show(); }
+	protected override void OnBlur(PanelEvent e) { base.OnBlur(e); if (!HasHovered) Clear(); }
+	public override void OnDeleted() { Clear(); base.OnDeleted(); }
+}

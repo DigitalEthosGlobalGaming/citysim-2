@@ -1,0 +1,65 @@
+@import "/Ui/Punchboard/_tokens.scss";
+
+Hud {
+ position: absolute; width: 100%; height: 100%; pointer-events: none;
+ font-family: $pb-font-body; font-size: 20px; color: $pb-ink;
+ &.menu-screen { background-color: $pb-table; }
+ .end-backdrop { position: absolute; left: 0; right: 0; top: 0; bottom: 0; background-color: rgba($pb-ink, 0.6); pointer-events: all; }
+ .market-backdrop { position: absolute; left: 0; right: 0; top: 0; bottom: 0; background-color: rgba($pb-ink, 0.48); pointer-events: none; }
+ .safe-area { position: absolute; z-index: 2; left: 3%; right: 3%; top: 3%; bottom: 3%; flex-direction: column; }
+ .center-stage { width: 100%; height: 100%; justify-content: center; align-items: center; }
+ .menu { pointer-events: all; width: 84%; max-width: 1080px; max-height: 100%; overflow: scroll; flex-direction: column; text-align: center; padding: 12px; }
+ .menu-content { width: 100%; flex-direction: column; align-items: center; gap: 14px; padding: 18px; }
+ .title { font-size: 56px; font-family: $pb-font-display; font-weight: 800; @include pb-printed-text; }
+ .subtitle { font-size: 28px; }
+ .eyebrow { font-size: 18px; letter-spacing: 2px; font-weight: 700; color: $pb-ink-soft; }
+ .muted { font-size: 18px; color: $pb-ink-soft; }
+ .howto, .controls { font-size: 20px; }
+ .controls, .settings-list { flex-direction: column; gap: 12px; }
+ .controls { align-items: center; }
+ .settings-list { width: 80%; align-items: stretch; }
+ .menu-actions { gap: 20px; justify-content: center; flex-wrap: wrap; }
+ .join-row { width: 90%; gap: 12px; flex-shrink: 0; }
+ .join-row TextEntry { flex-grow: 1; min-width: 0; min-height: 50px; pointer-events: all; color: $pb-ink; font-size: 20px; padding: 10px 16px; @include pb-recessed; }
+ .join-row TextEntry:focus { border-color: $pb-teal; }
+ .pause-action { position: absolute; top: -3%; right: -3%; z-index: 35; pointer-events: all; }
+ .top-row { width: 100%; justify-content: flex-end; align-items: flex-start; gap: 20px; flex-shrink: 0; }
+ .left-column { padding-top: 140px; }
+ .right-column { padding-top: 42px; }
+ .left-column, .right-column { flex-direction: column; gap: 8px; width: 22%; max-width: 320px; flex-shrink: 0; }
+ .left-column { max-height: 650px; overflow: scroll; }
+ .right-column { align-items: stretch; }
+ .left-column > *, .right-column > * { flex-shrink: 0; }
+ .brand { flex-direction: column; align-items: flex-start; gap: 6px; color: $pb-ink; font-family: $pb-font-display; font-weight: 900; font-size: 28px; letter-spacing: 2px; }
+ .brand-name { flex-shrink: 0; white-space: nowrap; }
+ .brand-actions { gap: 8px; flex-wrap: wrap; }
+ .brand-actions PbButton { padding: 4px 8px; font-size: 16px; letter-spacing: 0; }
+ .board-space { flex-grow: 1; min-height: 0; }
+ .overlay { position: absolute; width: 100%; height: 100%; justify-content: center; align-items: center; background-color: rgba($pb-ink,0.6); pointer-events: all; z-index: 40; }
+ .valid { color: darken($pb-good,18%); font-weight: 700; }
+ .invalid { color: darken($pb-bad,12%); font-weight: 700; }
+}
+
+FeedbackPanel { position: absolute; width: 100%; height: 100%; pointer-events: none;
+ .payout-receipt { flex-direction: column; text-align: left; padding: 16px; gap: 8px; max-height: 55%; overflow: scroll; }
+ .receipt-title { font-size: 24px; padding-bottom: 8px; border-bottom: 2px solid $pb-ink; }
+ .receipt-row { width: 100%; justify-content: space-between; gap: 16px; font-size: 20px; }
+ .receipt-source { flex-shrink: 1; }
+ .receipt-amount { flex-shrink: 0; color: $pb-ink; min-width: 48px; text-align: right; }
+ .ghost-preview, .floater { position: absolute; padding: 6px 12px; font-size: 22px; font-weight: 800; color: $pb-ink; background-color: $pb-panel; border: 2px solid $pb-ink; border-radius: $pb-radius; box-shadow: $pb-edge; }
+ .phase-toast { position: absolute; left: 40%; right: 40%; top: 17%; justify-content: center; text-align: center; color: $pb-ink; background-color: $pb-panel; border: 3px solid $pb-ink; border-radius: $pb-radius; box-shadow: $pb-edge; padding: 10px; font-size: 22px; font-weight: 800; }
+ .auction-flight { position: absolute; font-size: 30px; font-weight: 800; padding: 20px; border-radius: $pb-radius; border: 3px solid $pb-ink; background-color: $pb-panel; color: $pb-ink; box-shadow: $pb-edge; transform: translate(-50% -50%); }
+ .confetti { position: absolute; font-size: 24px; font-weight: 800; color: $pb-accent; pointer-events: none; }
+}
+BoardOverlay { position: absolute; z-index: 1; width: 100%; height: 100%; pointer-events: none;
+ .reference-status { position: absolute; top: 12%; left: 34%; width: 32%; justify-content: center; text-align: center; padding: 6px 10px; font-size: 18px; font-weight: 800; color: $pb-ink; background-color: $pb-panel; border: 2px solid $pb-ink; border-radius: $pb-radius; box-shadow: $pb-edge; }
+ .board-inspect { position: absolute; left: 3%; bottom: 25%; width: 320px; max-width: 30%; flex-direction: column; gap: 8px; padding: 12px; background-color: $pb-panel; color: $pb-ink; border: 2px solid $pb-ink; border-radius: $pb-radius; box-shadow: $pb-edge; }
+ .inspect-title { font-size: 22px; font-family: $pb-font-display; font-weight: 800; }
+ .inspect-meta { font-size: 16px; color: $pb-ink-soft; }
+ .inspect-rules { font-size: 18px; }
+ .highlight-marker { position: absolute; transform: translate(-50% -100%); padding: 2px 5px; font-size: 20px; font-weight: 800; color: $pb-ink; background-color: $pb-panel; border: 2px solid $pb-ink; border-radius: 4px; box-shadow: 0 2px 0 $pb-core, 0 3px 0 $pb-ink; pointer-events: none; }
+ .claim-label { position: absolute; font-size: 22px; font-weight: 800; background-color: $pb-panel; color: $pb-ink; padding: 4px 8px; border: 2px solid $pb-ink; border-radius: $pb-radius; }
+}
+.tooltip, .tooltip.city-tooltip { font-family: $pb-font-body; font-size: 20px; font-weight: 600; max-width: 420px; white-space: normal; flex-wrap: wrap; background-color: $pb-panel; color: $pb-ink; padding: 10px 14px; border: 2px solid $pb-ink; border-radius: $pb-radius; box-shadow: $pb-edge; pointer-events: none; }
+
+FeedbackPanel .ghost-preview, FeedbackPanel .placement-vp { font-size: 15px; padding: 3px 7px; }

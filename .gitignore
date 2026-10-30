@@ -6,21 +6,27 @@
 .vs/*
 .vscode/*
 *.csproj
-obj/*
+!tests/CitySim.Rules.Tests.csproj
+!docs/balance/lab/BalanceLab.csproj
+.build/
+.sbox/
+*.slnx
+obj
+bin
 Properties/*
 code/obj/*
 code/Properties/*
-*.sln
-
-# Editor Projects
-code/Editor/obj/*
-code/Editor/Properties/*
-code/Editor/*.sln
-code/Editor/.vs/*
-code/Editor/.vscode/*
 
 # Auto-generated asset related files
 *.generated.*
 *.*_c
+!*.shader_c
 *.los
 *.vpk
+*launchSettings.json
+*.sln
+
+*idea
+
+# Exported / standalone games
+Exports/

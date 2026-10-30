@@ -1,0 +1,520 @@
+Analytics checks passed: offers, committed actions, anonymity, lifecycle and storage failure isolation.
+PASS unique catalog card IDs
+PASS card timing labels split into explained payout and end sections
+PASS House explains payout and placement separately
+PASS plain card text remains intact
+PASS Apartment description renders its Home-tag target as a tag
+PASS multiple tag references produce distinct inline chips
+PASS singular and plural Shop references become chips
+PASS specific House and Shop targets do not become category tags
+PASS original GDD section 5.6 playtest cards remain available
+PASS card metadata is populated
+PASS eight default Common choices
+PASS Civic ownership limits
+PASS park size metadata
+PASS unknown cards rejected
+PASS starting coins
+PASS neutral seed road
+PASS deal a House
+PASS no placement outside Build
+PASS road requirement preserves hand
+PASS place House from hand
+PASS placement order and age
+PASS occupied tile cannot be overwritten
+PASS out of bounds rejected
+PASS Park needs no road
+PASS Cottage needs no road despite Home tag
+PASS events do not occupy board cells
+PASS unknown player rejected
+PASS cannot seed roads during Build
+PASS overspending cannot mutate coins or emit a change
+PASS coin changes emit one event
+PASS exactly one notification per successful mutation or rejection
+PASS hand limit enforced
+PASS board enumeration and neutral ownership
+PASS Bank stack 1
+PASS Bank stack 2
+PASS Bank stack 3
+PASS fourth Bank rejected without consuming card
+M0 foundation checks passed.
+PASS House–Shop and Farm–Shop form by tile range
+PASS shared Links pay both owners plus base income
+PASS payout preview has no side effects
+PASS payout entries animate oldest building first
+PASS catch-up goes to last place from round 2
+PASS tied last-place players both receive catch-up
+PASS placement preview identifies adjacent house VP
+PASS interaction preview restores the complete board
+PASS placement preview identifies factory pollution for another owner
+PASS placement preview identifies actual shared links
+PASS Shop capacity reserves Links for the oldest houses
+PASS diagonal range is not counted twice
+PASS House links to at most two Shops
+PASS adjacent Farms pay both owners exactly once
+PASS Farm links to at most three Shops
+PASS isolated Cottage has no income
+PASS Cottage beside park pays without a Link
+PASS Cottage preview counts adjacent parks
+PASS Cottage preview and committed VP agree
+PASS only the placing House owner gets adjacency VP
+PASS Cafe pays its owner for an adjacent house
+PASS Grant consumes its card for four coins without occupying a tile
+PASS explicit discard removes only the selected slot
+PASS every player receives the same free Common, without a Street, before Bid
+PASS Bid stub respects its deadline
+PASS Ready skips stub Bid and starts a full Build clock
+PASS Build deadline settles income once
+PASS repeated ticks and Ready during Payout cannot duplicate income
+PASS large clock step completes exactly eight rounds
+PASS eight idle payouts have an exact known coin total
+PASS retained defaults respect the five-card limit
+PASS EndGame is terminal and never pays again
+PASS full solo match places defaults and finishes round eight
+PASS full solo match places defaults and finishes round eight
+PASS same seed and actions reproduce the entire solo board and economy
+PASS Back restores the previous overlay without losing the match
+PASS screen stack cannot pop its base screen
+M1 round checks passed.
+PASS market reveals five different cards
+PASS Street is available in every market selection
+PASS market remains untimed before hurry
+PASS invalid, unseated and stale purchases are rejected
+PASS purchase charges fixed price and gives card immediately
+PASS purchase is visible in public player status
+PASS only one purchase per player per selection
+PASS different players may purchase the same card
+PASS purchaser can start countdown only once
+PASS deadline rejects purchase
+PASS deadline passes undecided players and resolves shared purchases
+PASS resolution does not charge purchases twice and advances selection
+PASS next selection contains no duplicate faces
+PASS players can pass without paying
+PASS market cap advances to build
+PASS a player above the hand target can buy a Street
+PASS configured second buy can purchase another Street
+PASS market ends after the configured number of buys
+PASS isolated interior Street is rejected without consuming it
+PASS Street can connect to a road
+PASS Street can start at the board edge
+PASS only Streets score once per adjacent building, including rival buildings
+PASS Street VP settles once per payout
+PASS unaffordable cards cannot be purchased
+PASS ownership limits include cards in hand
+PASS checkpoint preserves purchases and countdown
+Market checks passed.
+M2 auction checks passed.
+PASS first Park scores at least one VP
+PASS Fountain merges parks and pays the placer and each other owner once
+PASS Fountain weighs two but occupies one park tile
+PASS diagonal park tiles do not connect
+PASS park scoring size is capped at ten
+PASS alternate stop-after-cap policy is explicit and tested
+PASS Sapling stays small after its first payout
+PASS duplicate payout cannot add coins or advance growth
+PASS Sapling becomes a size-three Forest after exactly two payouts
+PASS growth scores the park once
+PASS mature Forest neither regrows nor becomes a new deck card
+PASS Gardener's Guild triggers on Park, Fountain and Sapling placement
+PASS rival park placement does not trigger your Guild
+PASS growth is a park addition, not a new Guild-triggering placement
+PASS Architect can trigger on itself as the first building beside an owned road
+PASS roads do not use the Architect's first-building trigger, and it pays only once per round
+PASS a first building without an owned neighbour consumes the Architect opportunity
+PASS Factory and three stackable Banks pay their flat income
+PASS Bank's Civic card type does not count as a Civic tag
+PASS Town Hall includes itself when the third Civic-tagged building arrives
+PASS Chamber counts itself and pays per pair of Trade tags
+PASS Chamber income respects its data cap
+PASS Apartment can use the last available house slot in a Shop
+PASS Apartment supplies two house units and each has two-Shop capacity
+PASS Apartment adjacency preview pays two VP per neighbouring house
+PASS Apartment committed points match preview
+PASS Land Claim reserves an empty tile without placing a building
+PASS rivals cannot build on a reservation or lose their card trying
+PASS the reserving owner may build and consumes the marker
+PASS Land Claim expires at the next round start
+PASS the former reservation is available to rivals next round
+PASS known final-score fixture has exact earned VP before settlement
+PASS known fixture pays exact income and records paid Link endpoints
+PASS explained final score matches the hand-calculated 41–6 fixture
+PASS Museum excludes itself; Monument and park-side Cafe end bonuses score
+PASS pollution affects the factory owner's houses as well as rivals
+PASS tied competitive bonuses split their point pool
+PASS winner and every displayed score reconcile to the explanation lines
+PASS end scoring is idempotent
+PASS a five-road cross has a longest simple chain of three, not five
+PASS cyclic road networks are searched for the exact longest chain
+PASS road chain solver matches independent brute force for all 511 nonempty 3×3 boards
+PASS neutral starting roads cannot join owned chains for the bonus
+PASS park-owner bonus counts owned physical tiles, not Fountain size weights
+PASS Museum end points stop at the data cap
+PASS Cottage remains a Home for adjacency and Cafe effects
+PASS Cottage is affected by pollution despite not forming Shop Links
+PASS all-zero measures do not award free competitive bonuses
+PASS coins break a tied final VP total
+PASS a four-point bonus split three ways rounds down equally
+M3 core-card checks passed.
+PASS nine public goals and eight priced contracts load
+PASS Home goal includes Cottage but excludes diagonal connections
+PASS rival Home cannot bridge your neighbourhood
+PASS four orthogonally connected Home cells qualify
+PASS High Street rejects a gap in the row
+PASS three consecutive row Shops qualify
+PASS vertical High Street qualifies
+PASS Green Thumb counts physical owned tiles, not park weights or rival tiles
+PASS shared park connects your four owned cells
+PASS Farm Belt rejects diagonally detached farms
+PASS connected Farm Belt qualifies
+PASS Civic Pride ignores Banks with Civic card type but no Civic tag
+PASS three Culture buildings qualify
+PASS three Civic-tagged Museums qualify for Civic Pride
+PASS multi-tag buildings can contribute to each of three tag groups
+PASS Mini Mall rejects a diagonal park
+PASS Mini Mall rejects a rival park
+PASS owned Shop Cafe and park beside one neutral road qualify
+PASS Rainy Day threshold is twelve coins
+PASS Rainy Day uses current coins rather than a past peak
+PASS meeting a condition does not claim it during Build
+PASS same-phase qualifiers each receive three VP
+PASS claimed card stays visible and the same checkpoint is idempotent
+PASS next round replaces only the claimed slot
+PASS Bid is not a goal settlement checkpoint
+PASS sole claimant receives five VP
+PASS initial three-goal draw is distinct and seeded
+PASS exhausted goal deck recycles without duplicate active slots
+PASS nine Home or Nature buildings do not meet their ten-building contracts
+PASS ten Home and Nature buildings meet their contracts
+PASS Hoarder rejects fourteen coins
+PASS Hoarder accepts fifteen coins
+PASS four Culture or Industry buildings are insufficient
+PASS five Culture or Industry buildings qualify
+PASS Landlord ignores your own neighbouring Homes
+PASS Landlord counts each own Home once even with two rival neighbours
+PASS Mayor ignores Civic card types without the Civic tag
+PASS Mayor counts different tagged definitions, not repeated copies
+PASS four distinct Civic-tagged types qualify
+PASS Apartment units count toward three paid Shop Links
+PASS Cafe-only Links do not pay the Shop and cannot satisfy Entrepreneur
+PASS contract projection contains only the requested owner's two distinct choices
+PASS contract deals reproduce by seed and seat
+PASS clock and defaults wait for every contract choice
+PASS stale draft and unoffered choices are rejected
+PASS selection locks once while other owner still waits
+PASS owner selection discards the offer while public model reveals no contracts
+PASS all kept contracts unlock the first round and cannot change after start
+PASS ready path checks goals before payout income
+PASS contracts remain secret through a nonfinal payout
+PASS round transition refreshes the claimed goal
+PASS deadline path settles Build without ready requests
+PASS end reveal awards the printed contract VP and zero for unmet conditions
+PASS explained score separates public goals and contracts without double counting
+PASS final contract settlement is idempotent
+M4 objective checks passed.
+PASS each recipient gets exactly their own hand
+PASS public lobby payload contains none of the private hand card ids
+PASS public players expose hand counts only
+PASS kept contracts stay in their owner's projection
+PASS wire projections use an independent match token and omit the secret seed and shuffle states
+PASS spectator gets no owner payload
+PASS deserialized client model has no rival hands or authoritative seed
+PASS owner projection cannot be applied to a different recipient
+PASS duplicate and older snapshots cannot roll back a replica
+PASS retired match snapshots cannot resurrect a previous game
+PASS unsupported and nonfinite snapshots are rejected
+PASS JSON checkpoint round trip preserves lobby hands, offers, selections and goal deck
+PASS stale contract draft token cannot select an otherwise offered card
+PASS opaque current draft token selects the owner's offered contract
+PASS authenticated player can buy a market card
+PASS purchase and selected card are publicly visible
+PASS public market is identical while hands remain private
+PASS replayed purchase cannot charge twice
+PASS unseated connection cannot purchase
+PASS prior match id cannot purchase
+PASS stale market id is rejected
+PASS a second purchase in the same selection is rejected
+PASS stale phase cannot pass
+PASS spectator cannot start the countdown
+PASS authenticated player starts countdown
+PASS deadline rejects late purchases
+PASS multiple authenticated players can buy the same card at the host price
+PASS purchase and deadline survive checkpoint restoration
+PASS restored market resolves without charging purchases twice
+PASS auction results interval survives migration
+PASS post-handoff draw sequence and mini-auction counters remain identical
+PASS placement request consumes the authenticated owner's selected card
+PASS retransmitted placement cannot consume a second copy
+PASS old hand version cannot consume an identical card after a slot shift
+PASS client cannot substitute an unowned card id
+PASS network placement denial is returned to its caller without firing the host's local denial feedback
+PASS Build-ready seats restore without auto-readying rivals
+PASS ready player cannot continue building through RPC
+PASS restored Build readiness reaches the same single payout
+PASS restored payout checkpoint cannot pay the same round twice
+PASS late-join snapshot restores board, current phase, round and clock
+PASS late join restores only the joining owner's hand
+PASS eight-round migration replay preserves every future draw, goal, payout and final score
+PASS final score cache survives a handoff without duplicate bonuses
+PASS request replay protection survives authority restoration
+PASS unsupported host checkpoint version cannot be restored
+PASS explicit RNG state reproduces the next thousand draws
+PASS authenticated accounts establish distinct game seats
+PASS empty connection or unauthenticated account cannot own a seat
+PASS connection identity cannot switch accounts or mutate the ownership registry
+PASS new connection for the same account recovers the existing seat and revokes the old binding
+PASS late disconnect from the old connection cannot disconnect the replacement
+PASS disconnect drops the live channel while retaining authenticated seat ownership
+PASS a returning account retains its seat across repeated connection changes
+PASS host checkpoint restores ownership without trusting stale connection bindings
+PASS successor binds a new authenticated channel to the saved rival seat
+PASS a different authenticated account cannot recover another player's seat
+PASS duplicate seat ownership in a host checkpoint is rejected
+PASS reconnected owner can resume after its restored command sequence floor
+PASS three lobby seats join unready
+PASS duplicate and empty lobby identities are rejected
+PASS host start waits for every seated player's readiness
+PASS ready nonhost cannot start the lobby
+PASS host starts contract selection exactly once and freezes readiness
+PASS late joiner observes the active match without taking a seat or readying it
+PASS contract selection advances to play once
+PASS public lobby checkpoint preserves seats, readiness, host and phase
+PASS incomplete and contradictory session checkpoints are rejected
+PASS invalid checkpoint clock, match identity and command sequences are rejected
+PASS migration promotes the engine's successor and retains the departed player's match seat
+PASS same authenticated identity can reconnect to its existing active-match seat
+PASS departed player cannot be promoted or disconnected twice
+PASS only the host can return a completed match to ready-up
+PASS rematch frees disconnected seats and admits the waiting observer
+PASS lobby mutations emit one revision and event apiece
+M5 protocol checks passed (live transport checks remain separate).
+PASS bot does not bid or ready on the initial scheduling tick
+PASS bot submits no action at the auction deadline
+PASS 1 rivals independently choose or pass while the market is untimed while the human remains unready
+PASS 2 rivals independently choose or pass while the market is untimed while the human remains unready
+PASS 3 rivals independently choose or pass while the market is untimed while the human remains unready
+PASS bot performs no build action at the deadline
+PASS hard bot chooses a VP-producing house placement over the first legal cell
+PASS bot readies after completing its build actions
+PASS late-round bot chooses six-VP Monument over a low-yield bank
+PASS end-card scoring accounts for Monument, park-adjacent Cafe, Culture Museum and pollution on both owners
+PASS end-card helper agrees with the final score breakdown
+PASS bot renovates a full board into a useful end-game building through shared rules
+PASS bot replacement retains the actual six-VP end-game effect
+PASS 2 bots choose their offered contracts
+PASS 2 bots finish an eight-round match with legal actions and final scores
+PASS 2 bots choose their offered contracts
+PASS 2 bots finish an eight-round match with legal actions and final scores
+PASS identical seeds reproduce full bot match decisions and scores
+PASS 3 bots choose their offered contracts
+PASS 3 bots finish an eight-round match with legal actions and final scores
+PASS 4 bots choose their offered contracts
+PASS 4 bots finish an eight-round match with legal actions and final scores
+PASS 4 bots choose their offered contracts
+PASS 4 bots finish an eight-round match with legal actions and final scores
+PASS four bots finish an 18×18 eight-round stress match in 1.48s
+M6 bot checks passed.
+PASS Industrial Estate metadata
+PASS Housing Authority metadata
+PASS Eco Council metadata
+PASS Industrial Estate counts itself
+PASS Industrial Estate excludes rival Industry
+PASS Industrial Estate income caps at five
+PASS Industrial Estate ownership limit is enforced
+PASS Apartment preview counts both own and rival adjacent Home-tagged buildings
+PASS Apartment placement awards two VP per Home-tagged neighbour
+PASS tag highlights respect category and ownership
+PASS specific Link homes remain distinct from all Home-tagged buildings
+PASS specific House target excludes Apartment
+PASS Housing Authority is Home-tagged without being a House for adjacency or Links
+PASS Home-tagged Civic does not add House adjacency VP
+PASS Housing Authority rounds down below three Homes
+PASS Housing Authority counts itself in each group of three
+PASS Housing Authority excludes rival Homes
+PASS Housing Authority caps at six VP
+PASS Eco Council rounds down its own single Nature tag
+PASS Eco Council counts its own Nature tag
+PASS Eco Council excludes rival Nature
+PASS Eco Council Nature bonus caps at eight
+PASS Eco Council applies Industry penalty after the Nature cap
+PASS Eco Council clamps the Industry penalty to zero
+PASS final scoring uses the same Eco Council card effect
+M7 tag-engine checks passed.
+PASS Roundabout preview awards owner without mutation
+PASS rival building awards Roundabout owner
+PASS adjacent road does not trigger Roundabout
+PASS own building triggers Roundabout and road preview does not
+PASS previews do not consume Contractor cap
+PASS rejected placement does not consume Contractor cap
+PASS Contractor pays for own House
+PASS Contractor ignores rival Shop
+PASS Contractor counts House card, not Apartment
+PASS Contractor caps own House and Shop triggers at two per source per round
+PASS checkpoint preserves exhausted Contractor cap
+PASS Contractor cap resets in the next round after restore
+PASS checkpoint rejects invalid Contractor usage
+PASS older checkpoint without trigger usage loads with empty usage
+M7 trigger checks passed.
+PASS growth preview is pure in round 1
+PASS growth payout settles once in round 1
+PASS growth preview is pure in round 2
+PASS growth payout settles once in round 2
+PASS growth preview is pure in round 3
+PASS growth payout settles once in round 3
+PASS growth preview is pure in round 4
+PASS growth payout settles once in round 4
+PASS growth preview is pure in round 5
+PASS growth payout settles once in round 5
+PASS Vineyard waits for two completed payouts, including checkpoint restore
+PASS Startup ramps on its own payout age and caps at three
+PASS income growth never invokes Forest growth or park awards
+PASS late growth cards start at their first payout rather than match round
+PASS Avenue ignores adjacent roads at the two-building threshold
+PASS Avenue counts buildings of either owner and pays its owner once
+PASS Avenue income stays one above its threshold
+PASS Avenue counts double in a chain with one Street
+PASS Market includes diagonal range two but excludes rivals, distant Shops and Cafes
+PASS Market income caps at four qualifying owned Shops
+PASS Lake pays each orthogonally adjacent residential owner once, including Apartment and Cottage
+PASS Lake never contributes to a park region
+PASS Lake supplies Cafe's park end bonus
+PASS Lake supplies Cottage's ordinary park income as well as the Lake bonus
+PASS Lake counts as a park neighbour for Cottage placement
+PASS Orchard supplies Shops through ordinary Farm Links
+PASS Orchard shares adjacent Farm income with both owners
+PASS Orchard also joins the adjacent park at size one
+M7 economy and growth checks passed.
+PASS Tourist Office is a one-per-player Civic tray card
+PASS Tax Office is a one-per-player Civic tray card
+PASS Depot is a one-per-player Civic tray card
+PASS School is a one-per-player Civic tray card
+PASS Granary is a one-per-player Civic tray card
+PASS Tourist Office counts itself and excludes rival Culture
+PASS Tourist Office caps Culture income at three
+PASS Tax Office floors groups and excludes rival and nonresidential Home tags
+PASS Tax Office counts residential houses once, including Cottage and Apartment
+PASS Depot counts owned physical road tiles, not rival roads or Avenue weight
+PASS Depot pays one per five owned roads
+PASS Depot caps income at four
+PASS School includes diagonal range two but excludes rivals, distant houses and Civic Home tags
+PASS School caps at four houses
+PASS Granary pays its owner per unsupplied own Shop and explains source and partner
+PASS Granary creates no Farm Link and respects rival Farm supply
+PASS Granary payout settles once
+PASS Granary bonus never increases paid Link count beyond the real Farm Link
+M7 Civic checks passed.
+PASS Stadium pays orthogonal homes of either owner, once per Apartment card
+PASS Stadium charges adjacent Cafe owner one coin
+PASS Stadium owner earns end VP for both owners' adjacent homes
+PASS signed Stadium payout explanation reconciles exactly to bank settlement
+PASS Stadium deductions settle only once
+PASS Stadium deductions cannot create debt or report money that was never lost
+PASS noise consumes simultaneous income before reaching the zero-bank floor
+PASS all Airports share a per-player penalty cap of three
+PASS overlapping Airports apply independently before the shared cap; Cafe and distant House excluded
+PASS each Airport pays its owner three coins
+PASS Airport range includes diagonal homes exactly two tiles away
+PASS Skyscraper excludes itself, roads and distant buildings, includes rivals in range
+PASS Skyscraper end bonus caps at six
+PASS Skyscraper road alone cannot satisfy its building requirement
+PASS Skyscraper rejects only one adjacent building
+PASS Skyscraper accepts two adjacent buildings and a road
+M7 landmark checks passed.
+PASS Central Station metadata
+PASS Senate metadata
+PASS Central Station counts both owned Apartment–Shop endpoints and only Cafe's paid endpoint
+PASS Central Station explains its source and ignores Granary bonuses
+PASS Central Station includes a received Farm Link and caps at six
+PASS Central Station remains capped when further Links are received
+PASS Senate excludes rivals and requires three buildings per tag
+PASS Senate counts Home-tagged Civic and its own Civic tag independently
+PASS Senate counts each matching tag of a multi-tag building
+PASS Senate scores all six qualifying tags at the twelve VP cap
+PASS Senate final-score line preserves source and qualified-tag explanation
+M7 Legendary checks passed.
+PASS round activity counts committed buildings per owner and excludes roads
+PASS Ribbon Cutting pays one per own building capped at four and is consumed
+PASS Rush Hour activates only its owner
+PASS a redundant Rush Hour cannot stack or consume the card
+PASS Rush Hour doubles received link income up to eight coins, excluding other income
+PASS recipient projection restores public activity without exposing rival hand
+PASS checkpoint preserves round activity and payout modifiers
+PASS building history survives later board removal
+PASS event command rejects stale hand, wrong owner and wrong card
+PASS redundant event and command replay do not consume the card
+PASS valid owner event pays the uncapped building count exactly once despite replay
+PASS Rush Hour bonus excludes civic income and uses actual uncapped link receipts
+PASS new round expires activity and retained Rush Hour can be used again
+PASS retained Rush Hour becomes playable in the next round
+PASS bot places buildings before Ribbon Cutting, plays Rush Hour, then readies
+M7 event checks passed.
+PASS invalid hospital schedule fraction rejected
+PASS invalid hospital schedule fraction rejected
+PASS invalid hospital schedule fraction rejected
+PASS invalid hospital schedule fraction rejected
+PASS no homes attempts once without a draw
+PASS emergency waits until midpoint
+PASS equal-distance hospital tie chooses oldest and awards its owner
+PASS deadline cannot repeat emergency
+PASS early ready attempts unanswered residential emergency
+PASS range uses Chebyshev distance including diagonals
+PASS checkpoint preserves next emergency draw and RNG state
+PASS checkpoint after attempt does not replay emergency
+PASS public result exposes board cells and round without hands or seed
+M7 Hospital checks passed.
+PASS Builder preference requires an owned Yard
+PASS Builders' Yard defaults to Street for each player
+PASS Builder choices are owner-specific
+PASS Builder preference is visible only in the owner's projection
+PASS replica loads only its owner's Builder preference
+PASS Builder command rejects unseated callers and invalid values
+PASS Builder command accepts owner choice and rejects replay
+PASS authenticated Builder command only changes its caller's choice
+PASS owner choices can be changed independently
+PASS Warehouse previews do not consume its cap
+PASS rejected Street does not consume Warehouse cap
+PASS Warehouse pays for first Street placement
+PASS Warehouse pays at most once per round
+PASS Builder checkpoint rejects null, unknown and duplicate preferences
+PASS Builder checkpoint retains preference after its Yard is removed
+PASS Builder preference survives checkpoint restore
+PASS Builder extra draws replay identically after RNG and choice restore
+PASS Warehouse and owner-selected Yard grant defaults separately
+PASS Yard choice can change for the following round
+PASS Warehouse cap resets next round
+PASS full hand skips Builder cards and consumes no Common RNG
+M7 Builder checks passed.
+PASS Renovation rejects rival, road and out-of-bounds targets
+PASS Renovation rejects the same slot, same building type and a road replacement
+PASS Renovation rejects ownership-limit violations and stale event slots
+PASS invalid replacement leaves cards, board and events unchanged
+PASS Renovation preview leaves checkpoint and events unchanged
+PASS fixture starts with the bank payout effect
+PASS Renovation commits a fresh replacement on the same tile
+PASS Renovation consumes exactly two cards and emits one replacement and placement
+PASS Renovation preserves earned VP, records new construction and removes the old effect
+PASS Renovation replacement and building history survive a checkpoint
+PASS stale event slot cannot trigger another replacement
+PASS replacement requiring a road is rejected without a neighbouring road
+PASS removed Contractor cannot trigger on its own replacement
+PASS park replacement applies the same placement award as its pure preview
+PASS authenticated rival cannot renovate another player's building
+PASS a ready player cannot renovate their own building
+PASS stale hand version is rejected before renovation
+PASS valid renovation is accepted once and replay cannot consume or replace again
+PASS replica emits old-to-new replacement and one placement without exposing rival hand
+M7 Renovation checks passed.
+PASS starting road crossing is interior and deterministic
+PASS simulation seed reproduces match provenance, scores and curves
+PASS each strategy plays every seat in a four-match rotation
+PASS rotation shares match seed and uses the live 15 by 15 board
+PASS each strategy retains its bot seed across paired seats
+PASS matches have eight round curves and fractional win shares summing to one
+PASS simulated matches preserve legal actions, budgets and total wins
+PASS AI budget stops after a completed update and resumes fairly next frame
+PASS AI frame budget rejects nonfinite and nonpositive values
+PASS incremental bidding evaluates one lot per update without submitting early
+PASS bot purchases after all cards are scored
+PASS near-deadline bidding submits the best evaluated lot before expiration
+PASS incremental bidder never submits at the deadline
+PASS auction change discards work that had evaluated only one lot
+PASS round curve includes Sapling growth VP after payout
+M8 simulation checks passed.

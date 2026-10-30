@@ -1,0 +1,38 @@
+@import "/Ui/Punchboard/_tokens.scss";
+
+@mixin pb-tag-color($c)
+{
+	border-color: $c;
+	background-color: mix($c, $pb-panel, 30%);
+}
+
+PbTagPill
+{
+	// The containing TagChip owns hover and focus, including over this pill's text.
+	pointer-events: none;
+	flex-shrink: 0;
+	align-items: center;
+	gap: 4px;
+	padding: 1px 8px 1px 6px;
+	border: 1.5px solid $pb-ink-soft;
+	border-radius: $pb-radius;
+	color: $pb-ink;
+	font-family: $pb-font-body;
+	font-size: 18px;
+	font-weight: 800;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+
+	.pb-tag-icon, .pb-tag-name { pointer-events: none; }
+	.pb-tag-icon { font-size: 18px; }
+
+	&.compact { gap: 3px; padding: 1px 5px; font-size: 14px; letter-spacing: 0px; .pb-tag-icon { font-size: 14px; } }
+
+	&.home { @include pb-tag-color($pb-tag-home); }
+	&.trade { @include pb-tag-color($pb-tag-trade); }
+	&.nature { @include pb-tag-color($pb-tag-nature); }
+	&.industry { @include pb-tag-color($pb-tag-industry); }
+	&.culture { @include pb-tag-color($pb-tag-culture); }
+	&.civic { @include pb-tag-color($pb-tag-civic); }
+}
+.large-text PbTagPill { font-size: 27px; .pb-tag-icon { font-size: 27px; } }

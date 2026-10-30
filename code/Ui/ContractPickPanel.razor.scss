@@ -1,0 +1,23 @@
+@import "/Ui/Punchboard/_tokens.scss";
+ContractPickPanel {
+ width: 100%; height: 100%; justify-content: center; align-items: center;
+ &.contract-stage.overlay { background-color: transparent; }
+ .pb-contract-layout { width: 86%; max-width: 1200px; max-height: 94%; overflow: scroll; pointer-events: all; flex-direction: column; }
+ .pb-contract-content { flex-direction: column; gap: 14px; font-size: 20px; }
+ .opening-summary { justify-content: space-between; flex-wrap: wrap; gap: 12px; color: $pb-ink-soft; font-size: 18px; }
+ .pb-contract-title { font-family: $pb-font-display; font-size: 38px; }
+ .pb-contract-scroll { flex-direction: column; gap: 12px; }
+ .pb-contract-choices { justify-content: center; flex-wrap: wrap; gap: 32px; padding: 12px 0; }
+ .pb-contract-card { flex-shrink: 0; }
+ .contract-choice { width: 260px; min-height: 320px; }
+ .contract-choice .pb-name { font-size: 26px; }
+ .contract-choice .pb-text { font-size: 20px; }
+ .contract-choice .pb-requirement { font-family: $pb-font-display; font-size: 24px; color: $pb-ink; background-color: $pb-accent; padding: 8px; margin-top: 8px; }
+ .contract-stamp { align-self: center; font-family: $pb-font-display; font-size: 24px; color: $pb-good; border: 3px solid $pb-good; padding: 8px 18px; transform: rotate(-3deg); }
+ .pb-contract-subtitle { font-family: $pb-font-display; font-size: 22px; }
+ .goal-reward-note { flex-direction: column; gap: 4px; font-size: 18px; color: $pb-ink-soft; }
+ .pb-contract-goals { flex-wrap: wrap; gap: 12px; }
+ .pb-contract-goal { min-width: 230px; flex: 1; flex-direction: column; }
+ .pb-contract-actions { justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+}
+.large-text ContractPickPanel { .pb-contract-content { font-size: 27px; } .contract-choice { width: 310px; } .contract-choice .pb-text, .goal-reward-note { font-size: 24px; } }

@@ -1,0 +1,8 @@
+{
+  "mesh": "raw/kenney/industrial/building-s.fbx",
+  "texture": "raw/kenney/industrial/colormap.png",
+  "model": "models/kenney/industrial/building-s.vmdl",
+  "material": "materials/kenney/industrial.vmat",
+  "initialize_model": "models/buildings/house_01.vmdl",
+  "scale": 1.0
+}

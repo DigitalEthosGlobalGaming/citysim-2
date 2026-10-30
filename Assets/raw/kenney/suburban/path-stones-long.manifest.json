@@ -1,0 +1,8 @@
+{
+  "mesh": "raw/kenney/suburban/path-stones-long.fbx",
+  "texture": "raw/kenney/suburban/colormap.png",
+  "scale": 1.0,
+  "initialize_model": "models/kenney/suburban/building-type-a.vmdl",
+  "material": "materials/kenney/suburban.vmat",
+  "model": "models/kenney/suburban/path-stones-long.vmdl"
+}

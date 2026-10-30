@@ -1,0 +1,167 @@
+@namespace CitySim.Punchboard
+@using Sandbox
+@using Sandbox.UI
+@inherits PanelComponent
+
+<root class="pb-showcase">
+	<div class="pb-sc-scroll">
+		<div class="pb-sc-title">Punchboard components</div>
+		<div class="pb-sc-note">A live catalogue. Every component below takes plain parameters and has no game dependencies.</div>
+
+		<div class="pb-sc-row">
+			<PbPanel Title="Round bar" Kind=@(PbPanelKind.Raised)>
+<ChildContent>
+				<div class="pb-sc-line">
+					<div class="pb-sc-col"><span class="pb-sc-caption">Round</span><span class="pb-sc-big">@($"{round} / 8")</span><PbRoundTrack Total=@(8) Current=@round /></div>
+					<PbDial Fill=@Fraction Text=@Seconds Alert=@(Seconds.ToInt() <= 5) />
+					<div class="pb-sc-col"><span class="pb-sc-caption">Phase</span><span class="pb-sc-big">Build</span></div>
+				</div>
+			</ChildContent>
+</PbPanel>
+
+			<PbPanel Title="Resources">
+<ChildContent>
+				<div class="pb-sc-line">
+					<PbStat Icon="🪙" Value=@coins.ToString() Tone=@(PbTone.Accent) Label="Coins" />
+					<PbStat Icon="★" Value=@points.ToString() Tone=@(PbTone.Red) Label="Points" />
+				</div>
+				<div class="pb-sc-line">
+					<PbButton Text="+1 coin" Size=@(PbSize.Small) Kind=@(PbButtonKind.Tertiary) Clicked=@(() => { coins++; }) />
+					<PbButton Text="+3 points" Size=@(PbSize.Small) Kind=@(PbButtonKind.Secondary) Clicked=@(() => { points += 3; }) />
+				</div>
+			</ChildContent>
+</PbPanel>
+
+			<PbPanel Title="Players">
+<ChildContent>
+				<div class="pb-sc-line"><PbMeeple Tint=@(new Color( 0.85f, 0.28f, 0.23f )) /><span class="pb-sc-name">You</span></div>
+				<div class="pb-sc-line"><PbMeeple Tint=@(new Color( 0.23f, 0.61f, 0.72f )) /><span class="pb-sc-name">Maya</span></div>
+				<div class="pb-sc-line"><PbMeeple Tint=@(new Color( 0.94f, 0.72f, 0.23f )) /><span class="pb-sc-name">Bot Ben</span></div>
+			</ChildContent>
+</PbPanel>
+
+			<PbPanel Title="Effects">
+<ChildContent>
+				<div class="pb-sc-line">
+					<PbSlot Icon="🏛" Count=@(2) TooltipText="Bank ×2" />
+					<PbSlot Icon="🎭" TooltipText="Museum" />
+					<PbSlot Icon="🌿" TooltipText="Gardener's Guild" />
+					<PbSlot Empty=@true />
+				</div>
+			</ChildContent>
+</PbPanel>
+		</div>
+
+		<div class="pb-sc-row">
+			<PbPanel Title="Buttons">
+<ChildContent>
+				<div class="pb-sc-line">
+					<PbButton Text="Primary" />
+					<PbButton Text="Secondary" Kind=@(PbButtonKind.Secondary) />
+					<PbButton Text="Tertiary" Kind=@(PbButtonKind.Tertiary) />
+					<PbButton Text="Ghost" Kind=@(PbButtonKind.Ghost) />
+					<PbButton Text="Danger" Kind=@(PbButtonKind.Danger) />
+				</div>
+				<div class="pb-sc-line">
+					<PbButton Text="Small" Size=@(PbSize.Small) />
+					<PbButton Text="Disabled" Disabled=@true />
+					<PbButton Text=@(ready ? "Ready!" : "Ready") Toggled=@ready Clicked=@(() => { ready = !ready; }) />
+					<PbButton Text="Big" Size=@(PbSize.Big) />
+				</div>
+			</ChildContent>
+</PbPanel>
+
+			<PbPanel Title="Settings">
+<ChildContent>
+				<PbToggle Label="Reduce screen shake" Value=@shake ValueChanged=@((Action<bool>)(v => { shake = v; })) />
+				<PbToggle Label="Reduce flashing" Value=@flashing ValueChanged=@((Action<bool>)(v => { flashing = v; })) />
+				<PbTabs Items=@tabs Selected=@tab SelectedChanged=@((Action<int>)(i => { tab = i; })) />
+				<PbMeter Label="Hand" Text="3 / 5" Value=@(0.6f) />
+				<PbMeter Label="Park size" Text="6 / 10" Value=@(0.6f) Tone=@(PbTone.Good) />
+			</ChildContent>
+</PbPanel>
+
+			<PbPanel Title="Tags and rarity">
+<ChildContent>
+				<div class="pb-sc-line">
+					@foreach ( var tag in Enum.GetValues<PbTag>() )
+					{
+						<PbTagPill Tag=@tag />
+					}
+				</div>
+				<div class="pb-sc-line">
+					@foreach ( var rarity in Enum.GetValues<PbRarity>() )
+					{
+						<PbRarityMarker Rarity=@rarity />
+					}
+				</div>
+			</ChildContent>
+</PbPanel>
+
+			<PbTooltipCard Title="Cafe" Rarity=@(PbRarity.Uncommon) Tags=@(new[] { PbTag.Trade, PbTag.Culture }) Text="Pays 1 coin per adjacent house or shop (max 3)." Live="+2 coins per round here" />
+		</div>
+
+		<div class="pb-sc-row">
+			<PbBanner Caption="Round 4" Title="Market!" />
+			<PbBanner Caption="Goal claimed" Title="Neighbourhood +5" Tone=@(PbTone.Teal) />
+			<PbButton Text="Open dialog" Kind=@(PbButtonKind.Secondary) Clicked=@(() => { modal = true; }) />
+		</div>
+
+		<div class="pb-sc-hand">
+			<PbHand>
+<ChildContent>
+				@for ( var i = 0; i < cards.Length; i++ )
+				{
+					var index = i;
+					var card = cards[i];
+					<PbCard Title=@card.Title Icon=@card.Icon Rarity=@card.Rarity Tags=@card.Tags Text=@card.Text Accent=@card.Accent
+						HotKey=@((index + 1).ToString()) Compact=@true Selected=@(selected == index) Clicked=@(() => { selected = selected == index ? -1 : index; }) />
+				}
+			</ChildContent>
+</PbHand>
+		</div>
+	</div>
+
+	<PbModal Open=@modal Title="End of game" Dismissed=@(() => { modal = false; })>
+		<ChildContent><div class="pb-sc-name">Maya wins with 58 VP.</div></ChildContent>
+		<Actions>
+			<PbButton Text="Main menu" Kind=@(PbButtonKind.Secondary) Clicked=@(() => { modal = false; }) />
+			<PbButton Text="Play again" Clicked=@(() => { modal = false; }) />
+		</Actions>
+	</PbModal>
+</root>
+
+@code
+{
+	record CardInfo( string Title, string Icon, PbRarity Rarity, PbTag[] Tags, string Text, Color Accent );
+
+	readonly CardInfo[] cards =
+	{
+		new( "House", "🏠", PbRarity.Common, new[] { PbTag.Home }, "Payout: +1 coin if a Shop is within 2 tiles. Place: +1 VP per adjacent Home building.", new Color( 0.85f, 0.28f, 0.23f ) ),
+		new( "Park", "🌳", PbRarity.Common, new[] { PbTag.Nature }, "Park size 1. Only the builder scores the park's capped size increase.", new Color( 0.29f, 0.65f, 0.39f ) ),
+		new( "Cafe", "☕", PbRarity.Uncommon, new[] { PbTag.Trade, PbTag.Culture }, "+1 coin per adjacent house or shop (max 3).", new Color( 0.64f, 0.41f, 0.78f ) ),
+		new( "Bank", "🏛", PbRarity.Rare, new[] { PbTag.Trade }, "+2 coins at every payout. Stackable, max 3.", new Color( 0.94f, 0.72f, 0.23f ) ),
+		new( "Monument", "★", PbRarity.Legendary, new[] { PbTag.Culture }, "+6 VP at game end.", new Color( 0.9f, 0.6f, 0f ) ),
+	};
+
+	readonly List<string> tabs = new() { "Audio", "Video", "Input" };
+
+	int round = 3;
+	int coins = 9;
+	int points = 24;
+	int selected = 1;
+	int tab;
+	bool ready;
+	bool shake = true;
+	bool flashing;
+	bool modal;
+
+	float Fraction => 1f - (Time.Now % 30f) / 30f;
+	string Seconds => MathF.Ceiling( 30f - Time.Now % 30f ).ToString();
+
+	protected override int BuildHash()
+	{
+		var a = HashCode.Combine( round, coins, points, selected, tab, ready, shake, flashing );
+		return HashCode.Combine( a, modal, (int)(Time.Now * 2f) );
+	}
+}

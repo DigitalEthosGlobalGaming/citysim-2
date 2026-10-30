@@ -1,0 +1,181 @@
+@namespace CitySim
+@using Sandbox.UI
+@using CitySim.Match
+@using CitySim.Punchboard
+@inherits PanelComponent
+
+<root class="@(City?.Screens.Top is GameScreen.Menu or GameScreen.Settings or GameScreen.ContractPick ? "menu-screen" : "")">
+	@if (City is not null)
+	{
+		@if (City.State == GameState.Playing && City.Match?.Phase == MatchPhase.Bid && !MarketPeeking) { <div class="market-backdrop"></div> }
+		@if (City.State == GameState.End && !City.EndInspect) { <div class="end-backdrop"></div> }
+		<div class="safe-area">
+			@if (City.Screens.BaseScreen==GameScreen.Lobby) { <LobbyPanel City=@City /> }
+			else if (City.State == GameState.Menu)
+			{
+				<div class="center-stage">
+					<div class="menu"><PbPanel Title="EIGHT ROUNDS · ONE NEIGHBOURHOOD" Kind=@(PbPanelKind.Raised) Corner=@true><ChildContent><div class="menu-content">
+						<div class="eyebrow">A LITTLE CITY. EIGHT BIG DECISIONS.</div>
+						<div class="title">🏙️ CITY SIM</div>
+						<div class="subtitle">Build a neighbourhood that pays you back.</div>
+						<div class="menu-actions">
+							<PbButton Text="Play 8 rounds" Icon="▶" Clicked=@(() => { City.RequestStart(GameMode.Match); }) />
+							<PbButton Text="Host multiplayer" Kind=@(PbButtonKind.Secondary) Clicked=@(() => { City.Session.Host(); }) />
+							<PbButton Text="Debug Sandbox" Kind=@(PbButtonKind.Ghost) Clicked=@(() => { City.RequestStart(GameMode.Sandbox); }) />
+							<PbButton Text="Settings" Kind=@(PbButtonKind.Ghost) Clicked=@(() => { City.OpenSettings(); }) />
+						</div>
+						<SoloOptionsPanel City=@City />
+						<div class="join-row"><TextEntry @ref=JoinEntry Placeholder="Host Steam ID or server address" MaxLength=@(180) onsubmit=@JoinLobby /><PbButton Text="Join" Kind=@(PbButtonKind.Secondary) Clicked=@JoinLobby /></div>
+						@if (City.Session?.Status is { } status) { <div class="muted">@status</div> }
+						<div class="howto">Choose a contract → shop → build → collect income.</div>
+						<div class="howto">Buildings earn coins from the neighbors shown on their cards.</div>
+						<div class="muted">Grow shared parks, build tag engines, and compete for three city bonuses.</div>
+						<div class="controls"><div>WASD pan · Q/E rotate · wheel zoom · R recentre</div><div>Arrows aim · 1–5 select · Enter build · Space ready · Esc pause</div></div>
+					</div></ChildContent></PbPanel></div>
+				</div>
+			}
+			else
+			{
+				@if (City.State == GameState.Playing && City.Match?.Phase != MatchPhase.Lobby && City.Screens.Top != GameScreen.ContractPick) {
+					<PbButton CssClass="pause-action global-action" Text="Pause · Esc" Kind=@(PbButtonKind.Tertiary) Size=@(PbSize.Small) Clicked=@(() => { City.TogglePause(); }) />
+					<GoalsPanel City=@City />
+					@if (City.Match?.Phase != MatchPhase.Bid) { <div class="top-row">
+						<div class="right-column"><ResourcePanel City=@City />@if (City.Match?.Players.Count>1) { <ScoreboardPanel City=@City /> }</div>
+					</div><RoundBar City=@City /> }
+				}
+				<div class="board-space"></div>
+				@if (City.State == GameState.Playing && City.Match?.Phase != MatchPhase.Lobby && City.Screens.Top != GameScreen.ContractPick && City.Match?.Phase == MatchPhase.Bid) { <BidPanel City=@City Peeking=@MarketPeeking TogglePeek=@ToggleMarketPeek /> }
+				@if (City.State == GameState.Playing && City.Match?.Phase != MatchPhase.Lobby && City.Screens.Top != GameScreen.ContractPick && City.Match?.Phase != MatchPhase.Bid) { <HandBar City=@City /> }
+				@if (City.Mode==GameMode.Match && City.Match!=null && City.Match.Phase != MatchPhase.Bid && City.Screens.Top==GameScreen.Match && !PlayerPreferences.Current.HintsDismissed) { <OnboardingPanel City=@City /> }
+				@if (City.Screens.Top == GameScreen.ContractPick) { <ContractPickPanel City=@City /> }
+				@if (City.State == GameState.End)
+				{
+					<EndPanel City=@City />
+				}
+				@if (City.Screens.Top == GameScreen.Pause)
+				{
+					<div class="overlay"><div class="menu"><PbPanel Title="PAUSE" Kind=@(PbPanelKind.Raised)><ChildContent><div class="menu-content">
+						<div class="title">Take a breather.</div><div class="subtitle">@(City.Multiplayer ? "The multiplayer clock keeps running." : "The solo round clock is paused.")</div>
+						<PbButton Text="Resume · Esc / B" Clicked=@(() => { City.TogglePause(); }) />
+						<PbButton Text="Settings" Kind=@(PbButtonKind.Secondary) Clicked=@(() => { City.OpenSettings(); }) />
+						<PbButton Text="Main menu" Kind=@(PbButtonKind.Ghost) Clicked=@(() => { City.RequestMenu(); }) />
+					</div></ChildContent></PbPanel></div></div>
+				}
+			}
+			@if (City.Screens.Top==GameScreen.Recovery)
+			{
+				<div class="overlay"><div class="menu"><PbPanel Title="MATCH RECOVERY" Kind=@(PbPanelKind.Raised)><ChildContent><div class="menu-content"><div class="title">Could not restore the match</div><div class="subtitle">@City.Session.RecoveryError</div><PbButton Text="Leave match · Esc / B" Clicked=@(() => { City.RequestMenu(); }) /></div></ChildContent></PbPanel></div></div>
+			}
+			@if (City.Screens.Top==GameScreen.Settings) { <SettingsPanel City=@City /> }
+		</div>
+		<BoardOverlay City=@City /><FeedbackPanel City=@City />
+	}
+</root>
+
+@code {
+	CityGame City => CityGame.Instance;
+	CityGame bound;
+	GameScreen focusedScreen = (GameScreen)(-1);
+	MatchPhase? focusedPhase;
+	bool focusPending;
+	int lastControlIndex;
+	TextEntry JoinEntry { get; set; }
+	void JoinLobby() => City.Session.Join(JoinEntry?.Text);
+	public static bool PointerOverUi { get; private set; }
+	public static bool UiControlFocused { get; private set; }
+	public static bool ControlsMode { get; private set; }
+	public static bool MarketPeeking { get; private set; }
+	void ToggleMarketPeek()
+	{
+		if (City?.Screens.Top != GameScreen.Match || City.Match?.Phase != MatchPhase.Bid) return;
+		if (!MarketPeeking) City.PinLastInteractionHighlight(); else City.UnpinInteractionHighlight();
+		MarketPeeking = !MarketPeeking;
+		ControlsMode = false;
+		FocusBoard();
+		if (!MarketPeeking) focusPending = true;
+		Refresh();
+	}
+	void ToggleControls() { ControlsMode=!ControlsMode; if (ControlsMode) focusPending=true; else FocusBoard(); Refresh(); }
+	float HudScale => PlayerPreferences.UiScale;
+	void ApplyScale() { var screen=Components.Get<ScreenPanel>(); if (screen.IsValid() && screen.Scale != HudScale) screen.Scale=HudScale; }
+	protected override void OnStart() { ApplyScale(); Bind(); }
+	void Bind() { if (bound == City) return; if (bound != null) bound.UiChanged -= Refresh; bound = City; if (bound != null) bound.UiChanged += Refresh; Refresh(); }
+	void Refresh() => StateHasChanged();
+	public void Refocus() { focusPending=true; }
+	protected override void OnUpdate()
+	{
+		// Reapply after hotload as well as startup so an existing scene cannot retain the old oversized HUD.
+		ApplyScale();
+		if (bound == null) Bind();
+		if (City?.Match?.Phase != MatchPhase.Bid && MarketPeeking) { MarketPeeking=false; City?.UnpinInteractionHighlight(true); Refresh(); }
+		if (City?.Screens.Top==GameScreen.Match && City.Match?.Phase==MatchPhase.Bid && Input.Pressed("ToggleMarket")) { ToggleMarketPeek(); Input.Clear("ToggleMarket"); }
+		if (City?.Screens.Top!=GameScreen.Match && ControlsMode) { ControlsMode=false; Refresh(); }
+		if (City?.Screens.Top==GameScreen.Match && Input.Pressed("InspectControls")) { ToggleControls(); Input.Clear("InspectControls"); }
+		PointerOverUi = (City?.Screens.Top is GameScreen.Menu or GameScreen.Lobby or GameScreen.ContractPick or GameScreen.Pause or GameScreen.Settings or GameScreen.Recovery) || (City?.Screens.Top==GameScreen.End && !City.EndInspect) || (Panel?.Descendants.Any(p => p.HasHovered && (IsControl(p) || p.HasClass("goals-panel") || p.HasClass("hand-slot"))) ?? false);
+		UiControlFocused = Panel?.Descendants.Any(p=>p.HasFocus && IsControl(p) && !p.HasClass("hand-card")) ?? false;
+		if (Input.Pressed("PauseGame")) City?.TogglePause();
+		if (City?.EndInspect==true && Input.Pressed("CancelCard")) { City.SetEndInspect(false); Input.Clear("CancelCard"); }
+		if (Input.Pressed("Goals") && City?.Screens.Top is GameScreen.Match or GameScreen.Goals) City.ToggleGoals();
+		if (Input.Pressed("DismissHint") && City?.Screens.Top==GameScreen.Match && !PlayerPreferences.Current.HintsDismissed) City.DismissHints();
+		if (Input.Pressed("CancelCard") && City?.Screens.Top==GameScreen.ContractPick) { City.TogglePause(); Input.Clear("CancelCard"); }
+		if (City?.Screens.Top == GameScreen.Match && !ControlsMode && !MarketPeeking && Input.Pressed("ReadyRound")) City?.Ready();
+		if (focusPending) FocusScreen();
+		NavigateMenus();
+	}
+	protected override void OnTreeBuilt()
+	{
+		if (City != null && (focusedScreen != City.Screens.Top || focusedPhase != City.Match?.Phase)) focusPending = true;
+	}
+	void FocusScreen()
+	{
+		if (City == null) return;
+		var buttons = Panel.Descendants.Where(IsControl).ToList();
+		bool InOverlay(Panel panel) { for (var p = panel.Parent; p != null; p = p.Parent) if (p.HasClass("overlay")) return true; return false; }
+		var overlay = City.Screens.Top is GameScreen.Pause or GameScreen.Settings or GameScreen.End or GameScreen.ContractPick or GameScreen.Recovery;
+		bool InGoals(Panel panel) { for (var p = panel.Parent; p != null; p = p.Parent) if (p.HasClass("goals-panel")) return true; return false; }
+		bool InBid(Panel panel) { for (var p = panel.Parent; p != null; p = p.Parent) if (p.HasClass("bid-stage")) return true; return false; }
+		var eligible = buttons.Where(b => EnabledControl(b) && (overlay ? InOverlay(b) : City.Screens.Top == GameScreen.Goals ? InGoals(b) : City.Match?.Phase == MatchPhase.Bid && !ControlsMode ? InBid(b) || b.HasClass("global-action") : (!InGoals(b) || b.HasClass("goals-trigger")))).ToList();
+		foreach (var b in buttons) { b.AcceptsFocus = eligible.Contains(b); b.TabIndex = b.AcceptsFocus ? eligible.IndexOf(b)+1 : -1; }
+		if (City.Screens.Top == GameScreen.Match && City.Match?.Phase != MatchPhase.Bid && !ControlsMode)
+		{
+			FocusBoard(); focusedScreen = City.Screens.Top; focusedPhase = City.Match?.Phase; focusPending = false;
+			return;
+		}
+		var initial = City.Screens.Top == GameScreen.Match && !ControlsMode ? eligible.FirstOrDefault(b => b.HasClass("hand-card")) : eligible.FirstOrDefault(b => b.HasClass("primary"));
+		initial ??= eligible.FirstOrDefault();
+		if (initial == null) return;
+		initial.Focus(); focusedScreen = City.Screens.Top; focusedPhase = City.Match?.Phase; focusPending = false;
+	}
+	public void FocusBoard() { foreach (var p in Panel.Descendants.Where(p => p.HasFocus)) p.Blur(); UiControlFocused=false; }
+	static bool IsControl(Panel p) => p is Button or TextEntry or PbButton or StandingRow or PbCard or PbToggle or PbSlot || p.HasClass("tag-chip") || p.HasClass("interaction-chip") || p.HasClass("effect-icon");
+	static bool EnabledControl(Panel p) => !p.IsDeleting && p.IsVisible && p switch { PbButton b => !b.Disabled, PbCard c => !c.Disabled, PbSlot s => !s.Empty, _ => !p.HasClass("disabled") };
+	void NavigateMenus()
+	{
+		if (City?.Screens.Top is not (GameScreen.Menu or GameScreen.Pause or GameScreen.Settings or GameScreen.Lobby or GameScreen.End or GameScreen.Recovery or GameScreen.Goals) && !(City?.Screens.Top==GameScreen.Match && ControlsMode)) return;
+		if (ControlsMode && City.Screens.Top==GameScreen.Match && Input.Pressed("CancelCard")) { ToggleControls(); Input.Clear("CancelCard"); return; }
+		var controls=Panel.Descendants.Where(p=>IsControl(p) && p.AcceptsFocus && EnabledControl(p)).OrderBy(p=>p.TabIndex).ToList();
+		var focused=controls.FirstOrDefault(p=>p.HasFocus);
+		if (ControlsMode && controls.Count>0 && focused==null) { lastControlIndex=Math.Clamp(lastControlIndex,0,controls.Count-1); controls[lastControlIndex].Focus(); return; }
+		if (ControlsMode && focused!=null) lastControlIndex=controls.IndexOf(focused);
+		if (focused is TextEntry)
+		{
+			if (Input.Pressed("CancelCard")) { focused.Blur(); controls.FirstOrDefault(p=>p is not TextEntry)?.Focus(); Input.Clear("CancelCard"); }
+			return;
+		}
+		var direction=Input.Pressed("CursorDown") ? 1 : Input.Pressed("CursorUp") ? -1 : 0;
+		if (direction!=0 && controls.Count>0) { var index=controls.IndexOf(focused); lastControlIndex=(index+direction+controls.Count)%controls.Count; controls[lastControlIndex].Focus(); }
+		if (Input.Pressed("ConfirmCard"))
+		{
+			if (focused is PbButton button) button.Activate();
+			else if (focused is StandingRow standing) standing.Activate();
+			else if (focused is PbToggle toggle) toggle.ValueChanged?.Invoke(!toggle.Value);
+			else if (focused is PbCard card) card.Clicked?.Invoke();
+			else if (focused is PbSlot slot && !slot.Empty) slot.Inspected?.Invoke();
+			Input.Clear("ConfirmCard");
+		}
+		if (Input.Pressed("CancelCard") && City.Screens.Top!=GameScreen.Menu) { City.TogglePause(); Input.Clear("CancelCard"); }
+	}
+	protected override void OnDestroy() { if (bound != null) bound.UiChanged -= Refresh; PointerOverUi = false; UiControlFocused=false; ControlsMode=false; MarketPeeking=false; }
+}
+
+

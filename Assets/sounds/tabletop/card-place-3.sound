@@ -1,0 +1,9 @@
+{
+  "volume": 1.0,
+  "ui": true,
+  "sounds": [
+    "sounds/tabletop/card-place-3.ogg"
+  ],
+  "selectionmode": "0",
+  "pitch": 1.0
+}

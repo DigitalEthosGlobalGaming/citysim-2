@@ -1,0 +1,4 @@
+@import "/Ui/Punchboard/_tokens.scss";
+InteractionChip { pointer-events: all; flex-shrink: 0; color: $pb-ink-soft; cursor: help; font-size: 16px; font-weight: 700; }
+InteractionChip.interaction-heading { color: $pb-ink; font-size: 13px; font-weight: 900; }
+InteractionChip:hover, InteractionChip:focus { color: $pb-teal; }

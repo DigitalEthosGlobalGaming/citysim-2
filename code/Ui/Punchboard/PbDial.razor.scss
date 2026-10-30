@@ -1,0 +1,34 @@
+@import "/Ui/Punchboard/_tokens.scss";
+
+PbDial
+{
+	position: relative;
+	flex-shrink: 0;
+	width: 68px;
+	height: 68px;
+	justify-content: center;
+	align-items: center;
+	background-color: $pb-panel-deep;
+	border: $pb-border solid $pb-ink;
+	border-radius: 34px;
+	box-shadow: 0 4px 0 $pb-core, 0 7px 0 $pb-ink;
+	margin-bottom: 7px;
+
+	.pb-dial-face
+	{
+		position: absolute;
+		left: 7px;
+		top: 7px;
+		right: 7px;
+		bottom: 7px;
+		justify-content: center;
+		align-items: center;
+		background-color: $pb-panel;
+		border: 1.5px solid rgba($pb-ink, 0.25);
+		border-radius: 30px;
+	}
+
+	.pb-dial-text { font-family: $pb-font-display; font-size: 22px; color: $pb-ink; white-space: nowrap; }
+	&.alert .pb-dial-text { color: $pb-bad; }
+}
+.large-text PbDial { width: 96px; height: 96px; border-radius: 48px; .pb-dial-face { border-radius: 42px; } .pb-dial-text { font-size: 30px; } }

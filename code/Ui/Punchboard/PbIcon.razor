@@ -1,0 +1,20 @@
+@namespace CitySim.Punchboard
+@using Sandbox.UI
+@inherits Panel
+
+@if ( Pb.IsImagePath( Icon ) )
+{
+	<div class="pb-icon-image" style="background-image: url( @Icon );"></div>
+}
+else
+{
+	<span class="pb-icon-glyph">@Icon</span>
+}
+
+@code
+{
+	/// <summary>An emoji or glyph, or a texture path relative to Assets (anything containing "/" or ".").</summary>
+	[Parameter] public string Icon { get; set; }
+
+	protected override int BuildHash() => HashCode.Combine( Icon );
+}

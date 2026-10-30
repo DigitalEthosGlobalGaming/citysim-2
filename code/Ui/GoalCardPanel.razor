@@ -1,0 +1,21 @@
+@namespace CitySim
+@using CitySim.Match
+@inherits Sandbox.UI.Panel
+
+<root class="goal-card @(Goal.Claim != null ? "claimed" : "")">
+	<div class="goal-card-name">@($"{Definition.Icon} {Definition.Name}")</div>
+	<div class="goal-condition">@Definition.Description</div>
+	@if (Goal.Claim != null) { <div class="goal-status">@($"✓ Round {Goal.Claim.Round} · "+string.Join(" · ",Goal.Claim.Awards.Select(a => $"{City.Match.Players[a.Player].Name} +{a.Vp} VP")))</div> }
+	else { <div class="goal-status">@($"Your progress: {Progress.Detail}")</div> }
+</root>
+
+@code {
+	[Parameter] public CityGame City { get; set; }
+	[Parameter] public PublicGoal Goal { get; set; }
+	[Parameter] public ObjectiveProgress Progress { get; set; }
+	GoalDef Definition => GoalLibrary.Get(Goal.GoalId);
+	string lastKey;
+	float flip = 10;
+	protected override void OnParametersSet() { base.OnParametersSet(); var key = $"{Goal.GoalId}:{Goal.Claim?.Round}"; if (key != lastKey) { lastKey = key; flip = 0; } }
+	public override void Tick() { base.Tick(); if (flip >= 0.35f) return; flip += Time.Delta; var t = Math.Clamp(flip/0.35f,0,1); Style.Set("transform",FormattableString.Invariant($"scaleX({Math.Max(0.02f,1-MathF.Pow(1-t,3)):0.###})")); }
+}

@@ -1,0 +1,108 @@
+@namespace CitySim
+@using CitySim.Match
+@using CitySim.Punchboard
+@inherits MatchPanel
+<root class="end-stage @(City.EndInspect ? "inspecting" : "end-results")">
+ @if (City.EndInspect) {
+  <div class="return-results"><PbButton CssClass="primary" Text="Back to results" Clicked=@(() => City.SetEndInspect(false)) /></div>
+ }
+ else if (score != null) {
+ <div class="pb-end-layout"><PbPanel Title="YOUR CITY · FINAL SCORE" Kind=@(PbPanelKind.Raised) Fill=@true><ChildContent>
+ <div class="pb-end-content">
+  <div class="pb-end-heading"><div><div class="pb-end-title">@Outcome</div><div class="end-subtitle">@Subtitle</div></div>
+  @if (!Complete) { <PbButton CssClass="primary" Text="Skip reveal" Kind=@(PbButtonKind.Secondary) Clicked=@Skip /> }</div>
+  <div class="end-standings">@foreach (var player in OrderedPlayers) {
+   <PbButton CssClass=@($"standing {(player.Player == selected ? "chosen" : "")} {(Complete && score.Winners.Contains(player.Player) ? "winner" : "")}") Kind=@(PbButtonKind.Ghost) Text=@($"{(Complete && score.Winners.Contains(player.Player) ? "🏆 " : "")}{player.Name}{(player.Player == CityGame.Me ? " · YOU" : "")}") Clicked=@(() => Select(player.Player))>
+    <ChildContent><div class="standing-total">@ShownScore(player) VP</div><div class="standing-detail">@(Complete ? $"{player.Coins} spare coins" : $"{player.Lines.Where(l=>Category(l)==beat).Sum(l=>l.Vp):+#;-#;0} VP · {BeatName}")</div></ChildContent>
+   </PbButton>
+  }</div>
+  <div class="end-breakdown"><div class="breakdown-heading">@(SelectedPlayer?.Name) · @(Complete ? "Score breakdown" : BeatName)</div>
+   <div class="end-score-scroll">
+   @if (SelectedPlayer is { } chosen) {
+    @foreach (var line in VisibleLines(chosen).Where(l=>l.Vp!=0 || !Complete)) {
+     <div class="end-score-row"><div class="end-score-copy"><div class="score-reason">@line.Reason</div>@if (!string.IsNullOrEmpty(line.Detail)) { <div class="score-explanation">@line.Detail</div> }</div><div class="score-amount @(line.Vp < 0 ? "loss" : "")">@(line.Vp > 0 ? $"+{line.Vp}" : line.Vp.ToString()) VP</div></div>
+    }
+    @if (Complete && chosen.Lines.Any(l=>l.Vp==0)) {
+     <PbButton Text=@(showZeros ? "Hide unscored awards" : "Show unscored awards") Size=@(PbSize.Small) Kind=@(PbButtonKind.Ghost) Clicked=@(() => { showZeros=!showZeros; Refresh(); }) />
+     @if (showZeros) { @foreach (var line in chosen.Lines.Where(l=>l.Vp==0)) { <div class="end-score-row"><div class="end-score-copy"><div>@line.Reason</div><div class="score-explanation">@line.Detail</div></div><div class="score-amount">0 VP</div></div> } }
+    }
+   }
+   </div>
+  </div>
+  <div class="pb-end-actions">
+   @if (Complete) {
+    @if (!City.Multiplayer) { <PbButton CssClass="primary" Text="Play again" Clicked=@(() => City.RequestStart(GameMode.Match)) /> }
+    else if (City.Session.IsHost) { <PbButton CssClass="primary" Text="Back to lobby" Clicked=@(() => City.Session.Rematch()) /> }
+    else { <div>Waiting for the host to return to the lobby.</div> }
+    <PbButton Text="Inspect city" Kind=@(PbButtonKind.Secondary) Clicked=@(() => City.SetEndInspect(true)) />
+   }
+   <PbButton Text=@(City.Multiplayer ? "Leave match" : "Main menu") Kind=@(PbButtonKind.Ghost) Clicked=@(() => City.RequestMenu()) />
+  </div>
+ </div></ChildContent></PbPanel></div>
+ }
+</root>
+
+@code {
+ EndScore score;
+ Guid selected;
+ int beat;
+ float elapsed;
+ bool celebrated, showZeros;
+ readonly Dictionary<Guid,float> counters = new();
+ static readonly string[] Competitions = { "Longest Road", "Biggest Park Owner", "Full House" };
+ static int ContractBeat => Competitions.Length+2;
+ static int CoinBeat => Competitions.Length+3;
+ static int CompleteBeat => Competitions.Length+4;
+ bool Complete => beat >= CompleteBeat;
+ PlayerScore SelectedPlayer => score?.Players.FirstOrDefault(p=>p.Player==selected);
+ IEnumerable<PlayerScore> OrderedPlayers => Complete ? score.Players : City.Match.Players.Keys.Select(id=>score.Players.First(p=>p.Player==id));
+ string BeatName => beat==0 ? "Earned during the match" : beat==1 ? "Buildings & penalties" : beat>=2 && beat<ContractBeat ? Competitions[beat-2] : beat==ContractBeat ? "Secret contracts" : beat==CoinBeat ? "Spare coins" : "Final standings";
+ string Outcome => !Complete ? beat==0 ? $"{City.Match.Settings.Rounds} rounds complete" : BeatName : score.Winners.Count>1 ? "A shared victory" : score.Winners.Contains(CityGame.Me) ? "Your city wins!" : $"{score.Players.First(p=>score.Winners.Contains(p.Player)).Name} wins";
+ string Subtitle {
+  get {
+   if (!Complete) return beat==0 ? "Your city is built. Let's count what it earned." : "Adding final bonuses to each city's score";
+   var own=score.Players.FirstOrDefault(p=>p.Player==CityGame.Me);
+   var winner=score.Players.First();
+   var tie=score.Players.Any(p=>!score.Winners.Contains(p.Player) && p.TotalVp==winner.TotalVp);
+   var place=own==null ? "Final standings" : $"Your city · {own.TotalVp} VP · Place {1+score.Players.Count(p=>p.TotalVp>own.TotalVp || p.TotalVp==own.TotalVp && p.Coins>own.Coins)}";
+   return place+(tie ? " · Spare coins decided the VP tie" : score.Winners.Count>1 ? " · Equal VP and spare coins" : "");
+  }
+ }
+ static int Category(ScoreLine line) {
+  if (line.Reason=="Earned during match" || line.Reason.StartsWith("Public goal ·")) return 0;
+  var competition=Array.IndexOf(Competitions,line.Reason); if (competition>=0) return competition+2;
+  if (line.SecretContract) return ContractBeat;
+  return line.Reason=="Spare coins" ? CoinBeat : 1;
+ }
+ IEnumerable<ScoreLine> VisibleLines(PlayerScore p) => p.Lines.Where(l=>Complete || Category(l)<=beat);
+ int Target(PlayerScore p) => VisibleLines(p).Sum(l=>l.Vp);
+ int ShownScore(PlayerScore p) => (int)MathF.Round(counters.GetValueOrDefault(p.Player,Target(p)));
+ protected override void Subscribe() { if (City!=null) City.UiChanged+=Refresh; if (BoundMatch!=null) BoundMatch.Events.MatchScored+=Reset; Reset(BoundMatch?.FinalScore); }
+ protected override void Unsubscribe() { if (City!=null) City.UiChanged-=Refresh; if (BoundMatch!=null) BoundMatch.Events.MatchScored-=Reset; }
+ void Reset(EndScore result) {
+  score=result; beat=0; elapsed=0; celebrated=false; showZeros=false; counters.Clear();
+  selected=score?.Players.FirstOrDefault(p=>p.Player==CityGame.Me)?.Player ?? score?.Players.FirstOrDefault()?.Player ?? Guid.Empty;
+  if (score!=null) foreach (var p in score.Players) counters[p.Player]=Target(p);
+  Refresh();
+ }
+ void Select(Guid id) { selected=id; showZeros=false; Refresh(); }
+ void Finish() { if (celebrated) return; celebrated=true; City.Feedback.CelebrateEnd(score.Winners.Contains(CityGame.Me)); City.Scene.GetAllComponents<Hud>().FirstOrDefault()?.Refocus(); }
+ void Skip() { beat=CompleteBeat; foreach (var p in score.Players) counters[p.Player]=p.TotalVp; Finish(); Refresh(); }
+ public override void Tick() {
+  base.Tick(); if (score==null) return;
+  elapsed+=Time.Delta;
+  var next=Math.Min(CompleteBeat,(int)(elapsed/1.1f));
+  if (!Complete && next!=beat) { beat=next; if (Complete) Finish(); else City.Feedback.EndRevealBeat(beat==ContractBeat); Refresh(); }
+  foreach (var p in score.Players) {
+   var before=ShownScore(p); var target=Target(p);
+   counters[p.Player]=Complete ? target : counters[p.Player]+(target-counters[p.Player])*(1-MathF.Exp(-12*Time.Delta));
+   if (before!=ShownScore(p)) Refresh();
+  }
+  if (!City.Feedback.ReduceFlashing) {
+   var phaseAge=Complete ? elapsed-CompleteBeat*1.1f : elapsed%1.1f;
+   var t=Math.Clamp(phaseAge/0.35f,0,1);
+   foreach (var standing in Descendants.Where(p=>p.HasClass("standing")))
+    standing.Style.Set("transform",FormattableString.Invariant($"scale({1+0.035f*MathF.Sin(t*MathF.PI):0.###})"));
+  }
+ }
+}
