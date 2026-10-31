@@ -8,7 +8,9 @@
     @foreach (var word in CardRuleText.Words(Text))
     {
         @if (word.Tag != Tag.None) { <TagChip City=@City Tag=@word.Tag Compact=@true Inline=@true Reference=@true /> }
+        else if (word.Park) { <InteractionChip City=@City Label=@($"[🌳 {word.Text}]") Targets=@(new[] { new InteractionTarget(word.Text,InteractionKind.Park) }) /> }
         else if (word.Shop) { <InteractionChip City=@City Label=@($"[🏪 {word.Text}]") Targets=@(new[] { new InteractionTarget(word.Text,InteractionKind.Shop) }) /> }
+        else if (word.Kind != InteractionKind.None) { <InteractionChip City=@City Label=@($"[{word.Text}]") Targets=@(new[] { new InteractionTarget(word.Text,word.Kind,CardId:word.CardId) }) /> }
         else { <span>@word.Text</span> }
     }
 </root>

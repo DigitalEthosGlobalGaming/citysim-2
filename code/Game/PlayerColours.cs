@@ -20,4 +20,5 @@ public static class PlayerColours
   var seat=Seat(match,owner);
   return seat<0 ? Color.White : Palette[seat % Palette.Length];
  }
+ public static Color ForSeat(int seat) => seat<0 ? Color.White : Palette[seat % Palette.Length];
 }

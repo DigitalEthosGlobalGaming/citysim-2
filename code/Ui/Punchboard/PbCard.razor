@@ -6,11 +6,12 @@
 <root class="pb-card @DisplayRarity.Css() @Size.Css() @CssClass @(Selected ? "selected" : "") @(Disabled ? "disabled" : "") @(Compact ? "compact" : "") @(DisplayCost.HasValue ? "has-cost" : "")">
 	<div class="pb-paper"></div>
 	<div class="pb-rarity-frame"></div>
+	<div class="pb-foil-line"></div>
 	@if ( !string.IsNullOrEmpty( HotKey ) )
 	{
 		<div class="pb-key">@HotKey</div>
 	}
-	@if (DisplayCost.HasValue) { <div class="pb-cost">🪙 @DisplayCost.Value @(BuildOnly ? "build" : "buy")</div> }
+	@if (DisplayCost.HasValue) { <div class="pb-cost">🪙 @DisplayCost.Value</div> }
 	@if (Card != null) { <div class="pb-tags">@foreach (var tag in TagChip.Values(Card.Tags)) { <TagChip City=@City Tag=@tag Compact=@true Reference=@true /> }</div> }
 	else if (TagContent != null) { <div class="pb-tags">@TagContent</div> }
 	else if ( Tags != null && Tags.Any() ) { <div class="pb-tags">@foreach ( var tag in Tags ) { <PbTagPill Tag=@tag Compact=@true /> }</div> }
@@ -18,7 +19,7 @@
 		<PbIcon Icon=@DisplayIcon />
 	</div>
 	<div class="pb-name">@DisplayTitle</div>
-	@if (Card != null && !BuildOnly) { <div class="pb-build-cost">@(BuildCost > 0 ? $"{BuildCost} to build · {(DisplayCost ?? 0) + BuildCost} total" : "Free to build")</div> }
+	@if (Card != null && !BuildOnly && BuildCost > 0) { <div class="pb-build-cost">@($"{BuildCost} to build · {(DisplayCost ?? 0) + BuildCost} total")</div> }
 	@if (Card != null) { <div class="pb-interactions"><CardInteractions City=@City Card=@Card /></div> }
 	else if (InteractionContent != null) { <div class="pb-interactions">@InteractionContent</div> }
 	else if ( !string.IsNullOrEmpty( Interactions ) ) { <div class="pb-interactions"><span class="pb-interaction-label">INTERACTS WITH</span><span>@Interactions</span></div> }
@@ -34,11 +35,10 @@
 			}
 		</div>
 	}
-	@if (Card?.ParkSize > 0) { <div class="pb-park-help"><PbRuleKeyword Label="Park scoring" Help=@CardPresentation.ParkHelp(City?.Match?.Settings) /></div> }
 	@if ( !string.IsNullOrEmpty( DisplayRequirement ) ) { <div class="pb-requirement">@DisplayRequirement</div> }
 	@if (ShowRarity) { <div class="pb-rarity-row"><PbRarityMarker Rarity=@DisplayRarity /></div> }
 	@ChildContent
-	@if (ShowDiscard) { <PbButton CssClass="card-discard" Icon="🗑️" Help=@($"Discard {DisplayTitle}. G discards the selected card.") Kind=@(PbButtonKind.Ghost) Size=@(PbSize.Small) Disabled=@(Disabled || DiscardDisabled) Clicked=@Discard /> }
+	@if (ShowDiscard) { <PbButton CssClass="card-discard" Help=@($"Discard {DisplayTitle}.") Kind=@(PbButtonKind.Ghost) Size=@(PbSize.Small) Disabled=@(Disabled || DiscardDisabled) Clicked=@Discard><ChildContent><div class="discard-icon"><div class="discard-lid"></div><div class="discard-bin"></div></div></ChildContent></PbButton> }
 </root>
 
 @code
@@ -93,7 +93,7 @@
 	string DisplayIcon => Card?.Icon ?? Icon;
 	PbRarity DisplayRarity => Card == null ? Rarity : PunchboardMapping.Rarity(Card.Rarity);
 	string DisplayText => Card == null ? Text : CardPresentation.Rules(Card);
-	string DisplayTypeLabel => Card == null ? TypeLabel : Card.Type.ToString();
+	string DisplayTypeLabel => Card == null ? TypeLabel : Card.Id is "farm" or "orchard" ? "Farming" : Card.Type.ToString();
 	string DisplayRequirement => Card == null ? Requirement : CardPresentation.Requirement(Card);
 	int BuildCost => Card == null ? 0 : (City?.Match?.Settings ?? new CitySim.Match.MatchSettings()).BuildCost(Card);
 	int? DisplayCost => BuildOnly && Card != null ? (BuildCost > 0 ? BuildCost : null) : Cost ?? (Card != null ? City?.Match?.Settings.Rarities.FirstOrDefault(r => r.Rarity == Card.Rarity)?.MinimumBid : null);

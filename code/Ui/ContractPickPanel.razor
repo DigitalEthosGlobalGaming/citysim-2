@@ -23,7 +23,7 @@
   <div class="pb-contract-goals">@foreach (var goal in City.Match.Goals.Active) { var def=GoalLibrary.Get(goal.GoalId); <div class="pb-contract-goal"><PbPanel Title=@def.Name><ChildContent><div>@($"{def.Icon} {def.Description}")</div></ChildContent></PbPanel></div> }</div>
   </div>
   <div class="pb-contract-actions"><PbButton Text=@(City.Multiplayer ? "Leave match" : "Back to menu") Kind=@(PbButtonKind.Ghost) Clicked=@(() => City.RequestMenu()) />
-  @if (!Kept && view.Choices.Count>0) { <PbButton CssClass="primary keep-contract" Text=@($"Choose {Contracts.Get(view.Choices[selected]).Name} · Enter / A") Disabled=@confirming Clicked=@Confirm /> }
+  @if (!Kept && view.Choices.Count>0) { <PbButton CssClass="primary keep-contract" Text=@($"Choose {Contracts.Get(view.Choices[selected]).Name}") Disabled=@confirming Clicked=@Confirm /> }
   </div>
  </div></ChildContent></PbPanel></div>
  }

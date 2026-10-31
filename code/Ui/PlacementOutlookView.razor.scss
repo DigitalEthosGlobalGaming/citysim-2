@@ -1,0 +1,9 @@
+@import "/Ui/Punchboard/_tokens.scss";
+PlacementOutlookView {
+ flex-direction: column; width: 100%;
+ .pb-body { flex-direction: column; gap: 8px; font-size: 18px; }
+ .outlook-title { font-family: $pb-font-display; font-size: 24px; font-weight: 800; }
+ .outlook-gain { font-size: 22px; font-weight: 800; }
+ .outlook-rival { color: $pb-ink-soft; font-weight: 700; }
+ .outlook-note { font-size: 15px; color: $pb-ink-soft; }
+}

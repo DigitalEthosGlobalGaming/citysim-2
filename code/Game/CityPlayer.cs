@@ -13,6 +13,7 @@ public sealed class CityPlayer : Component
 	public Vector2? DebugMouse { get; set; }
 	public event Action PreviewChanged;
 	public IReadOnlyList<PlacementInteraction> Interactions { get; private set; } = Array.Empty<PlacementInteraction>();
+	public PlacementOutlook Outlook { get; private set; }
 	string interactionKey;
 	MatchState interactionMatch;
 	GameObject footprint;
@@ -92,6 +93,7 @@ public sealed class CityPlayer : Component
 			? $"{card}:{Hovered.X}:{Hovered.Y}:{game.RenovationArmed}:" + string.Join(",",game.Match.Cells().Select(c => $"{c.Order}:{c.Age}")) + ":" + game.Match.Round + ":" + string.Join(",",game.Match.Players.Values.Select(p => $"{p.Coins}:{p.Vp}")) : "";
 		if (key == interactionKey && interactionMatch == game.Match) return;
 		interactionMatch = game.Match; interactionKey = key;
+		Outlook=key.Length==0 || !HoveredValid ? null:game.Match.PreviewOutlook(CityGame.Me,card,Hovered.X,Hovered.Y,game.RenovationArmed);
 		Interactions = key.Length == 0 ? Array.Empty<PlacementInteraction>() : game.Match.PreviewInteractions(CityGame.Me,card,Hovered.X,Hovered.Y,game.RenovationArmed);
 		game.PreviewPlacementInteractions(Interactions);
 		PreviewChanged?.Invoke();
@@ -161,7 +163,8 @@ public sealed class CityPlayer : Component
 		var road = game.Grid.RoadShape(Hovered.X,Hovered.Y);
 		var model = id == "land-claim" ? TileRules.Ghost : type == TileType.Road ? road.model : null;
 		if (id == "avenue" && model != null && model.EndsWith("road-crossroad.vmdl")) model = "models/kenney/roads/road-crossroad-line.vmdl";
-		var key = id + ":" + model;
+		var visualSeed = CardVisualVariation.Seed(id,Hovered.X,Hovered.Y);
+		var key = id + ":" + model + ":" + visualSeed;
 		if (ghostModel != key)
 		{
 			ghostModel = key;
@@ -169,10 +172,10 @@ public sealed class CityPlayer : Component
 			if (id == "land-claim") ghostRenderer.Model = Model.Load(model);
 			if (id == "land-claim") CardVisuals.Clear(ghost);
 			else if (type == TileType.Road) CardVisuals.BuildRoad(ghost,model,id == "roundabout");
-			else CardVisuals.Build(ghost,id);
+			else CardVisuals.Build(ghost,id,visualSeed:visualSeed);
 		}
-		var dir = game.Grid.RoadNeighbourDirection(Hovered);
-		var yaw = type == TileType.Road ? road.yaw : dir >= 0 ? CityGrid.YawForDirection(dir) : 0;
+		var yaw = type == TileType.Road ? road.yaw : CardVisualVariation.Yaw(game.Match,id,Hovered.X,Hovered.Y);
+		ghost.WorldScale = (id == "sapling" ? 0.55f : 1f)*CityGrid.ModelScale;
 		ghost.WorldRotation = Rotation.FromYaw(yaw+(denyTime > 0 ? MathF.Sin(denyTime*100)*denyTime*40 : 0));
 		// Road meshes normally replace the ground tile. Lift the preview above the
 		// still-visible ground so it cannot disappear underneath it.

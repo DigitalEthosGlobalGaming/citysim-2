@@ -6,22 +6,21 @@ namespace CitySim;
 /// <summary>Reviewed, non-authoritative summaries of the subjects mentioned by each card's rules.</summary>
 public static class CardPresentation
 {
-    public static string ParkHelp(MatchSettings settings = null)
-    {
-        settings ??= new();
-        return $"Only the builder scores. Round the park's size up per {settings.ParkPlacerDivisor} size, before and after adding this tile; gain the difference. Stop counting size at {settings.ParkScoringCap}. Joined regions count once. Sapling growth scores only its size increase. Adjacent means shared edges; diagonals do not join parks.";
-    }
     static InteractionTarget T(string label, InteractionKind kind, bool own = false) => new(label,kind,own);
-    public static IReadOnlyList<InteractionTarget> Targets(CardDef card) => card.Id switch
+    public static IReadOnlyList<InteractionTarget> Targets(CardDef card) => CoreTargets(card)
+        .Concat(card.Effects.Any(e=>e.Rule=="beside-road-vp") ? new[]{T("🛣 Roads",InteractionKind.Road)}:Array.Empty<InteractionTarget>())
+        .Concat(card.Id=="orchard" ? new[]{T("🌿 Nature",InteractionKind.Nature)}:Array.Empty<InteractionTarget>()).ToArray();
+    static IReadOnlyList<InteractionTarget> CoreTargets(CardDef card) => card.Id switch
     {
         "house" => [T("🏠 Home",InteractionKind.Home), T("🏪 Shops",InteractionKind.Shop)],
         "apartment" => [T("🏠 Home tags",InteractionKind.Home), T("🏪 Shops",InteractionKind.Shop)],
         "cottage" => [T("🌳 Parks",InteractionKind.Park), T("🌊 Lakes",InteractionKind.Lake)],
         "shop" => [T("🏠 Home",InteractionKind.Home)],
         "farm" or "orchard" => [T("🌾 Farms / Orchards",InteractionKind.Farm), .. (card.Id == "orchard" ? new[] { T("🌳 Parks",InteractionKind.Park) } : Array.Empty<InteractionTarget>())],
-        "park" or "wild-garden" or "fountain" or "sapling" => [T("🌳 Parks",InteractionKind.Park)],
+        "park" or "wild-garden" or "fountain" or "sapling" => [T("🌿 Nature",InteractionKind.Nature)],
         "street" or "avenue" or "roundabout" or "skyscraper" => [T("🏗 Buildings",InteractionKind.Building)],
-        "lake" or "tax-office" or "school" or "airport" => [T("🏠 Home",InteractionKind.Home,card.Id is "tax-office" or "school")],
+        "lake" => [T("🏠 Home",InteractionKind.Home),T("🌿 Nature",InteractionKind.Nature)],
+        "tax-office" or "school" or "airport" => [T("🏠 Home",InteractionKind.Home,card.Id is "tax-office" or "school")],
         "market" => [T("🏪 Shops",InteractionKind.Shop,true)],
         "contractor" => [T("🏠 House",InteractionKind.House), T("🏪 Shop",InteractionKind.Shop)],
         "cafe" => [T("🏠 Home",InteractionKind.Home), T("🏪 Shops",InteractionKind.Shop), T("🌳 Parks",InteractionKind.Park), T("🌊 Lakes",InteractionKind.Lake)],

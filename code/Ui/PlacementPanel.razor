@@ -8,7 +8,7 @@ else if (City.RenovationArmed) {
 <div class="placement-heading">RENOVATION · @(City.RenovationReplacement?.Name ?? "CHOOSE A BUILDING")</div>
 <div class="@(City.Player.HoveredValid ? "placement-valid" : "placement-invalid")">@(City.Player.HoveredValid ? $"✓{VpText}" : $"⊘ {City.Player.HoveredReason}")</div>
 @foreach (var interaction in City.Player.Interactions) { <div class="interaction-note">@interaction.Detail</div> }
-<div class="placement-note">Choose an owned building · B / right-click cancels</div> }
+<div class="placement-note">Choose one of your buildings</div> }
 else if (City.SelectedCard is { } card) {
 <div class="placement-heading">@($"SELECTED · {card.Name}")</div>
 <div class="@(City.Player.HoveredValid ? "placement-valid" : "placement-invalid")">@(City.Player.HoveredValid ? City.SelectedCardId == "land-claim" ? "🚩 Reserve until next round" : $"✓{VpText}" : $"⊘ {City.Player.HoveredReason}")</div>

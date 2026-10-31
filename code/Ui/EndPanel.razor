@@ -16,7 +16,7 @@
     <ChildContent><div class="standing-total">@ShownScore(player) VP</div><div class="standing-detail">@(Complete ? $"{player.Coins} spare coins" : $"{player.Lines.Where(l=>Category(l)==beat).Sum(l=>l.Vp):+#;-#;0} VP · {BeatName}")</div></ChildContent>
    </PbButton>
   }</div>
-  <div class="end-breakdown"><div class="breakdown-heading">@(SelectedPlayer?.Name) · @(Complete ? "Score breakdown" : BeatName)</div>
+  <div class="end-breakdown"><div class="breakdown-heading">@($"{SelectedPlayer?.Name} · {(Complete ? "Score breakdown" : BeatName)}")</div>
    <div class="end-score-scroll">
    @if (SelectedPlayer is { } chosen) {
     @foreach (var line in VisibleLines(chosen).Where(l=>l.Vp!=0 || !Complete)) {

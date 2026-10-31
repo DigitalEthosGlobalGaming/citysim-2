@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 144" role="img" aria-labelledby="title">
+  <title id="title">Plotter plot mark</title>
+  <g fill="none" stroke="#293A3B" stroke-width="8" stroke-linejoin="round"><rect x="8" y="8" width="128" height="128" rx="6"/><path d="M8 73h128M72 8v128"/></g>
+  <path fill="#B94F3E" d="M22 56V37l17-16 17 16v19H45V44H33v12z"/><path fill="#293A3B" d="M88 91h30v30H88z"/>
+</svg>

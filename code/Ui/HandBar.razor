@@ -17,7 +17,7 @@
 				{
 					var slot = i;
 					var card = CardLibrary.Get(player.Hand[i]);
-					<div class="hand-slot"><PbCard City=@City Card=@card BuildOnly=@true SelectionSound=@false CssClass="hand-card" HotKey=@((slot+1).ToString()) Selected=@(slot == City.SelectedSlot) Compact=@true Size=@(PbSize.Big) Clicked=@(() => { City.SelectSlot(slot); }) Discarded=@(() => { City.DiscardSlot(slot); }) ShowDiscard=@(slot == City.SelectedSlot && City.Mode != GameMode.Sandbox) DiscardDisabled=@(!City.BoardInput || City.RenovationArmed) /></div>
+					<div class="hand-slot"><PbCard City=@City Card=@card BuildOnly=@true SelectionSound=@false CssClass="hand-card" Selected=@(slot == City.SelectedSlot) Compact=@true Size=@(PbSize.Big) Clicked=@(() => { City.SelectSlot(slot); }) Discarded=@(() => { City.DiscardSlot(slot); }) ShowDiscard=@(slot == City.SelectedSlot && City.Mode != GameMode.Sandbox) DiscardDisabled=@(!City.BoardInput || City.RenovationArmed) /></div>
 				}
 			</ChildContent></PbHand>
 			@if (player.Hand.Count == 0) { <div class="empty-hand">Hand empty.</div> }
@@ -29,8 +29,8 @@
 	}
 	<div class="hand-actions">
         @if (City.SelectedCard is { } selected && BoundMatch != null && City.LocalPlayer is { } owner && BoundMatch.Settings.BuildCost(selected) > 0) { <div class="surface">@(BoundMatch.Settings.BuildCost(selected) > owner.Coins ? $"Need {BoundMatch.Settings.BuildCost(selected)} coins to build; you have {owner.Coins}. Keep this card to build later." : $"Build {selected.Name}: {BoundMatch.Settings.BuildCost(selected)} coins")</div> }
-		@if (City.RenovationArmed) { <div class="renovation-hint">@(City.RenovationReplacement == null ? "Renovation: select a building card" : $"Renovation → {City.RenovationReplacement.Name}: select your building")</div><PbButton Text="Cancel renovation · B" Size=@(PbSize.Small) Kind=@(PbButtonKind.Ghost) Clicked=@(() => { City.Deselect(); }) /> }
-		@if (!City.RenovationArmed && City.SelectedImmediateEvent && BoundMatch?.Phase == MatchPhase.Build) { <PbButton Text=@($"Play {City.SelectedCard.Name} · Enter / A") Disabled=@(City.SelectedCardId=="rush-hour" && BoundMatch.RushHourActive(CityGame.Me)) Clicked=@(() => { City.PlaySelectedEvent(); }) /> }
+		@if (City.RenovationArmed) { <div class="renovation-hint">@(City.RenovationReplacement == null ? "Renovation: select a building card" : $"Renovation → {City.RenovationReplacement.Name}: select your building")</div><PbButton Text="Cancel renovation" Size=@(PbSize.Small) Kind=@(PbButtonKind.Ghost) Clicked=@(() => { City.Deselect(); }) /> }
+		@if (!City.RenovationArmed && City.SelectedImmediateEvent && BoundMatch?.Phase == MatchPhase.Build) { <PbButton Text=@($"Play {City.SelectedCard.Name}") Disabled=@(City.SelectedCardId=="rush-hour" && BoundMatch.RushHourActive(CityGame.Me)) Clicked=@(() => { City.PlaySelectedEvent(); }) /> }
 		@if (City.SelectedCardId == "land-claim" && BoundMatch?.Phase == MatchPhase.Build) { <div class="surface">🚩 Click an empty tile to reserve it.</div> }
 	</div>
 </root>

@@ -1,0 +1,23 @@
+{
+  "Screen": "GameSetup",
+  "Count": 2,
+  "Names": [
+    "Casey",
+    "Dakota",
+    "Drew",
+    "Parker"
+  ],
+  "Difficulties": [
+    "Normal",
+    "Normal",
+    "Normal",
+    "Normal"
+  ],
+  "VisibleNames": [
+    "Casey",
+    "Dakota"
+  ],
+  "BackgroundButtons": 0,
+  "Scale": 0.8
+}
+

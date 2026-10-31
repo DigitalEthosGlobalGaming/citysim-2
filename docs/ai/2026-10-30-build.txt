@@ -1,0 +1,9 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  city_sim -> C:\personal-dev\sbox\citysim-v3\city_sim\.build\ai-redesign\city_sim.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:27.65

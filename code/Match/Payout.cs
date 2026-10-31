@@ -19,10 +19,6 @@ public static class Payout
 		var cells = state.Cells().ToArray();
 		var byOwner = cells.ToLookup(c => c.Owner);
 		var entries = new List<PayoutEntry>();
-		// Each building rewards each adjacent Street owner once, even beside several of their Streets.
-		foreach (var building in cells.Where(c => CardLibrary.Get(c.CardId).Type is not (CardType.Road or CardType.Event)))
-			foreach (var road in state.Neighbours(building.X,building.Y).Where(c => c.CardId == "street" && state.Players.ContainsKey(c.Owner)).GroupBy(c => c.Owner).Select(g => g.OrderBy(c => c.Order).First()))
-				entries.Add(new(road.Owner,0,1,"Street · adjacent building",road,building));
 		var rush = CardLibrary.Get("rush-hour").Effects.First(e => e.Rule == "rush-hour");
 		foreach (var player in state.Players.Values.Where(p => state.RushHourActive(p.Id)))
 		{

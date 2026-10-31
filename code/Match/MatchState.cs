@@ -121,7 +121,7 @@ public sealed partial class MatchState
 			Settings.MiniAuctionSeconds <= 0 || !double.IsFinite(Settings.MiniAuctionSeconds) ||
 			Settings.AuctionResolveSeconds < 0 || !double.IsFinite(Settings.AuctionResolveSeconds) ||
 			Settings.HandTarget < 1 || Settings.HandTarget > Settings.HandLimit || Settings.MiniAuctionCap < 1 || Settings.ExtraLots < 1 ||
-			Settings.ParkScoringCap < 1 || Settings.ParkPlacerDivisor < 1 || Settings.CoinsPerEndVp < 1 ||
+			Settings.CoinsPerEndVp < 1 ||
 			Settings.PublicGoalCount < 1 || Settings.PublicGoalCount > GoalLibrary.All.Count || Settings.ContractChoices < 1 || Settings.ContractChoices > Contracts.All.Count || Settings.GoalVp < 0 || Settings.TiedGoalVp < 0 ||
 			Settings.StubOpponentBid < 0 || Settings.StubThinkSeconds < 0 || !double.IsFinite(Settings.StubThinkSeconds) ||
 			Settings.AiFrameBudgetMilliseconds <= 0 || !double.IsFinite(Settings.AiFrameBudgetMilliseconds) ||

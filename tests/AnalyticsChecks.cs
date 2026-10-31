@@ -10,7 +10,12 @@ public static class AnalyticsChecks
 		var settings=new MatchSettings {EnableContracts=false,EnableGoals=false,DefaultStreets=0,DefaultCommons=0,HandTarget=3,HandLimit=5};
 		var state=new MatchState(12,12,123,settings); state.AddPlayer(human,"PRIVATE HUMAN NAME"); state.AddPlayer(bot,"PRIVATE BOT NAME");
 		var rounds=new RoundMachine(state); var records=new List<BalanceEvent>();
-		using var analytics=new BalanceAnalytics(state,rounds,matchId,"solo",new[]{bot},records.Add);
+		using var analytics=new BalanceAnalytics(state,rounds,matchId,"solo",new[]{bot},records.Add,
+			botConfigurations:new Dictionary<Guid,BotAnalyticsConfiguration> {{bot,new("Hard","Nature")}});
+		var started=JsonSerializer.SerializeToElement(records[0].Data);
+		Check(started.GetProperty("Players")[0].GetProperty("BotConfiguration").ValueKind==JsonValueKind.Null &&
+			started.GetProperty("Players")[1].GetProperty("BotConfiguration").GetProperty("Difficulty").GetString()=="Hard" &&
+			started.GetProperty("Players")[1].GetProperty("BotConfiguration").GetProperty("Style").GetString()=="Nature","individual difficulty and style are recorded on the bot seat only");
 		rounds.Start(0); var view=rounds.GetAuctionView(human);
 		Check(records.Count(e=>e.Event=="market_offered")==2,"offers recorded for each seat");
 		Check(!rounds.BuyMarketCard(human,view.Id+1,0,0),"invalid purchase rejected");

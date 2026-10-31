@@ -18,7 +18,7 @@ public static class Contracts
 		new ContractDef("hoarder","Hoarder","🪙","Finish with 15 coins unspent.",ContractKind.Coins,15,5),
 		new ContractDef("cultured","Cultured","🎭","Own 5 Culture buildings.",ContractKind.TagCount,5,6,Tag.Culture),
 		new ContractDef("landlord","Landlord","🏠","Own 3 Home buildings beside rivals' Homes.",ContractKind.RivalNeighbours,3,6),
-		new ContractDef("industrialist","Industrialist","⚙","Own 5 Industry buildings.",ContractKind.TagCount,5,7,Tag.Industry),
+		new ContractDef("industrialist","Industrialist","⚙","Own 5 Industry-tagged buildings.",ContractKind.TagCount,5,7,Tag.Industry),
 		new ContractDef("mayor","Mayor","🏛️","Own 4 different Civic-tagged building types.",ContractKind.DistinctCivic,4,7),
 		new ContractDef("entrepreneur","Entrepreneur","🏪","Own 3 Shops, each with at least 2 Home buildings within 2 tiles.",ContractKind.NearbyHomeShops,3,6,NearbyHomes:2)
 	});

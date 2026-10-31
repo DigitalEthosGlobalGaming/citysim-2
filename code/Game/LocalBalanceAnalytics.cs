@@ -10,7 +10,7 @@ public static class LocalBalanceAnalytics
 {
 	public const string Folder="analytics/v1";
 	const int MaxFiles=64,MaxRecordingBytes=2*1024*1024;
-	public static BalanceAnalytics Start(MatchState state,RoundMachine rounds,Guid matchId,string mode,IEnumerable<Guid> bots=null,string difficulty=null)
+	public static BalanceAnalytics Start(MatchState state,RoundMachine rounds,Guid matchId,string mode,IEnumerable<Guid> bots=null,string difficulty=null,IReadOnlyDictionary<Guid,BotAnalyticsConfiguration> botConfigurations=null)
 	{
 		try
 		{
@@ -28,7 +28,7 @@ public static class LocalBalanceAnalytics
 				if (bytes+content.Length>MaxRecordingBytes) throw new IOException("Recording reached its 2 MiB limit; local tracking stopped for this recording.");
 				using var stream=FileSystem.Data.OpenWrite(path,FileMode.Append);
 				stream.Write(content,0,content.Length); bytes+=content.Length;
-			},error=>Log.Warning($"City Sim local analytics stopped: {error.Message}"),difficulty);
+			},error=>Log.Warning($"City Sim local analytics stopped: {error.Message}"),difficulty,botConfigurations);
 			Log.Info($"City Sim local analytics: {FileSystem.Data.GetFullPath(path) ?? path}");
 			return result;
 		}

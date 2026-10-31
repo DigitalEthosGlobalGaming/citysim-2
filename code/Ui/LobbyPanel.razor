@@ -6,12 +6,11 @@
  <div class="pb-lobby-layout"><PbPanel Title="CITY LOBBY" Kind=@(PbPanelKind.Raised)><ChildContent><div class="pb-lobby-content">
  <div class="pb-screen-title">Build a city together</div>
  @if (City.Session?.Lobby is { } room) {
- <div>@($"{room.Members.Count(m=>m.Connected && !m.Spectator)} / {room.Capacity} players · eight rounds")</div>
+ <div>@($"{room.Members.Count(m=>m.Connected && !m.Spectator)} / {room.Capacity} players")</div>
  <div class="pb-lobby-list">@foreach (var p in room.Members.Where(m=>m.Connected)) { <div class="lobby-member pb-lobby-row"><PbMeeple /><div class="pb-lobby-name">@($"{(p.Id==room.Host ? "♛ " : "")}{p.Name}{(p.Id==CityGame.Me ? " · you" : "")}")</div><div>@(p.Spectator ? "👁 Watching" : p.Ready ? "● Ready" : "○ Not ready")</div></div> }</div>
- <div>Everyone readies up, then the host starts. Pick your secret contract before the first round.</div>
  @if (City.Session.IsHost) { <div>@($"Friends can join with host Steam ID: {City.Session.InviteAddress}")</div> }
- <div class="pb-lobby-actions">@if (room.Members.FirstOrDefault(m=>m.Id==CityGame.Me) is {Spectator:false} own) { <PbButton CssClass="primary" Text=@(own.Ready ? "✓ Ready · undo" : "Ready · Space / Y") Toggled=@own.Ready Clicked=@(() => { City.Session.ToggleReady(); }) /> } @if (City.Session.IsHost) { <PbButton CssClass="start-match" Text="Start match" Disabled=@(!City.Session.CanStart) Clicked=@(() => { City.Session.StartMatch(); }) /> } <PbButton Text="Leave lobby · Esc" Kind=@(PbButtonKind.Ghost) Clicked=@(() => { City.RequestMenu(); }) /></div>
- @if (room.Members.Count(m=>m.Connected && !m.Spectator)<2) { <div>Waiting for at least one more player.</div> } else if (!City.Session.CanStart && City.Session.IsHost) { <div>Waiting for every player to ready up.</div> }
+ <div class="pb-lobby-actions">@if (room.Members.FirstOrDefault(m=>m.Id==CityGame.Me) is {Spectator:false} own) { <PbButton CssClass="primary" Text=@(own.Ready ? "Not ready" : "Ready") Toggled=@own.Ready Clicked=@(() => { City.Session.ToggleReady(); }) /> } @if (City.Session.IsHost) { <PbButton CssClass="start-match" Text="Start match" Disabled=@(!City.Session.CanStart) Clicked=@(() => { City.Session.StartMatch(); }) /> } <PbButton Text="Leave lobby" Kind=@(PbButtonKind.Ghost) Clicked=@(() => { City.RequestMenu(); }) /></div>
+ @if (room.Members.Count(m=>m.Connected && !m.Spectator)<2) { <div>Waiting for at least one more player.</div> } else if (!City.Session.CanStart && City.Session.IsHost) { <div>Waiting for players.</div> }
  } else { <div>Connecting…</div><PbButton Text="Back to menu" Kind=@(PbButtonKind.Ghost) Clicked=@(() => { City.RequestMenu(); }) /> }
  </div></ChildContent></PbPanel></div>
 </root>

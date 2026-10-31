@@ -7,12 +7,13 @@ namespace CitySim.Match;
 
 public sealed record BalanceEvent(int SchemaVersion,string BalanceVersion,Guid RecordingId,Guid MatchId,
 	long Sequence,DateTime TimestampUtc,int Round,string Phase,string Event,object Data);
+public sealed record BotAnalyticsConfiguration(string Difficulty,string Style);
 
 /// <summary>Observes committed authority events only. Payloads use match-local seats, never account IDs or names.</summary>
 public sealed class BalanceAnalytics : IDisposable
 {
-	// Bump when card definitions or scoring change; schema changes have a separate version.
-	public const string BalanceVersion="2026-10-30.2";
+	// Bump when rules or AI policy change; schema changes have a separate version.
+	public const string BalanceVersion="2026-10-30.5";
 	readonly MatchState state;
 	readonly RoundMachine rounds;
 	readonly Action<BalanceEvent> write;
@@ -22,13 +23,13 @@ public sealed class BalanceAnalytics : IDisposable
 	long sequence;
 	bool disabled,disposed,completed;
 	public BalanceAnalytics(MatchState state,RoundMachine rounds,Guid matchId,string mode,
-		IEnumerable<Guid> bots,Action<BalanceEvent> write,Action<Exception> failed=null,string difficulty=null)
+		IEnumerable<Guid> bots,Action<BalanceEvent> write,Action<Exception> failed=null,string difficulty=null,IReadOnlyDictionary<Guid,BotAnalyticsConfiguration> botConfigurations=null)
 	{
 		this.state=state; this.rounds=rounds; this.matchId=matchId; this.write=write; this.failed=failed;
 		seats=state.Players.Keys.Select((id,index)=>(id,index)).ToDictionary(p=>p.id,p=>p.index);
 		var botIds=new HashSet<Guid>(bots ?? Array.Empty<Guid>());
 		Emit("recording_started",new { Mode=mode,Difficulty=difficulty,Resumed=state.Round>0,Seed=state.Seed,state.Width,state.Height,
-			Settings=state.Settings,Cards=CardLibrary.All,Players=state.Players.Keys.Select(id=>new {Seat=Seat(id),IsBot=botIds.Contains(id)}).ToArray(),InitialState=Players(),InitialBoard=state.Cells().Select(Cell).ToArray() });
+			Settings=state.Settings,Cards=CardLibrary.All,Players=state.Players.Keys.Select(id=>new {Seat=Seat(id),IsBot=botIds.Contains(id),BotConfiguration=botConfigurations?.GetValueOrDefault(id)}).ToArray(),InitialState=Players(),InitialBoard=state.Cells().Select(Cell).ToArray() });
 		var e=state.Events;
 		e.CardPurchased+=Purchased; e.CardReceived+=Received; e.CardDiscarded+=Discarded;
 		e.PlacementResolved+=Placed; e.EventPlayed+=Played; e.BuildingReplaced+=Replaced;

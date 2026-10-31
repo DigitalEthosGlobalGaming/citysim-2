@@ -67,7 +67,7 @@ public sealed class BoardView : Component
 		if (tile?.Building == null || !tile.Building.IsValid()) return;
 		if (cell.CardId != "sapling") return;
 		var target = Scale(cell);
-		CardVisuals.Build(tile.Building,cell.CardId,Growth.IsMature(cell)); Tint(cell);
+		CardVisuals.Build(tile.Building,cell.CardId,Growth.IsMature(cell),CardVisualVariation.Seed(cell.CardId,cell.X,cell.Y)); Tint(cell);
 		tile.Building.Name = $"{(cell.CardId == "sapling" && Growth.IsMature(cell) ? "Forest" : CardLibrary.Get(cell.CardId).Name)} {cell.X},{cell.Y}";
 		if (MathF.Abs(tile.Building.WorldScale.z/CityGrid.ModelScale-target) > 0.01f) { pops.RemoveAll(p => p.Tile == tile); pops.Add((tile,tile.Building.WorldScale.z/CityGrid.ModelScale,target,0)); }
 	}
@@ -181,6 +181,7 @@ public sealed class BoardView : Component
 	void TintTile(Tile tile,BoardCell cell)
 	{
 		if (tile == null) return;
+		tile.GroundBaseTint = CardVisualVariation.Ground(cell?.CardId,tile.X,tile.Y,cell != null && Growth.IsMature(cell));
 		var dim = placementInteractions.Count == 0 && highlightedCells.Count > 0 && !Matches(cell);
 		if (tile.GroundRenderer.IsValid()) tile.GroundRenderer.Tint = dim ? Darken(tile.GroundBaseTint) : tile.GroundBaseTint;
 		if (!tile.BuildingRenderer.IsValid()) return;
@@ -260,10 +261,9 @@ public sealed class BoardView : Component
 		else
 		{
 			tile.BuildingRenderer.Enabled = false;
-			var direction = grid.RoadNeighbourDirection(tile);
-			tile.Building.WorldRotation = Rotation.FromYaw(direction >= 0 ? CityGrid.YawForDirection(direction) : 0);
+			tile.Building.WorldRotation = Rotation.FromYaw(CardVisualVariation.Yaw(match,cell.CardId,cell.X,cell.Y,cell.Order));
 			tile.Ground.Enabled = true;
-			CardVisuals.Build(tile.Building,cell.CardId,cell.CardId == "sapling" && Growth.IsMature(cell));
+			CardVisuals.Build(tile.Building,cell.CardId,cell.CardId == "sapling" && Growth.IsMature(cell),CardVisualVariation.Seed(cell.CardId,cell.X,cell.Y));
 		}
 		Tint(cell);
 		MarkOwner(cell);

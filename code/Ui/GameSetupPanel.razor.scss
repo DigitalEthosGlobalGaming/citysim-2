@@ -1,0 +1,22 @@
+@import "/Ui/Punchboard/_tokens.scss";
+
+Hud .game-setup-stage { position: absolute; left: 0; top: 0; right: 0; bottom: 0; width: 100%; height: 100%; background-color: $pb-table; }
+GameSetupPanel {
+ .game-setup-layout { width: 92%; max-width: 1040px; max-height: 92%; flex-direction: column; pointer-events: all; }
+ .game-setup-layout > PbPanel { max-height: 100%; }
+ .game-setup-layout .pb-body { min-height: 0; }
+ .game-setup-content { flex-direction: column; padding: 16px; gap: 22px; min-height: 0; }
+ .game-setup-title { font-family: $pb-font-display; font-size: 38px; font-weight: 800; }
+ .game-setup-count { align-items: center; justify-content: space-between; gap: 18px; font-size: 22px; font-weight: 800; flex-wrap: wrap; flex-shrink: 0; }
+ .game-setup-count-buttons { gap: 12px; }
+ .game-setup-roster { flex-direction: column; gap: 14px; overflow: scroll; min-height: 0; max-height: 620px; }
+ .opponent-row { align-items: center; flex-wrap: wrap; padding: 16px; gap: 16px; background-color: $pb-panel-deep; border: 2px solid rgba($pb-ink,0.25); border-radius: 8px; flex-shrink: 0; }
+ .opponent-seat { width: 34px; height: 34px; border: 2px solid $pb-ink; border-radius: 17px; justify-content: center; align-items: center; font-size: 18px; font-weight: 800; flex-shrink: 0; }
+ .opponent-name-field { flex-direction: column; flex-grow: 1; flex-basis: 170px; min-width: 150px; gap: 7px; }
+ .opponent-field-label { font-size: 16px; font-weight: 800; }
+ .opponent-name { width: 100%; min-height: 46px; font-size: 20px; color: $pb-ink; padding: 8px 12px; pointer-events: all; @include pb-recessed; }
+ .opponent-name:focus { border-color: $pb-teal; }
+ .opponent-difficulty { flex-direction: column; gap: 7px; }
+ .opponent-difficulty-buttons { gap: 8px; }
+ .game-setup-actions { justify-content: space-between; gap: 14px; flex-wrap: wrap; flex-shrink: 0; padding-top: 8px; }
+}

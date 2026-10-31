@@ -21,18 +21,26 @@ public sealed class CityGame : Component
 	public const int MaxVehicles = 100;
 	public static readonly Guid LocalPlayerId = new("11111111-0000-0000-0000-000000000001");
 	public static readonly Guid StubPlayerId = new("22222222-0000-0000-0000-000000000002");
-	static readonly Guid[] BotPlayerIds = { StubPlayerId, new("33333333-0000-0000-0000-000000000003"), new("44444444-0000-0000-0000-000000000004") };
+	static readonly Guid[] BotPlayerIds = Enumerable.Range(0,Ai.SoloSetup.MaximumOpponents).Select(Ai.SoloSetup.PlayerId).ToArray();
 	public static Guid Me => Networking.IsActive ? Instance?.Session?.PlayerId ?? Connection.Local.Id : LocalPlayerId;
 	public CityNetwork Session { get; private set; }
 	public bool Multiplayer => Session?.IsConnected==true;
 	public GameMode Mode { get; private set; } = GameMode.Match;
-	public int SoloRivals { get; private set; } = 2;
-	public Ai.BotDifficulty SoloDifficulty { get; private set; } = Ai.BotDifficulty.Normal;
+	public Ai.SoloSetupData GameSetup { get; private set; } = Ai.SoloSetup.Create(new Random().Next());
+	public IReadOnlyList<Ai.OpponentSetup> ActiveOpponents { get; private set; } = Array.Empty<Ai.OpponentSetup>();
+	public int SoloRivals => GameSetup.OpponentCount;
+	public Ai.BotDifficulty SoloDifficulty => GameSetup.Opponents[0].Difficulty;
+	public void OpenGameSetup() { if (!Multiplayer && Screens.Top==GameScreen.Menu) Screens.Push(GameScreen.GameSetup); }
+	public void SetOpponentCount(int count) { if (Screens.Top!=GameScreen.GameSetup) return; GameSetup=Ai.SoloSetup.Resize(GameSetup,count); SaveGameSetup(); }
+	public void EditOpponent(int seat,string name,Ai.BotDifficulty difficulty) { if (Screens.Top!=GameScreen.GameSetup) return; GameSetup=Ai.SoloSetup.Edit(GameSetup,seat,name,difficulty); SaveGameSetup(); }
+	public void RandomizeOpponentNames() { if (Screens.Top!=GameScreen.GameSetup) return; GameSetup=Ai.SoloSetup.Randomize(GameSetup,new Random().Next()); SaveGameSetup(); }
+	void SaveGameSetup() { SoloSetupPreferences.Save(GameSetup); NotifyUi(); }
 	public void ConfigureSolo(int rivals,Ai.BotDifficulty difficulty)
 	{
-		if (Multiplayer || Screens.Top!=GameScreen.Menu) return;
-		SoloRivals=Math.Clamp(rivals,1,3); SoloDifficulty=Enum.IsDefined(difficulty) ? difficulty : Ai.BotDifficulty.Normal;
-		NotifyUi();
+		if (Multiplayer || Screens.Top is not (GameScreen.Menu or GameScreen.GameSetup)) return;
+		GameSetup=Ai.SoloSetup.Resize(GameSetup,rivals);
+		foreach(var opponent in GameSetup.Opponents) GameSetup=Ai.SoloSetup.Edit(GameSetup,opponent.Seat,opponent.Name,difficulty);
+		SaveGameSetup();
 	}
 	public GameState State => Screens.BaseScreen switch { GameScreen.Menu => GameState.Menu, GameScreen.End => GameState.End, _ => GameState.Playing };
 	public bool EndInspect { get; private set; }
@@ -65,7 +73,7 @@ public sealed class CityGame : Component
 	public bool HasInteractionHighlight => interactionHighlightSource != null;
 	public IReadOnlyList<BoardCell> HighlightedCells => board?.HighlightedCells ?? Array.Empty<BoardCell>();
 	public string HighlightLabel { get; private set; }
-	public string HighlightIcon => ReferenceTag != Tag.None ? TagChip.Icon(ReferenceTag) : HighlightedTag != Tag.None ? TagChip.Icon(HighlightedTag) : HighlightLabel?.Contains(' ') == true && !HighlightLabel.StartsWith("INTERACTS") ? HighlightLabel.Split(' ')[0] : "✦";
+	public string HighlightIcon => interactionHighlightSource != null && lastInteractionTargets?.Any(t => t.Kind == InteractionKind.Road) == true ? "🛣️" : ReferenceTag != Tag.None ? TagChip.Icon(ReferenceTag) : HighlightedTag != Tag.None ? TagChip.Icon(HighlightedTag) : HighlightLabel?.Contains(' ') == true && !HighlightLabel.StartsWith("INTERACTS") ? HighlightLabel.Split(' ')[0] : "✦";
 	public string HighlightStatus => !HasInteractionHighlight ? "" : HighlightedCells.Count == 0 ? $"{HighlightLabel} · None in city" : $"{HighlightLabel} · {HighlightedCells.Count} in city";
 	public Tag ReferenceTag { get; private set; }
 	public Guid HighlightOwner { get; private set; } = LocalPlayerId;
@@ -121,7 +129,7 @@ public sealed class CityGame : Component
 		Feedback.Bind(this);
 		Traffic = Components.GetOrCreate<TrafficController>();
 		Traffic.Bind(this);
-		PlayerPreferences.Load(); ApplyPreferences();
+		PlayerPreferences.Load(); ApplyPreferences(); GameSetup=SoloSetupPreferences.Load();
 		Lighting = new LightingPreview(Scene);
 		if (!Scene.GetAllComponents<Hud>().Any())
 		{
@@ -182,11 +190,12 @@ public sealed class CityGame : Component
 		EndInspect=false;
 		Mode = mode; Clock = 0; SelectedSlot = -1;
 		settings ??= new MatchSettings();
-		var rivalCount=mode==GameMode.Match ? SoloRivals : 0;
+		ActiveOpponents=mode==GameMode.Match ? Ai.SoloSetup.StartRoster(GameSetup,new Random().Next()) : Array.Empty<Ai.OpponentSetup>();
+		var rivalCount=ActiveOpponents.Count;
 		var side = Math.Clamp((int)Math.Ceiling(Math.Sqrt(settings.TilesPerPlayer*(1+rivalCount))),settings.MinimumBoardSide,settings.MaximumBoardSide);
 		Match = new MatchState(side,side,Game.Random.Int(1,1_000_000),settings);
 		Match.AddPlayer(Me,"You");
-		for(var i=0;i<rivalCount;i++) Match.AddPlayer(BotPlayerIds[i],new[]{"Mira","Rowan","Jules"}[i]);
+		for(var i=0;i<rivalCount;i++) Match.AddPlayer(BotPlayerIds[i],ActiveOpponents[i].Name);
 		var (row, col) = StartingRoads.Choose(Match.Width, Match.Height, Match.Seed);
 		for (var x = 0; x < Match.Width; x++) Match.SeedStreet(x,row);
 		for (var y = 0; y < Match.Height; y++) Match.SeedStreet(col,y);
@@ -207,10 +216,12 @@ public sealed class CityGame : Component
 		else
 		{
 			Rounds = new RoundMachine(Match);
-			analytics=LocalBalanceAnalytics.Start(Match,Rounds,Guid.NewGuid(),"solo",BotPlayerIds.Take(rivalCount),SoloDifficulty.ToString());
+			var configurations=ActiveOpponents.ToDictionary(p=>BotPlayerIds[p.Seat],p=>new BotAnalyticsConfiguration(p.Difficulty.ToString(),Ai.BotStyles.ForSeat(Match.Seed,p.Seat).ToString()));
+			analytics=LocalBalanceAnalytics.Start(Match,Rounds,Guid.NewGuid(),"solo",BotPlayerIds.Take(rivalCount),string.Join(",",ActiveOpponents.Select(p=>p.Difficulty.ToString())),configurations);
 			for(var i=0;i<rivalCount;i++)
 			{
-				var bot=new Ai.Bot(BotPlayerIds[i],Match,Rounds,SoloDifficulty,unchecked(Match.Seed+i*7919));
+				var bot=new Ai.Bot(BotPlayerIds[i],Match,Rounds,ActiveOpponents[i].Difficulty,unchecked(Match.Seed+i*7919),
+					finishBuildingQuickly: () => LocalPlayer is { } human && (human.Hand.Count == 0 || BuildReady),style: Ai.BotStyles.ForSeat(Match.Seed,i));
 				bots.Add(bot); bot.ChooseContract();
 			}
 			if (settings.EnableContracts) Screens.Push(GameScreen.ContractPick);
@@ -232,7 +243,7 @@ public sealed class CityGame : Component
 	}
 	public void TogglePause()
 	{
-		if (Screens.Top==GameScreen.Settings) { Screens.Pop(); return; }
+		if (Screens.Top is GameScreen.Settings or GameScreen.GameSetup) { Screens.Pop(); return; }
 		if (Screens.Top==GameScreen.Recovery) { RequestMenu(); return; }
 		if (Screens.Top==GameScreen.Lobby) { RequestMenu(); return; }
 		if (Screens.Top == GameScreen.ContractPick) { RequestMenu(); return; }

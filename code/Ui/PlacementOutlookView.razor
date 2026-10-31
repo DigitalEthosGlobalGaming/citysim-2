@@ -1,0 +1,31 @@
+@namespace CitySim
+@using CitySim.Match
+@using CitySim.Cards
+@using CitySim.Punchboard
+@inherits Sandbox.UI.Panel
+
+<root>
+ @if(Outlook is { } outlook) {
+  <PbPanel><ChildContent>
+   <div class="outlook-title">@Card?.Name</div>
+   <div class="outlook-gain">@($"Gain {outlook.Awards.Where(a=>a.Player==Viewer).Sum(a=>a.Vp)} VP now")</div>
+   @if(outlook.Awards.Where(a=>a.Player==Viewer).Sum(a=>a.Coins) is var coins && coins!=0) { <div>@($"Gain {coins:+#;-#;0} coins now")</div> }
+   @foreach(var award in outlook.Awards.Where(a=>a.Player!=Viewer && a.Vp!=0).GroupBy(a=>a.Player)) {
+    <div class="outlook-rival">@($"{Match.Players[award.Key].Name}: {award.Sum(a=>a.Vp):+#;-#;0} VP now")</div>
+   }
+   @if(outlook.NextIncome!=0 || outlook.RemainingIncome!=0 || Card?.Effects.Any(e=>e.Hook==EffectHook.Payout)==true) {
+    <div>@($"Your income: {outlook.NextIncome:+#;-#;0} coins next payout")</div>
+    <div>@($"{outlook.RemainingIncome:+#;-#;0} coins over {outlook.PayoutsLeft} payouts left")</div>
+    <div class="outlook-note">Income estimate uses current buildings.</div>
+   }
+   @if(outlook.EndVp!=0) { <div>@($"End-game card bonuses: {outlook.EndVp:+#;-#;0} VP")</div> }
+  </ChildContent></PbPanel>
+ }
+</root>
+
+@code {
+ [Parameter] public PlacementOutlook Outlook {get;set;}
+ [Parameter] public CardDef Card {get;set;}
+ [Parameter] public MatchState Match {get;set;}
+ [Parameter] public Guid Viewer {get;set;}
+}

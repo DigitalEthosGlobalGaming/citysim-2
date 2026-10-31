@@ -1,0 +1,15 @@
+@namespace CitySim
+@using CitySim.Match
+@using CitySim.Punchboard
+@inherits MatchPanel
+
+<root class="placement-outlook">
+ @if(City.Player.Outlook is { } outlook && City.Player.HoveredValid) {
+  <PlacementOutlookView Outlook=@outlook Card=@(City.RenovationReplacement ?? City.SelectedCard) Match=@City.Match Viewer=@CityGame.Me />
+ }
+</root>
+
+@code {
+ protected override void Subscribe() {if(City?.Player!=null) City.Player.PreviewChanged+=Refresh;}
+ protected override void Unsubscribe() {if(City?.Player!=null) City.Player.PreviewChanged-=Refresh;}
+}

@@ -32,15 +32,15 @@ public static class SimulationChecks
         var machine=new RoundMachine(bidState); machine.Start(0);
         var checkpoint=machine.Capture(); machine=RoundMachine.Restore(bidState,checkpoint with { Auction=checkpoint.Auction with { Lots=Enumerable.Range(0,3).Select(i=>new AuctionLot(i,"monument",5)).ToArray() } });
         var bot=new Bot(bidderId,bidState,machine,BotDifficulty.Hard,12); bot.Update(0); bot.Update(0.7); bot.Update(0.71);
-        Check(machine.GetAuctionView(bidderId).Lots.All(l=>l.Amount==0) && !machine.GetAuctionView(bidderId).Ready,"incremental bidding evaluates one lot per update without submitting early");
-        bot.Update(0.72);
+        Check(machine.GetAuctionView(bidderId).Lots.All(l=>l.Amount==0) && !machine.GetAuctionView(bidderId).Ready,"incremental market planning yields before submitting");
+        for(var n=1;n<360 && !machine.GetAuctionView(bidderId).Ready;n++) bot.Update(0.72+n/60.0);
         Check(machine.GetAuctionView(bidderId).Lots.Count(l=>l.Amount>0)==1 && machine.GetAuctionView(bidderId).Ready,"bot purchases after all cards are scored");
         var deadlineState=new MatchState(5,5,7,new MatchSettings { EnableContracts=false,EnableGoals=false,DefaultStreets=0,DefaultCommons=0,StartingCoins=12 });
         deadlineState.AddPlayer(bidderId,"Bidder"); deadlineState.AddPlayer(otherId,"Other"); deadlineState.SeedStreet(2,2);
         var deadlineRounds=new RoundMachine(deadlineState); deadlineRounds.Start(0);
         var saved=deadlineRounds.Capture(); deadlineRounds=RoundMachine.Restore(deadlineState,saved with { Auction=saved.Auction with { Lots=Enumerable.Range(0,3).Select(i=>new AuctionLot(i,"monument",5)).ToArray() } });
         deadlineRounds.BuyMarketCard(otherId,deadlineRounds.GetAuctionView(otherId).Id,0,0); deadlineRounds.HurryAuction(otherId,deadlineRounds.GetAuctionView(otherId).Id,0);
-        var deadlineBot=new Bot(bidderId,deadlineState,deadlineRounds,BotDifficulty.Hard,12); deadlineBot.Update(0); deadlineBot.Update(deadlineState.PhaseEndsAt-0.05);
+        var deadlineBot=new Bot(bidderId,deadlineState,deadlineRounds,BotDifficulty.Hard,12); deadlineBot.Update(0); for(var n=1;n<5;n++) deadlineBot.Update(n/60.0); deadlineBot.Update(deadlineState.PhaseEndsAt-0.05);
         Check(deadlineRounds.GetAuctionView(bidderId).Lots.Count(l=>l.Amount>0)==1,"near-deadline bidding submits the best evaluated lot before expiration");
         var deadlineSnapshot=JsonSerializer.Serialize(deadlineState.Capture()); deadlineBot.Update(deadlineState.PhaseEndsAt);
         Check(deadlineSnapshot==JsonSerializer.Serialize(deadlineState.Capture()),"incremental bidder never submits at the deadline");

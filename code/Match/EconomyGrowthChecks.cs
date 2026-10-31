@@ -55,7 +55,7 @@ public static class EconomyGrowthChecks
         var lake=Board(); Add(lake,"lake",5,5); Add(lake,"house",5,4,B); Add(lake,"apartment",4,5); Add(lake,"cottage",6,5); Add(lake,"cafe",5,6); Add(lake,"house",6,6);
         var lakeEntries=Payout.Calculate(lake).Entries.Where(e=>e.Reason=="Beside Lake").ToArray();
         Check(lakeEntries.Length==3 && lakeEntries.Count(e=>e.Player==B)==1 && lakeEntries.All(e=>e.Coins==1),"Lake pays each orthogonally adjacent residential owner once, including Apartment and Cottage");
-        Check(!BoardRules.IsPark(lake.Get(5,5)) && !ParkScoring.Regions(lake).Any(),"Lake never contributes to a park region");
+        Check(BoardRules.IsPark(lake.Get(5,5)) && ParkScoring.Regions(lake).Single().Count==1,"Lake contributes one physical park tile");
         Check(FinalScoring.CardEffects(lake).Single(e=>e.Reason=="Cafe").Vp==2,"Lake supplies Cafe's park end bonus");
         Check(Payout.Calculate(lake).Entries.Any(e=>e.Source?.CardId=="cottage" && e.Reason=="Beside park"),"Lake supplies Cottage's ordinary park income as well as the Lake bonus");
         Add(lake,"lake",10,10);

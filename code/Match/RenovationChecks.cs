@@ -37,7 +37,7 @@ public static class RenovationChecks
   Check(restored.Get(2,3)==result.Cell && restored.BuildingsPlacedThisRound(a)==s.BuildingsPlacedThisRound(a),"Renovation replacement and building history survive a checkpoint");
   Check(!s.TryRenovate(a,0,1,2,3).Success,"stale event slot cannot trigger another replacement");
   var t=new MatchState(9,9,55,new MatchSettings {EnableContracts=false}); t.AddPlayer(a,"A"); t.SeedStreet(4,4); t.SetPhase(MatchPhase.Build,1,40);
-  t.GiveCard(a,"bank"); t.TryPlace(a,"bank",0,0); t.GiveCard(a,"renovation"); t.GiveCard(a,"house");
+  t.GiveCard(a,"bank"); t.TryPlace(a,"bank",0,0); t.GiveCard(a,"renovation"); t.GiveCard(a,"shop");
   Check(t.RenovationError(a,0,1,0,0)!=null,"replacement requiring a road is rejected without a neighbouring road");
   t.Discard(a,1); t.Discard(a,0);
   t.GiveCard(a,"contractor"); t.TryPlace(a,"contractor",4,3); t.GiveCard(a,"renovation"); t.GiveCard(a,"house");
@@ -45,7 +45,7 @@ public static class RenovationChecks
   Check(t.TryRenovate(a,0,1,4,3).Success && t.Players[a].Coins==prior,"removed Contractor cannot trigger on its own replacement");
   t.GiveCard(a,"park"); t.TryPlace(a,"park",1,0); t.GiveCard(a,"renovation"); t.GiveCard(a,"park");
   var vp=t.Players[a].Vp; var parkPreview=t.PreviewRenovation(a,0,1,0,0);
-  Check(parkPreview==0 && t.TryRenovate(a,0,1,0,0).Success && t.Players[a].Vp-vp==parkPreview,"park replacement from size one to two applies its zero-point preview");
+  Check(parkPreview==2 && t.TryRenovate(a,0,1,0,0).Success && t.Players[a].Vp-vp==parkPreview,"park replacement applies its base point and Nature-neighbour preview");
   var net=new MatchState(9,9,66,new MatchSettings {EnableContracts=false,EnableAuctions=false,StubBidSeconds=0,DefaultStreets=0,DefaultCommons=0});
   net.AddPlayer(a,"A"); net.AddPlayer(b,"B"); for(var x=0;x<9;x++) net.SeedStreet(x,4);
   var rounds=new RoundMachine(net); rounds.Start(0); rounds.Tick(0);

@@ -55,16 +55,21 @@ public sealed class Feedback : Component
   var position=game.Grid.CellToWorld(cell.X,cell.Y);
   TabletopAudio.Place(1+streak*0.025f);
   if (effects.Park==null) Shake(Preset(FeedbackTier.Medium).Trauma);
-  var vp=effects.Awards.Where(a=>a.Player==cell.Owner && !a.Reason.Contains("park",StringComparison.OrdinalIgnoreCase)).Sum(a=>a.Vp);
+  var vp=effects.Awards.Where(a=>a.Player==cell.Owner && !(effects.Park?.Awards.Contains(a) ?? false)).Sum(a=>a.Vp);
   var coins=effects.Awards.Where(a=>a.Player==cell.Owner).Sum(a=>a.Coins);
   if (vp != 0) Cue?.Invoke(new($"{vp:+#;-#} VP",position,FeedbackTier.Small,PlacementVp:true));
   if (coins != 0) Cue?.Invoke(new($"{coins:+#;-#} 🪙",position+Vector3.Up*15,FeedbackTier.Small));
+  foreach(var award in effects.Awards.Where(a=>a.Player!=cell.Owner && a.Vp!=0).GroupBy(a=>a.Player))
+  {
+   var source=award.First().Source ?? cell;
+   Cue?.Invoke(new($"{award.Sum(a=>a.Vp):+#;-#} VP",game.Grid.CellToWorld(source.X,source.Y),FeedbackTier.Small,PlacementVp:true));
+  }
  }
  void Park(ParkScoreResult park)
  {
   var position=game.Grid.CellToWorld(park.Added.X,park.Added.Y);
   Shake(Math.Min(0.3f,0.12f+park.ScoringSize*0.015f)); Cue?.Invoke(new("",position,FeedbackTier.Medium,Region:park.Cells));
-  var index=0; foreach (var award in park.Awards) { var cell=park.Cells.First(c=>c.Owner==award.Player); Cue?.Invoke(new($"+{award.Vp} VP · {match.Players[award.Player].Name}",game.Grid.CellToWorld(cell.X,cell.Y)+Vector3.Up*(index++*20),FeedbackTier.Small,PlacementVp:true)); }
+  var index=0; foreach (var award in park.Awards.GroupBy(a=>a.Player)) Cue?.Invoke(new($"{award.Sum(a=>a.Vp):+#;-#} VP",position+Vector3.Up*(index++*20),FeedbackTier.Small,PlacementVp:true));
  }
  void Grown(GrowthResult result) { Sfx.Play("sounds/feedback/chime.sound",game.Grid.CellToWorld(result.After.X,result.After.Y)); Cue?.Invoke(new("🌳 Forest grown",game.Grid.CellToWorld(result.After.X,result.After.Y)+Vector3.Up*30,FeedbackTier.Medium)); }
  void EventPlayed(CardEventResult result)

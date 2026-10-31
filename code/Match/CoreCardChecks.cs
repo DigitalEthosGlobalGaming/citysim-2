@@ -29,19 +29,19 @@ public static class CoreCardChecks
 		var preview = PlacementScoring.Preview(park,"fountain",2,1,A);
 		var beforeA = park.Players[A].Vp; var beforeB = park.Players[B].Vp;
 		var fountain = Place(park,A,"fountain",2,1);
-		Check(preview == 1 && park.Players[A].Vp-beforeA == 1 && park.Players[B].Vp == beforeB,"Fountain joins distinct regions and awards only its owner the marginal point");
-		Check(ParkScoring.Region(park,fountain).Count == 3 && ParkScoring.Region(park,fountain).Sum(ParkScoring.SizeOf) == 4,"Fountain weighs two but occupies one park tile");
+		Check(preview == 3 && park.Players[A].Vp-beforeA == 3 && park.Players[B].Vp == beforeB,"Fountain beside two park regions awards its owner two base points and one Nature bonus");
+		Check(ParkScoring.Region(park,fountain).Count == 3 && ParkScoring.Region(park,fountain).Sum(ParkScoring.SizeOf) == 3,"Fountain occupies one park tile");
 		Place(park,A,"park",4,2); Check(ParkScoring.Regions(park).Count == 2,"diagonal park tiles do not connect");
 		var cap = Board(15); var deltas = new List<int>();
 		for (var x = 0; x < 11; x++) { var old = cap.Players[A].Vp; Place(cap,A,"park",x,0); deltas.Add(cap.Players[A].Vp-old); }
-		Check(deltas[0] == 1 && deltas[1] == 0 && deltas[2] == 1 && deltas[9] == 0 && deltas[10] == 0 && cap.Players[A].Vp == 5,"park extensions score marginally through and beyond the cap");
+		Check(deltas[0] == 1 && deltas.Skip(1).All(d=>d==2) && cap.Players[A].Vp == 21,"every park extension earns base VP and a single Nature bonus without a cap");
 		var loop = Board(); foreach (var point in new[] {(1,1),(1,2),(2,2),(3,2),(3,1)}) Place(loop,A,"park",point.Item1,point.Item2);
 		var loopBefore = loop.Players[A].Vp; Place(loop,A,"park",2,1);
-		Check(loop.Players[A].Vp == loopBefore,"a bridge touching the same region twice counts it once");
+		Check(loop.Players[A].Vp == loopBefore+2,"a bridge touching the same region twice receives only one Nature bonus");
 		var cappedGrowth = Board(15); Place(cappedGrowth,A,"sapling",0,0); for (var x = 1; x < 10; x++) Place(cappedGrowth,B,"park",x,0);
 		var growthA = cappedGrowth.Players[A].Vp; var growthB = cappedGrowth.Players[B].Vp;
 		for (var round = 1; round <= 2; round++) { cappedGrowth.SetPhase(MatchPhase.Payout,round,round*40); Payout.Apply(cappedGrowth,Payout.Calculate(cappedGrowth)); }
-		Check(cappedGrowth.Players[A].Vp == growthA && cappedGrowth.Players[B].Vp == growthB,"growth at the cap awards neither owner");
+		Check(cappedGrowth.Players[A].Vp == growthA+2 && cappedGrowth.Players[B].Vp == growthB,"growth in a large park awards only the Sapling owner two VP");
 
 		var sapling = Board(); var grownEvents = 0; sapling.Events.BuildingGrown += _ => grownEvents++;
 		Place(sapling,A,"sapling",1,1);
@@ -50,10 +50,10 @@ public static class CoreCardChecks
 		var coinsAfterFirst = sapling.Players[A].Coins;
 		Check(!Payout.Apply(sapling,first) && sapling.Players[A].Coins == coinsAfterFirst && sapling.Get(1,1).Age == 1,"duplicate payout cannot add coins or advance growth");
 		sapling.SetPhase(MatchPhase.Payout,2,80); Payout.Apply(sapling,Payout.Calculate(sapling));
-		Check(sapling.Get(1,1).Age == 2 && Growth.IsMature(sapling.Get(1,1)) && ParkScoring.SizeOf(sapling.Get(1,1)) == 3,"Sapling becomes a size-three Forest after exactly two payouts");
-		Check(sapling.Players[A].Vp == 2 && grownEvents == 1,"growth scores the park once");
+		Check(sapling.Get(1,1).Age == 2 && Growth.IsMature(sapling.Get(1,1)) && ParkScoring.SizeOf(sapling.Get(1,1)) == 1,"Sapling becomes a Forest after exactly two payouts and remains one tile");
+		Check(sapling.Players[A].Vp == 3 && grownEvents == 1,"growth awards two VP once");
 		sapling.SetPhase(MatchPhase.Payout,3,120); Payout.Apply(sapling,Payout.Calculate(sapling));
-		Check(grownEvents == 1 && sapling.Players[A].Vp == 2 && !CardLibrary.TryGet("forest",out _),"mature Forest neither regrows nor becomes a new deck card");
+		Check(grownEvents == 1 && sapling.Players[A].Vp == 3 && !CardLibrary.TryGet("forest",out _),"mature Forest neither regrows nor becomes a new deck card");
 
 		var guild = Board(); Place(guild,A,"gardeners-guild",0,0);
 		var purse = guild.Players[A].Coins;
@@ -105,11 +105,11 @@ public static class CoreCardChecks
 		Place(scored,A,"park",4,1); Place(scored,B,"park",4,0); Place(scored,A,"fountain",5,1);
 		Place(scored,A,"museum",6,2); Place(scored,A,"monument",6,1); Place(scored,A,"factory",2,4); Place(scored,A,"street",3,5);
 		Place(scored,B,"house",2,5); Place(scored,A,"house",1,4); Place(scored,A,"bank",7,0); Place(scored,A,"chamber-of-commerce",7,2); Place(scored,A,"town-hall",5,2); Place(scored,A,"architects-studio",0,2);
-		Check(scored.Players[A].Vp == 2 && scored.Players[B].Vp == 1,"known final-score fixture has exact earned VP before settlement");
+		Check(scored.Players[A].Vp == 9 && scored.Players[B].Vp == 5,"known final-score fixture includes one-time road and fixed park VP");
 		scored.SetPhase(MatchPhase.Payout,1,40); Payout.Apply(scored,Payout.Calculate(scored));
 		Check(scored.Players[A].Coins > 0 && scored.Players[B].Coins > 0,"known fixture pays income");
 		var final = FinalScoring.Calculate(scored); var scoreA = final.Players.Single(p => p.Player == A); var scoreB = final.Players.Single(p => p.Player == B);
-		Check(scoreA.TotalVp == 32 && scoreB.TotalVp == 4,"explained final score matches prototype income and competition fixture");
+		Check(scoreA.TotalVp == 38 && scoreB.TotalVp == 8,"explained final score matches placement, income and competition fixture");
 		Check(scoreA.Lines.Single(l => l.Reason == "Museum").Vp == 4 && scoreA.Lines.Single(l => l.Reason == "Monument").Vp == 6 && scoreA.Lines.Single(l => l.Reason == "Cafe").Vp == 2,"Museum excludes itself; Monument and park-side Cafe end bonuses score");
 		Check(scoreA.Lines.Where(l => l.Reason == "Factory pollution").Sum(l => l.Vp) == -1 && scoreB.Lines.Where(l => l.Reason == "Factory pollution").Sum(l => l.Vp) == -1,"pollution affects the factory owner's houses as well as rivals");
 		Check(scoreA.Lines.Single(l => l.Reason == "Full House").Vp == 2 && scoreB.Lines.Single(l => l.Reason == "Full House").Vp == 2,"tied competitive bonuses split their point pool");
@@ -137,7 +137,7 @@ public static class CoreCardChecks
 		var museumCap = Board(); Place(museumCap,A,"museum",1,4); for (var x = 0; x < 9; x++) Place(museumCap,A,"fountain",x,0);
 		Check(FinalScoring.Calculate(museumCap).Players.Single(p => p.Player == A).Lines.Single(l => l.Reason == "Museum").Vp == 8,"Museum end points stop at the data cap");
 		var cottageHome = Board(); Place(cottageHome,A,"cottage",1,4); Place(cottageHome,B,"house",2,4); Place(cottageHome,A,"cafe",0,4); cottageHome.UpdateCell(new(1,2,"street",A,100,1)); Place(cottageHome,A,"factory",1,3);
-		Check(cottageHome.Players[B].Vp == 1 && Payout.Calculate(cottageHome).Entries.Any(e => e.Source?.CardId == "cafe" && e.Coins > 0),"Cottage remains a Home for adjacency and Cafe effects");
+		Check(cottageHome.Players[B].Vp == 2 && Payout.Calculate(cottageHome).Entries.Any(e => e.Source?.CardId == "cafe" && e.Coins > 0),"Cottage remains a Home for adjacency and Cafe effects alongside the road bonus");
 		Check(FinalScoring.Calculate(cottageHome).Players.Single(p => p.Player == A).Lines.Any(l => l.Reason == "Factory pollution" && l.Vp == -1),"Cottage is affected by pollution as a Home building");
 		var empty = Board(); var emptyScore = FinalScoring.Calculate(empty);
 		Check(emptyScore.Players.All(p => p.Lines.Where(l => l.Reason != "Spare coins" && l.Reason != "Earned during match").All(l => l.Vp == 0)),"all-zero measures do not award free competitive bonuses");

@@ -10,12 +10,8 @@ public sealed record ParkScoreResult( BoardCell Added, int Size, int ScoringSize
 
 public static class ParkScoring
 {
-	public static int SizeOf(BoardCell cell)
-	{
-		var card = CardLibrary.Get(cell.CardId);
-		var growth = card.Effects.FirstOrDefault(e => e.Hook == EffectHook.Growth && e.Rule == "forest");
-		return growth != null && cell.Age >= growth.Cap ? growth.Amount : card.ParkSize;
-	}
+	/// <summary>Every park card is one physical tile, including Fountain, Lake and mature Forest.</summary>
+	public static int SizeOf(BoardCell cell) => BoardRules.IsPark(cell) ? 1:0;
 	public static IReadOnlyList<BoardCell> Region(MatchState state,BoardCell origin)
 	{
 		var board = state.Cells().ToDictionary(c => (c.X,c.Y));
@@ -35,17 +31,28 @@ public static class ParkScoring
 	public static ParkScoreResult OnTileAdded(MatchState state,BoardCell added,BoardCell before = null)
 	{
 		var cells = Region(state,added);
-		var size = cells.Sum(SizeOf); var scoring = Math.Min(size,state.Settings.ParkScoringCap);
-		// The resulting region already contains each joined component once. Replace the
-		// added tile's size with its old size to obtain the pre-addition total.
-		var previous = size - SizeOf(added) + (before == null ? 0 : SizeOf(before));
-		var divisor = state.Settings.ParkPlacerDivisor;
-		int Score(int n) => (Math.Min(n,state.Settings.ParkScoringCap)+divisor-1)/divisor;
-		var points = Math.Max(0,Score(size)-Score(previous));
+		var card=CardLibrary.Get(added.CardId);
 		var awards = new List<RuleAward>();
-		if (points > 0 && state.Players.ContainsKey(added.Owner))
-			awards.Add(new(added.Owner,points,0,"Park addition",added));
-		return new(added,size,scoring,cells,awards.AsReadOnly());
+		if (state.Players.ContainsKey(added.Owner))
+		{
+			if (before!=null)
+			{
+				var growth=card.Effects.FirstOrDefault(e=>e.Hook==EffectHook.Growth && e.Rule=="forest");
+				if(growth!=null && before.Age<growth.Cap && added.Age>=growth.Cap)
+					awards.Add(new(added.Owner,growth.Amount,0,"Forest growth",added));
+			}
+			else
+			{
+				var points=card.Effects.Where(e=>e.Hook==EffectHook.Place && e.Rule=="park-score").Sum(e=>e.Amount);
+				if(points>0) awards.Add(new(added.Owner,points,0,"Park placement",added));
+				if(state.Neighbours(added.X,added.Y).Any(c=>CardLibrary.Get(c.CardId).Tags.HasFlag(Tag.Nature)))
+				{
+					var bonus=card.Effects.Where(e=>e.Hook==EffectHook.Place && e.Rule=="beside-nature-vp").Sum(e=>e.Amount);
+					if(bonus>0) awards.Add(new(added.Owner,bonus,0,"Beside Nature",added));
+				}
+			}
+		}
+		return new(added,cells.Count,cells.Count,cells,awards.AsReadOnly());
 	}
 	public static IReadOnlyList<IReadOnlyList<BoardCell>> Regions(MatchState state)
 	{

@@ -1,0 +1,1430 @@
+{
+  "Version": "2026-10-30.4",
+  "RequiredRoads": 15,
+  "BuilderVp": 1,
+  "StreetOwnerVp": 1,
+  "Preview": {
+    "Awards": [
+      {
+        "Player": "11111111-0000-0000-0000-000000000001",
+        "Vp": 1,
+        "Coins": 0,
+        "Reason": "Beside road",
+        "Source": {
+          "X": 4,
+          "Y": 4,
+          "CardId": "house",
+          "Owner": "11111111-0000-0000-0000-000000000001",
+          "Order": 3,
+          "PlacedRound": 1,
+          "Age": 0
+        }
+      },
+      {
+        "Player": "22222222-0000-0000-0000-000000000002",
+        "Vp": 1,
+        "Coins": 0,
+        "Reason": "Street · building placed",
+        "Source": {
+          "X": 4,
+          "Y": 3,
+          "CardId": "street",
+          "Owner": "22222222-0000-0000-0000-000000000002",
+          "Order": 2,
+          "PlacedRound": 1,
+          "Age": 0
+        }
+      }
+    ],
+    "NextIncome": 0,
+    "RemainingIncome": 0,
+    "PayoutsLeft": 8,
+    "EndVp": 0
+  },
+  "FountainVp": 3,
+  "FountainPreview": {
+    "Awards": [
+      {
+        "Player": "11111111-0000-0000-0000-000000000001",
+        "Vp": 2,
+        "Coins": 0,
+        "Reason": "Park placement",
+        "Source": {
+          "X": 2,
+          "Y": 3,
+          "CardId": "fountain",
+          "Owner": "11111111-0000-0000-0000-000000000001",
+          "Order": 2,
+          "PlacedRound": 1,
+          "Age": 0
+        }
+      },
+      {
+        "Player": "11111111-0000-0000-0000-000000000001",
+        "Vp": 1,
+        "Coins": 0,
+        "Reason": "Beside Nature",
+        "Source": {
+          "X": 2,
+          "Y": 3,
+          "CardId": "fountain",
+          "Owner": "11111111-0000-0000-0000-000000000001",
+          "Order": 2,
+          "PlacedRound": 1,
+          "Age": 0
+        }
+      }
+    ],
+    "NextIncome": 0,
+    "RemainingIncome": 0,
+    "PayoutsLeft": 8,
+    "EndVp": 0
+  },
+  "Cards": [
+    {
+      "Id": "street",
+      "Name": "Street",
+      "Type": "Road",
+      "Tags": "None",
+      "Rarity": "Common",
+      "NeedsRoad": false,
+      "Icon": "\uD83D\uDEE3️",
+      "Rules": "Gain 1 VP when a building is placed beside your Streets. Once per building per Street owner.",
+      "Weight": 14,
+      "Effects": [
+        {
+          "Hook": "OwnerPlacedCard",
+          "Rule": "street-building-vp",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 0
+    },
+    {
+      "Id": "house",
+      "Name": "House",
+      "Type": "Residential",
+      "Tags": "Home",
+      "Rarity": "Common",
+      "NeedsRoad": false,
+      "Icon": "\uD83C\uDFE0",
+      "Rules": "Place: +1 VP per adjacent Home building, plus 1 VP if beside a road. Payout: +1 coin if a Shop is within 2 tiles.",
+      "Weight": 10,
+      "Effects": [
+        {
+          "Hook": "Place",
+          "Rule": "beside-road-vp",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        },
+        {
+          "Hook": "Payout",
+          "Rule": "shop-condition",
+          "Amount": 1,
+          "Range": 2,
+          "Cap": 0,
+          "Divisor": 1
+        },
+        {
+          "Hook": "Place",
+          "Rule": "adjacent-home-tag-vp",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 0
+    },
+    {
+      "Id": "cottage",
+      "Name": "Cottage",
+      "Type": "Residential",
+      "Tags": "Home",
+      "Rarity": "Common",
+      "NeedsRoad": false,
+      "Icon": "\uD83C\uDFE1",
+      "Rules": "Place: +1 VP per adjacent park tile or Lake. Payout: +1 coin if adjacent to a park tile or Lake.",
+      "Weight": 4,
+      "Effects": [
+        {
+          "Hook": "Payout",
+          "Rule": "beside-park-coins",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        },
+        {
+          "Hook": "Place",
+          "Rule": "adjacent-park-vp",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 0
+    },
+    {
+      "Id": "shop",
+      "Name": "Shop",
+      "Type": "Commerce",
+      "Tags": "Trade",
+      "Rarity": "Common",
+      "NeedsRoad": true,
+      "Icon": "\uD83C\uDFEA",
+      "Rules": "Payout: +1 coin per Home building within 2 tiles, max 3.",
+      "Weight": 6,
+      "Effects": [
+        {
+          "Hook": "Payout",
+          "Rule": "nearby-any-homes",
+          "Amount": 1,
+          "Range": 2,
+          "Cap": 3,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 0
+    },
+    {
+      "Id": "farm",
+      "Name": "Farm",
+      "Type": "Industry",
+      "Tags": "Nature",
+      "Rarity": "Common",
+      "NeedsRoad": false,
+      "Icon": "\uD83C\uDF3E",
+      "Rules": "Payout: +1 coin if adjacent to another Farm or Orchard.",
+      "Weight": 6,
+      "Effects": [
+        {
+          "Hook": "Payout",
+          "Rule": "adjacent-farm-condition",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 0
+    },
+    {
+      "Id": "park",
+      "Name": "Park",
+      "Type": "Green",
+      "Tags": "Nature",
+      "Rarity": "Common",
+      "NeedsRoad": false,
+      "Icon": "\uD83C\uDF33",
+      "Rules": "Place: +1 VP, plus 1 VP if beside a Nature card.",
+      "Weight": 8,
+      "Effects": [
+        {
+          "Hook": "Place",
+          "Rule": "park-score",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        },
+        {
+          "Hook": "Place",
+          "Rule": "beside-nature-vp",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 1
+    },
+    {
+      "Id": "wild-garden",
+      "Name": "Wild Garden",
+      "Type": "Green",
+      "Tags": "Nature",
+      "Rarity": "Common",
+      "NeedsRoad": false,
+      "Icon": "\uD83C\uDF3F",
+      "Rules": "Place: +1 VP, plus 1 VP if beside a Nature card.",
+      "Weight": 3,
+      "Effects": [
+        {
+          "Hook": "Place",
+          "Rule": "park-score",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        },
+        {
+          "Hook": "Place",
+          "Rule": "beside-nature-vp",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 1
+    },
+    {
+      "Id": "grant",
+      "Name": "Grant",
+      "Type": "Event",
+      "Tags": "None",
+      "Rarity": "Common",
+      "NeedsRoad": false,
+      "Icon": "\uD83E\uDE99",
+      "Rules": "Play: gain 4 coins, then discard this card.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "Place",
+          "Rule": "coins",
+          "Amount": 4,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 0
+    },
+    {
+      "Id": "avenue",
+      "Name": "Avenue",
+      "Type": "Road",
+      "Tags": "None",
+      "Rarity": "Uncommon",
+      "NeedsRoad": false,
+      "Icon": "\uD83D\uDEE3️",
+      "Rules": "Counts as 2 road tiles for Longest Road. Payout: +1 coin if adjacent to at least 2 buildings.",
+      "Weight": 3,
+      "Effects": [
+        {
+          "Hook": "Payout",
+          "Rule": "avenue-buildings",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 2,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 0
+    },
+    {
+      "Id": "roundabout",
+      "Name": "Roundabout",
+      "Type": "Road",
+      "Tags": "None",
+      "Rarity": "Uncommon",
+      "NeedsRoad": false,
+      "Icon": "\uD83D\uDD04",
+      "Rules": "Gain 1 VP whenever anyone places an adjacent building.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "OwnerPlacedCard",
+          "Rule": "roundabout-vp",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 0
+    },
+    {
+      "Id": "orchard",
+      "Name": "Orchard",
+      "Type": "Industry",
+      "Tags": "Nature",
+      "Rarity": "Uncommon",
+      "NeedsRoad": false,
+      "Icon": "\uD83C\uDF4E",
+      "Rules": "Place: +1 VP, plus 1 VP if beside a Nature card. Payout: +1 coin if adjacent to a Farm or another Orchard.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "Payout",
+          "Rule": "adjacent-farm-condition",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        },
+        {
+          "Hook": "Place",
+          "Rule": "park-score",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        },
+        {
+          "Hook": "Place",
+          "Rule": "beside-nature-vp",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 1
+    },
+    {
+      "Id": "lake",
+      "Name": "Lake",
+      "Type": "Green",
+      "Tags": "Nature",
+      "Rarity": "Uncommon",
+      "NeedsRoad": false,
+      "Icon": "\uD83C\uDF0A",
+      "Rules": "Place: +1 VP, plus 1 VP if beside a Nature card. Payout: each adjacent Home building earns its owner 1 coin. Counts as a park tile.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "Place",
+          "Rule": "park-score",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        },
+        {
+          "Hook": "Place",
+          "Rule": "beside-nature-vp",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        },
+        {
+          "Hook": "Payout",
+          "Rule": "lake-houses",
+          "Amount": 1,
+          "Range": 1,
+          "Cap": 0,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 1
+    },
+    {
+      "Id": "vineyard",
+      "Name": "Vineyard",
+      "Type": "Growth",
+      "Tags": "Trade, Nature",
+      "Rarity": "Uncommon",
+      "NeedsRoad": false,
+      "Icon": "\uD83C\uDF47",
+      "Rules": "Payout: 0 coins for the first 2 payouts, then +3 coins each payout.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "Payout",
+          "Rule": "delayed-coins",
+          "Amount": 3,
+          "Range": 0,
+          "Cap": 2,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 0
+    },
+    {
+      "Id": "startup",
+      "Name": "Startup",
+      "Type": "Growth",
+      "Tags": "Trade",
+      "Rarity": "Rare",
+      "NeedsRoad": false,
+      "Icon": "\uD83D\uDCA1",
+      "Rules": "Payout: +1 coin, then +2 coins, then +3 coins each payout.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "Payout",
+          "Rule": "ramping-coins",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 3,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 0
+    },
+    {
+      "Id": "market",
+      "Name": "Market",
+      "Type": "Commerce",
+      "Tags": "Trade",
+      "Rarity": "Rare",
+      "NeedsRoad": true,
+      "Icon": "\uD83C\uDFEC",
+      "Rules": "Payout: +1 coin per Shop you own within 2 tiles, max 4.",
+      "Weight": 3,
+      "Effects": [
+        {
+          "Hook": "Payout",
+          "Rule": "nearby-shops",
+          "Amount": 1,
+          "Range": 2,
+          "Cap": 4,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": true,
+      "OwnershipLimit": 0,
+      "ParkSize": 0
+    },
+    {
+      "Id": "contractor",
+      "Name": "Contractor",
+      "Type": "Civic",
+      "Tags": "Industry, Civic",
+      "Rarity": "Rare",
+      "NeedsRoad": false,
+      "Icon": "\uD83D\uDC77",
+      "Rules": "Gain 1 coin when you build a House or Shop, max 2 per round.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "OwnerPlacedCard",
+          "Rule": "contractor-coins",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 2,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": true,
+      "OwnershipLimit": 1,
+      "ParkSize": 0
+    },
+    {
+      "Id": "apartment",
+      "Name": "Apartment",
+      "Type": "Residential",
+      "Tags": "Home",
+      "Rarity": "Uncommon",
+      "NeedsRoad": true,
+      "Icon": "\uD83C\uDFE2",
+      "Rules": "Place: +2 VP per adjacent Home building. Payout: +2 coins if a Shop is within 2 tiles.",
+      "Weight": 3,
+      "Effects": [
+        {
+          "Hook": "Payout",
+          "Rule": "shop-condition",
+          "Amount": 2,
+          "Range": 2,
+          "Cap": 0,
+          "Divisor": 1
+        },
+        {
+          "Hook": "Place",
+          "Rule": "adjacent-home-tag-vp",
+          "Amount": 2,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 0
+    },
+    {
+      "Id": "cafe",
+      "Name": "Cafe",
+      "Type": "Commerce",
+      "Tags": "Trade, Culture",
+      "Rarity": "Uncommon",
+      "NeedsRoad": false,
+      "Icon": "☕",
+      "Rules": "Place: +1 VP if beside a road. Payout: +1 coin per adjacent Home building or Shop, max 3. End: +2 VP if adjacent to a park tile or Lake.",
+      "Weight": 4,
+      "Effects": [
+        {
+          "Hook": "Place",
+          "Rule": "beside-road-vp",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        },
+        {
+          "Hook": "Payout",
+          "Rule": "cafe-neighbours",
+          "Amount": 1,
+          "Range": 1,
+          "Cap": 3,
+          "Divisor": 1
+        },
+        {
+          "Hook": "EndGame",
+          "Rule": "beside-park-vp",
+          "Amount": 2,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 0
+    },
+    {
+      "Id": "fountain",
+      "Name": "Fountain",
+      "Type": "Green",
+      "Tags": "Nature, Culture",
+      "Rarity": "Uncommon",
+      "NeedsRoad": false,
+      "Icon": "⛲",
+      "Rules": "Place: +2 VP, plus 1 VP if beside a Nature card.",
+      "Weight": 3,
+      "Effects": [
+        {
+          "Hook": "Place",
+          "Rule": "park-score",
+          "Amount": 2,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        },
+        {
+          "Hook": "Place",
+          "Rule": "beside-nature-vp",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 1
+    },
+    {
+      "Id": "factory",
+      "Name": "Factory",
+      "Type": "Industry",
+      "Tags": "Industry",
+      "Rarity": "Uncommon",
+      "NeedsRoad": true,
+      "Icon": "\uD83C\uDFED",
+      "Rules": "Payout: +2 coins. End: each adjacent Home building or Cafe loses its owner 1 VP, including yours.",
+      "Weight": 3,
+      "Effects": [
+        {
+          "Hook": "Payout",
+          "Rule": "coins",
+          "Amount": 2,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        },
+        {
+          "Hook": "EndGame",
+          "Rule": "pollution",
+          "Amount": 1,
+          "Range": 1,
+          "Cap": 0,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 0
+    },
+    {
+      "Id": "sapling",
+      "Name": "Sapling",
+      "Type": "Growth",
+      "Tags": "Nature",
+      "Rarity": "Uncommon",
+      "NeedsRoad": false,
+      "Icon": "\uD83C\uDF31",
+      "Rules": "Place: +1 VP, plus 1 VP if beside a Nature card. Growth: after its second payout, grows into a Forest and earns 2 VP. Counts as one park tile.",
+      "Weight": 3,
+      "Effects": [
+        {
+          "Hook": "Growth",
+          "Rule": "forest",
+          "Amount": 2,
+          "Range": 0,
+          "Cap": 2,
+          "Divisor": 1
+        },
+        {
+          "Hook": "Place",
+          "Rule": "park-score",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        },
+        {
+          "Hook": "Place",
+          "Rule": "beside-nature-vp",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 1
+    },
+    {
+      "Id": "bank",
+      "Name": "Bank",
+      "Type": "Civic",
+      "Tags": "Trade",
+      "Rarity": "Rare",
+      "NeedsRoad": false,
+      "Icon": "\uD83C\uDFE6",
+      "Rules": "Payout: +2 coins.",
+      "Weight": 4,
+      "Effects": [
+        {
+          "Hook": "Payout",
+          "Rule": "coins",
+          "Amount": 2,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": true,
+      "OwnershipLimit": 3,
+      "ParkSize": 0
+    },
+    {
+      "Id": "town-hall",
+      "Name": "Town Hall",
+      "Type": "Civic",
+      "Tags": "Civic",
+      "Rarity": "Rare",
+      "NeedsRoad": true,
+      "Icon": "\uD83C\uDFDB️",
+      "Rules": "Payout: +2 coins if you own at least 3 Civic buildings, including this.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "Payout",
+          "Rule": "civic-threshold",
+          "Amount": 2,
+          "Range": 0,
+          "Cap": 3,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": true,
+      "OwnershipLimit": 1,
+      "ParkSize": 0
+    },
+    {
+      "Id": "museum",
+      "Name": "Museum",
+      "Type": "Civic",
+      "Tags": "Culture, Civic",
+      "Rarity": "Rare",
+      "NeedsRoad": false,
+      "Icon": "\uD83D\uDDBC️",
+      "Rules": "Place: +1 VP if beside a road. End: +1 VP per other Culture building you own, max 8.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "Place",
+          "Rule": "beside-road-vp",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        },
+        {
+          "Hook": "EndGame",
+          "Rule": "other-culture-vp",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 8,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": true,
+      "OwnershipLimit": 1,
+      "ParkSize": 0
+    },
+    {
+      "Id": "chamber-of-commerce",
+      "Name": "Chamber of Commerce",
+      "Type": "Civic",
+      "Tags": "Trade, Civic",
+      "Rarity": "Rare",
+      "NeedsRoad": true,
+      "Icon": "\uD83E\uDD1D",
+      "Rules": "Payout: +1 coin per 2 Trade buildings you own, including this, max 4 coins.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "Payout",
+          "Rule": "trade-pairs",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 4,
+          "Divisor": 2
+        }
+      ],
+      "EffectTray": true,
+      "OwnershipLimit": 1,
+      "ParkSize": 0
+    },
+    {
+      "Id": "warehouse",
+      "Name": "Warehouse",
+      "Type": "Civic",
+      "Tags": "Industry",
+      "Rarity": "Uncommon",
+      "NeedsRoad": true,
+      "Icon": "\uD83D\uDCE6",
+      "Rules": "Round start: gain a Street if your hand has room. Gain 1 coin for your first Street each round.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "RoundStart",
+          "Rule": "builder-street",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        },
+        {
+          "Hook": "OwnerPlacedCard",
+          "Rule": "warehouse-street-coins",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 1,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": true,
+      "OwnershipLimit": 1,
+      "ParkSize": 0
+    },
+    {
+      "Id": "builders-yard",
+      "Name": "Builders' Yard",
+      "Type": "Civic",
+      "Tags": "Industry",
+      "Rarity": "Rare",
+      "NeedsRoad": true,
+      "Icon": "\uD83C\uDFD7️",
+      "Rules": "Round start: gain a Street or random Common card if your hand has room. Choose before the round starts.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "RoundStart",
+          "Rule": "builder-choice",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": true,
+      "OwnershipLimit": 1,
+      "ParkSize": 0
+    },
+    {
+      "Id": "hospital",
+      "Name": "Hospital",
+      "Type": "Civic",
+      "Tags": "Civic",
+      "Rarity": "Rare",
+      "NeedsRoad": false,
+      "Icon": "\uD83C\uDFE5",
+      "Rules": "Place: +1 VP if beside a road. Each round: one random Home building has an emergency. The nearest Hospital within 4 tiles earns its owner 1 VP. Ties go to the Hospital built first.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "Place",
+          "Rule": "beside-road-vp",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        },
+        {
+          "Hook": "OwnerPlacedCard",
+          "Rule": "hospital-emergency",
+          "Amount": 1,
+          "Range": 4,
+          "Cap": 0,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": true,
+      "OwnershipLimit": 1,
+      "ParkSize": 0
+    },
+    {
+      "Id": "tourist-office",
+      "Name": "Tourist Office",
+      "Type": "Civic",
+      "Tags": "Culture, Civic",
+      "Rarity": "Rare",
+      "NeedsRoad": false,
+      "Icon": "\uD83D\uDDFA️",
+      "Rules": "Place: +1 VP if beside a road. Payout: +1 coin per Culture building you own, including this, max 3.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "Place",
+          "Rule": "beside-road-vp",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        },
+        {
+          "Hook": "Payout",
+          "Rule": "culture-count",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 3,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": true,
+      "OwnershipLimit": 1,
+      "ParkSize": 0
+    },
+    {
+      "Id": "tax-office",
+      "Name": "Tax Office",
+      "Type": "Civic",
+      "Tags": "Civic",
+      "Rarity": "Uncommon",
+      "NeedsRoad": false,
+      "Icon": "\uD83E\uDDFE",
+      "Rules": "Payout: +1 coin per 4 Home buildings you own.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "Payout",
+          "Rule": "house-groups",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 4
+        }
+      ],
+      "EffectTray": true,
+      "OwnershipLimit": 1,
+      "ParkSize": 0
+    },
+    {
+      "Id": "depot",
+      "Name": "Depot",
+      "Type": "Civic",
+      "Tags": "Industry",
+      "Rarity": "Uncommon",
+      "NeedsRoad": true,
+      "Icon": "\uD83D\uDE89",
+      "Rules": "Payout: +1 coin per 5 road tiles you own, max 4 coins.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "Payout",
+          "Rule": "road-groups",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 4,
+          "Divisor": 5
+        }
+      ],
+      "EffectTray": true,
+      "OwnershipLimit": 1,
+      "ParkSize": 0
+    },
+    {
+      "Id": "school",
+      "Name": "School",
+      "Type": "Civic",
+      "Tags": "Culture, Civic",
+      "Rarity": "Uncommon",
+      "NeedsRoad": false,
+      "Icon": "\uD83C\uDFEB",
+      "Rules": "Place: +1 VP if beside a road. Payout: +1 coin per Home building you own within 2 tiles, max 4.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "Place",
+          "Rule": "beside-road-vp",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        },
+        {
+          "Hook": "Payout",
+          "Rule": "nearby-homes",
+          "Amount": 1,
+          "Range": 2,
+          "Cap": 4,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": true,
+      "OwnershipLimit": 1,
+      "ParkSize": 0
+    },
+    {
+      "Id": "granary",
+      "Name": "Granary",
+      "Type": "Civic",
+      "Tags": "Civic",
+      "Rarity": "Uncommon",
+      "NeedsRoad": false,
+      "Icon": "\uD83C\uDF3E",
+      "Rules": "Payout: +1 coin per Farm or Orchard you own, max 3.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "Payout",
+          "Rule": "owned-farms",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 3,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": true,
+      "OwnershipLimit": 1,
+      "ParkSize": 0
+    },
+    {
+      "Id": "stadium",
+      "Name": "Stadium",
+      "Type": "Landmark",
+      "Tags": "Culture, Civic",
+      "Rarity": "Rare",
+      "NeedsRoad": true,
+      "Icon": "\uD83C\uDFDF️",
+      "Rules": "Payout: each adjacent Home building earns its owner 1 coin; each adjacent Cafe loses its owner 1 coin. End: +1 VP per adjacent Home building.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "Payout",
+          "Rule": "stadium-neighbours",
+          "Amount": 1,
+          "Range": 1,
+          "Cap": 0,
+          "Divisor": 1
+        },
+        {
+          "Hook": "EndGame",
+          "Rule": "stadium-house-vp",
+          "Amount": 1,
+          "Range": 1,
+          "Cap": 0,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 0
+    },
+    {
+      "Id": "airport",
+      "Name": "Airport",
+      "Type": "Landmark",
+      "Tags": "Industry, Civic",
+      "Rarity": "Rare",
+      "NeedsRoad": true,
+      "Icon": "✈️",
+      "Rules": "Payout: +3 coins. End: each Home building within 2 tiles loses its owner 1 VP. Maximum loss: 3 VP per player across all Airports.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "Payout",
+          "Rule": "coins",
+          "Amount": 3,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        },
+        {
+          "Hook": "EndGame",
+          "Rule": "airport-noise",
+          "Amount": 1,
+          "Range": 2,
+          "Cap": 3,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 0
+    },
+    {
+      "Id": "skyscraper",
+      "Name": "Skyscraper",
+      "Type": "Landmark",
+      "Tags": "Trade, Civic",
+      "Rarity": "Rare",
+      "NeedsRoad": true,
+      "Icon": "\uD83C\uDFD9️",
+      "Rules": "Requires at least 2 adjacent buildings. End: +1 VP per other building within 2 tiles, max 6.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "Place",
+          "Rule": "minimum-buildings",
+          "Amount": 0,
+          "Range": 0,
+          "Cap": 2,
+          "Divisor": 1
+        },
+        {
+          "Hook": "EndGame",
+          "Rule": "nearby-building-vp",
+          "Amount": 1,
+          "Range": 2,
+          "Cap": 6,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 0
+    },
+    {
+      "Id": "industrial-estate",
+      "Name": "Industrial Estate",
+      "Type": "Civic",
+      "Tags": "Industry, Civic",
+      "Rarity": "Rare",
+      "NeedsRoad": true,
+      "Icon": "\uD83C\uDFED",
+      "Rules": "Payout: +1 coin per Industry building you own, including this, max 5.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "Payout",
+          "Rule": "industry-count",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 5,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": true,
+      "OwnershipLimit": 1,
+      "ParkSize": 0
+    },
+    {
+      "Id": "housing-authority",
+      "Name": "Housing Authority",
+      "Type": "Civic",
+      "Tags": "Home, Civic",
+      "Rarity": "Rare",
+      "NeedsRoad": false,
+      "Icon": "\uD83C\uDFD8️",
+      "Rules": "End: +1 VP per 3 Home buildings you own, including this, max 6.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "EndGame",
+          "Rule": "home-thirds-vp",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 6,
+          "Divisor": 3
+        }
+      ],
+      "EffectTray": true,
+      "OwnershipLimit": 1,
+      "ParkSize": 0
+    },
+    {
+      "Id": "eco-council",
+      "Name": "Eco Council",
+      "Type": "Civic",
+      "Tags": "Nature, Civic",
+      "Rarity": "Rare",
+      "NeedsRoad": false,
+      "Icon": "\uD83C\uDF3F",
+      "Rules": "End: +1 VP per 2 Nature buildings you own, including this, max 8. Subtract 2 VP per Industry building you own. This bonus cannot fall below 0.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "EndGame",
+          "Rule": "eco-council-vp",
+          "Amount": 1,
+          "Range": 2,
+          "Cap": 8,
+          "Divisor": 2
+        }
+      ],
+      "EffectTray": true,
+      "OwnershipLimit": 1,
+      "ParkSize": 0
+    },
+    {
+      "Id": "gardeners-guild",
+      "Name": "Gardener's Guild",
+      "Type": "Civic",
+      "Tags": "Nature, Civic",
+      "Rarity": "Uncommon",
+      "NeedsRoad": false,
+      "Icon": "\uD83E\uDDD1‍\uD83C\uDF3E",
+      "Rules": "Gain 1 coin when you build a park tile.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "OwnerPlacedCard",
+          "Rule": "park-coins",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": true,
+      "OwnershipLimit": 1,
+      "ParkSize": 0
+    },
+    {
+      "Id": "architects-studio",
+      "Name": "Architect's Studio",
+      "Type": "Civic",
+      "Tags": "Culture, Civic",
+      "Rarity": "Rare",
+      "NeedsRoad": false,
+      "Icon": "\uD83D\uDCD0",
+      "Rules": "Gain 2 coins if your first building this round is adjacent to one of your tiles. Can trigger when you build this.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "OwnerPlacedCard",
+          "Rule": "first-building-beside-own",
+          "Amount": 2,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": true,
+      "OwnershipLimit": 1,
+      "ParkSize": 0
+    },
+    {
+      "Id": "renovation",
+      "Name": "Renovation",
+      "Type": "Event",
+      "Tags": "None",
+      "Rarity": "Uncommon",
+      "NeedsRoad": false,
+      "Icon": "\uD83D\uDD28",
+      "Rules": "Play: replace one of your buildings with a different building card from your hand. Discard both cards.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "Place",
+          "Rule": "renovation",
+          "Amount": 0,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 0
+    },
+    {
+      "Id": "ribbon-cutting",
+      "Name": "Ribbon Cutting",
+      "Type": "Event",
+      "Tags": "None",
+      "Rarity": "Common",
+      "NeedsRoad": false,
+      "Icon": "\uD83C\uDF80",
+      "Rules": "Play: gain 1 coin per building you built this round, max 4. Discard this card.",
+      "Weight": 1,
+      "Effects": [
+        {
+          "Hook": "Place",
+          "Rule": "round-building-coins",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 4,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 0
+    },
+    {
+      "Id": "rush-hour",
+      "Name": "Rush Hour",
+      "Type": "Event",
+      "Tags": "None",
+      "Rarity": "Common",
+      "NeedsRoad": false,
+      "Icon": "\uD83D\uDEA6",
+      "Rules": "Play: gain 1 extra coin per Shop you own at the next payout, max 4. Once per round. Discard this card.",
+      "Weight": 1,
+      "Effects": [
+        {
+          "Hook": "Place",
+          "Rule": "rush-hour",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 4,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 0
+    },
+    {
+      "Id": "land-claim",
+      "Name": "Land Claim",
+      "Type": "Event",
+      "Tags": "None",
+      "Rarity": "Uncommon",
+      "NeedsRoad": false,
+      "Icon": "\uD83D\uDEA9",
+      "Rules": "Play: reserve an empty tile until the next round starts. Only you may build there. Discard this card.",
+      "Weight": 2,
+      "Effects": [
+        {
+          "Hook": "Reserve",
+          "Rule": "land-claim",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": false,
+      "OwnershipLimit": 0,
+      "ParkSize": 0
+    },
+    {
+      "Id": "central-station",
+      "Name": "Central Station",
+      "Type": "Landmark",
+      "Tags": "Trade, Civic",
+      "Rarity": "Legendary",
+      "NeedsRoad": true,
+      "Icon": "\uD83D\uDE89",
+      "Rules": "Payout: +1 coin per Shop or Market you own, max 4.",
+      "Weight": 1,
+      "Effects": [
+        {
+          "Hook": "Payout",
+          "Rule": "owned-shops-markets",
+          "Amount": 1,
+          "Range": 0,
+          "Cap": 4,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": true,
+      "OwnershipLimit": 0,
+      "ParkSize": 0
+    },
+    {
+      "Id": "senate",
+      "Name": "Senate",
+      "Type": "Landmark",
+      "Tags": "Civic",
+      "Rarity": "Legendary",
+      "NeedsRoad": true,
+      "Icon": "\uD83C\uDFDB️",
+      "Rules": "End: +2 VP for each tag shared by at least 3 of your buildings, max 12. Counts this building.",
+      "Weight": 1,
+      "Effects": [
+        {
+          "Hook": "EndGame",
+          "Rule": "tag-majorities-vp",
+          "Amount": 2,
+          "Range": 0,
+          "Cap": 12,
+          "Divisor": 3
+        }
+      ],
+      "EffectTray": true,
+      "OwnershipLimit": 0,
+      "ParkSize": 0
+    },
+    {
+      "Id": "monument",
+      "Name": "Monument",
+      "Type": "Landmark",
+      "Tags": "Culture",
+      "Rarity": "Legendary",
+      "NeedsRoad": false,
+      "Icon": "\uD83D\uDDFF",
+      "Rules": "End: +6 VP.",
+      "Weight": 1,
+      "Effects": [
+        {
+          "Hook": "EndGame",
+          "Rule": "vp",
+          "Amount": 6,
+          "Range": 0,
+          "Cap": 0,
+          "Divisor": 1
+        }
+      ],
+      "EffectTray": true,
+      "OwnershipLimit": 0,
+      "ParkSize": 0
+    }
+  ]
+}
+

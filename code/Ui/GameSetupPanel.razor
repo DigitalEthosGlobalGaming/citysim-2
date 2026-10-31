@@ -1,0 +1,33 @@
+@namespace CitySim
+@using CitySim.Ai
+@using CitySim.Match
+@using CitySim.Punchboard
+@inherits MatchPanel
+
+<root class="overlay game-setup-stage">
+ <div class="game-setup-layout"><PbPanel Kind=@(PbPanelKind.Raised) Corner=@true><ChildContent>
+  <div class="game-setup-content">
+   <div class="game-setup-title">Game setup</div>
+   <div class="game-setup-count"><div>AI opponents</div><div class="game-setup-count-buttons">
+    @for(var i=1;i<=SoloSetup.MaximumOpponents;i++) { var count=i; <PbButton Text=@count.ToString() Kind=@(PbButtonKind.Secondary) Toggled=@(City.GameSetup.OpponentCount==count) Clicked=@(()=>City.SetOpponentCount(count)) /> }
+   </div></div>
+   <div class="game-setup-roster">
+    @foreach(var opponent in City.GameSetup.Opponents.Take(City.GameSetup.OpponentCount)) {
+     <div class="opponent-row" @key=opponent.Seat>
+      <div class="opponent-seat" style="background-color: @Pb.Rgba(PlayerColours.ForSeat(opponent.Seat+1))">@(opponent.Seat+1)</div>
+      <div class="opponent-name-field"><div class="opponent-field-label">Name</div><OpponentNameEntry City=@City Opponent=@opponent /></div>
+      <div class="opponent-difficulty"><div class="opponent-field-label">Difficulty</div><div class="opponent-difficulty-buttons">
+       @foreach(var level in Enum.GetValues<BotDifficulty>()) { var difficulty=level; <PbButton Text=@difficulty.ToString() Size=@(PbSize.Small) Kind=@(PbButtonKind.Secondary) Toggled=@(opponent.Difficulty==difficulty) Clicked=@(()=>City.EditOpponent(opponent.Seat,opponent.Name,difficulty)) /> }
+      </div></div>
+     </div>
+    }
+   </div>
+   <div class="game-setup-actions"><PbButton Text="Back" Kind=@(PbButtonKind.Ghost) Clicked=@(()=>City.Screens.Pop()) /><PbButton Text="Randomize names" Kind=@(PbButtonKind.Ghost) Clicked=@(()=>City.RandomizeOpponentNames()) /><PbButton CssClass="primary" Text="Start game" Clicked=@(()=>City.RequestStart(GameMode.Match)) /></div>
+  </div>
+ </ChildContent></PbPanel></div>
+</root>
+
+@code {
+ protected override void Subscribe() { if(City!=null) City.UiChanged+=Refresh; }
+ protected override void Unsubscribe() { if(City!=null) City.UiChanged-=Refresh; }
+}

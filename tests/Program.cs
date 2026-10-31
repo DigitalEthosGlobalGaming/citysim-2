@@ -1,3 +1,15 @@
+if (args.Contains("--ai-benchmark"))
+{
+    try
+    {
+        int ReadInt(string option,int fallback) {var at=Array.IndexOf(args,option);return at<0?fallback:at+1<args.Length && int.TryParse(args[at+1],out var value)?value:throw new ArgumentException(option+" requires an integer.");}
+        var report=CitySim.Ai.AiBenchmark.Run(ReadInt("--boards",1),ReadInt("--seed",30102026),(done,total)=>Console.Error.WriteLine($"AI benchmark {done}/{total}"));
+        Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(report,new System.Text.Json.JsonSerializerOptions {WriteIndented=true,Converters={new System.Text.Json.Serialization.JsonStringEnumConverter()}}));
+        return 0;
+    }
+    catch(Exception e) {Console.Error.WriteLine(e);return 1;}
+}
+
 if (args.Contains("--simulate"))
 {
     try
@@ -31,6 +43,8 @@ if (args.Contains("--simulate"))
 try
 {
 	AnalyticsChecks.Run();
+	foreach (var line in CitySim.Ai.BotChoiceChecks.Run()) Console.WriteLine(line);
+	foreach (var line in CitySim.Match.LocalBalanceChecks.Run()) Console.WriteLine(line);
 	foreach (var line in CitySim.Match.FoundationChecks.Run()) Console.WriteLine(line);
 	Console.WriteLine("M0 foundation checks passed.");
 	foreach (var line in CitySim.Match.RoundChecks.Run()) Console.WriteLine(line);
@@ -43,6 +57,8 @@ try
 	Console.WriteLine("M4 objective checks passed.");
 	foreach (var line in CitySim.Match.NetworkChecks.Run()) Console.WriteLine(line);
 	Console.WriteLine("M5 protocol checks passed (live transport checks remain separate).");
+	foreach (var line in CitySim.Ai.AiRedesignChecks.Run()) Console.WriteLine(line);
+	Console.WriteLine("AI redesign setup and evaluation checks passed.");
 	foreach (var line in CitySim.Ai.BotChecks.Run()) Console.WriteLine(line);
 	Console.WriteLine("M6 bot checks passed.");
 	foreach (var line in CitySim.Match.TagEngineChecks.Run()) Console.WriteLine(line);

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 540" role="img" aria-labelledby="title">
+ <title id="title">A small shared city, illustrated as a tabletop board</title>
+ <rect width="900" height="540" fill="#E7D9BA"/>
+ <path d="M0 137h900M0 307h900M232 0v540M535 0v540M760 0v540" stroke="#293A3B" stroke-width="58"/>
+ <path d="M0 137h900M0 307h900M232 0v540M535 0v540M760 0v540" stroke="#F2E8D3" stroke-width="2" stroke-dasharray="16 18" opacity=".55"/>
+ <g stroke="#293A3B" stroke-width="6" stroke-linejoin="round">
+  <path d="M39 94V57l58-35 58 35v37z" fill="#B94F3E"/><path d="M58 94V60h78v34" fill="#F2E8D3"/><path d="M90 94V71h17v23" fill="#557D88"/>
+  <path d="M291 99V37h132v62z" fill="#557D88"/><path d="M280 37h154L418 19H296z" fill="#D5A83D"/><path d="M308 55h27v22h-27zm45 0h27v22h-27zm45 0h12v22h-12z" fill="#F2E8D3"/>
+  <path d="M590 92V30h108v62z" fill="#F2E8D3"/><path d="M583 30h122L687 15h-86z" fill="#B94F3E"/><path d="M608 49h22v25h-22zm43 0h22v25h-22z" fill="#557D88"/>
+  <path d="M45 265v-64h132v64z" fill="#F2E8D3"/><path d="M37 201h148l-15-20H52z" fill="#B94F3E"/><path d="M60 217h32v26H60zm52 0h32v26h-32z" fill="#D5A83D"/>
+  <path d="M286 264v-57l52-30 52 30v57z" fill="#B94F3E"/><path d="M305 264v-49h66v49z" fill="#F2E8D3"/><path d="M326 264v-24h19v24" fill="#557D88"/>
+  <path d="M586 269v-86h113v86z" fill="#557D88"/><path d="M601 201h22v21h-22zm43 0h22v21h-22zm-43 36h22v19h-22zm43 0h22v19h-22z" fill="#F2E8D3"/>
+  <path d="M36 484v-90h135v90z" fill="#D5A83D"/><path d="M28 394h151l-15-18H43z" fill="#293A3B"/><path d="M55 413h32v30H55zm56 0h32v30h-32z" fill="#F2E8D3"/>
+  <path d="M588 486v-67l53-32 53 32v67z" fill="#B94F3E"/><path d="M607 486v-57h67v57z" fill="#F2E8D3"/><path d="M630 486v-25h20v25" fill="#557D88"/>
+ </g>
+ <g fill="#71855B" stroke="#293A3B" stroke-width="6"><circle cx="336" cy="406" r="38"/><circle cx="413" cy="445" r="43"/><circle cx="847" cy="211" r="38"/><circle cx="847" cy="430" r="44"/></g>
+ <g fill="#D5A83D"><rect x="458" y="120" width="36" height="16" rx="7"/><rect x="744" y="345" width="16" height="36" rx="7"/></g>
+ <g fill="#B94F3E"><circle cx="181" cy="53" r="10"/><circle cx="463" cy="54" r="10"/><circle cx="721" cy="232" r="10"/></g>
+</svg>

@@ -53,6 +53,8 @@ public sealed class SceneLabel
   lifetime.Owner = city;
   lifetime.StartPosition = label.obj.WorldPosition;
   lifetime.Duration = cue.PayoutCoin ? 0.85f : 1.4f;
+  lifetime.PlacementVp = cue.PlacementVp;
+  if (cue.PlacementVp) label.text.Scale = 0.12f * 3f * 0.65f;
  }
  public static Vector3 AboveTile(Tile tile, Vector3 fallback)
  {
@@ -86,6 +88,7 @@ public sealed class SceneLabelLifetime : Component
  public CityGame Owner { get; set; }
  public Vector3 StartPosition { get; set; }
  public float Duration { get; set; } = 1.4f;
+ public bool PlacementVp { get; set; }
  float age;
  protected override void OnUpdate()
  {
@@ -95,7 +98,17 @@ public sealed class SceneLabelLifetime : Component
   var t = Math.Clamp(age / Duration, 0, 1);
   WorldPosition = StartPosition + Vector3.Up * (12 * (1 - MathF.Pow(1-t, 3)));
   var renderer = Components.Get<TextRenderer>();
-  if (renderer.IsValid()) renderer.Color = new Color(1f, 0.98f, 0.92f, Math.Clamp((Duration-age)*3,0,1));
+  if (renderer.IsValid())
+  {
+   if (PlacementVp)
+   {
+    var pop = Math.Clamp(age / 0.24f, 0, 1) - 1;
+    var ease = 1 + 2.70158f * pop * pop * pop + 1.70158f * pop * pop;
+    var exit = Math.Clamp((Duration - age) / 0.22f, 0, 1);
+    renderer.Scale = 0.12f * 3f * (0.65f + 0.35f * ease) * (exit * exit * (3 - 2 * exit));
+   }
+   else renderer.Color = new Color(1f, 0.98f, 0.92f, Math.Clamp((Duration-age)*3,0,1));
+  }
  }
 }
 

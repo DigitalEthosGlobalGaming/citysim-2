@@ -7,9 +7,9 @@
 <root class="bid-stage @(Peeking ? "peeking" : "")">
 	@if (View is { } view)
 	{
-		@if (Peeking) { <div class="peek-toolbar">@if (City.HasInteractionHighlight) { <div class="peek-status">@City.HighlightStatus</div> }<PbButton CssClass="return-market" Text=@(BoundMatch.PhaseEndsAt >= 0 && !view.Resolving ? $"↩ Market · V / RB · {Seconds}s" : "↩ Market · V / RB") Clicked=@TogglePeek /></div> }
+		@if (Peeking) { <div class="peek-toolbar">@if (City.HasInteractionHighlight) { <div class="peek-status">@City.HighlightStatus</div> }<PbButton CssClass="return-market" Text=@(BoundMatch.PhaseEndsAt >= 0 && !view.Resolving ? $"↩ Market · {Seconds}s" : "↩ Market") Clicked=@TogglePeek /></div> }
 		else { <div class="auction-sheet"><PbPanel Title="MARKET" Kind=@(PbPanelKind.Raised) Fill=@true><ChildContent><div class="bid-window">
-			<div class="bid-heading"><div class="market-heading-copy"><div class="bid-title">@($"Choose your next build  ·  {view.Number} / {view.Cap}")</div></div><div class="heading-actions"><div class="bid-budget">@($"🪙 {view.AvailableCoins}")</div><PbButton Text="👁 View city · V / RB" Kind=@(PbButtonKind.Ghost) Size=@(PbSize.Small) Clicked=@TogglePeek /></div></div>
+			<div class="bid-heading"><div class="market-heading-copy"><div class="bid-title">@($"Choose your next build  ·  {view.Number} / {view.Cap}")</div></div><div class="heading-actions"><div class="bid-budget">@($"🪙 {view.AvailableCoins}")</div><PbButton Text="👁 View city" Kind=@(PbButtonKind.Ghost) Size=@(PbSize.Small) Clicked=@TogglePeek /></div></div>
 			<div class="auction-table">
 				<div class="player-rail"><div class="rail-title">AT THE TABLE</div>
 				@for (var i=0; i<view.Players.Count; i++) { var p=view.Players[i]; var seat=i; <div class="ready-pip seat-@seat"><div class="seat-token" style="background-color: @Pb.Rgba(PlayerColours.For(BoundMatch,p.Player))">@(seat+1)</div><div class="player-name">@p.Name</div><div class="player-status">@(!p.Eligible ? "—" : p.Ready ? p.HasBid ? "✓" : "—" : "○")</div></div> }

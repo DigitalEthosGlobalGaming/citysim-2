@@ -18,7 +18,7 @@
 	protected override void OnParametersSet()
 	{
 		base.OnParametersSet(); AddClass("tag-chip"); AcceptsFocus = true;
-		Tooltip = Reference ? null : $"{Tag}\nHighlight {Tag} buildings belonging to {City?.Match?.Players.GetValueOrDefault(Owner)?.Name ?? "you"}."; TooltipClass = "city-tooltip";
+		Tooltip = Reference ? null : Tag.ToString(); TooltipClass = "city-tooltip";
 	}
 	void Show() { if (Reference) City?.HighlightReferenceTag(this,Tag); else City?.HighlightTag(Tag,Owner); }
 	void Clear() { if (Reference) City?.ClearInteractionHighlight(this); else if (City?.HighlightedTag == Tag && City.HighlightOwner == Owner) City.HighlightTag(Tag.None,Owner); }

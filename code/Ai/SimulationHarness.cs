@@ -47,9 +47,9 @@ public static class SimulationHarness
             foreach(var bot in bots) bot.ChooseContract();
             if(!rounds.ContractsChosen) throw new InvalidOperationException("Simulation bots did not choose contracts.");
             rounds.Start(0);
-            for(var step=0;step<2500 && state.Phase!=MatchPhase.EndGame;step++)
+            for(var step=0;step<30000 && state.Phase!=MatchPhase.EndGame;step++)
             {
-                double now=step*0.25;
+                double now=step/30.0;
                 foreach(var bot in bots) { bot.Update(now); CaptureCompletedPayout(state,Ids,vp,coins,ref lastRecordedRound); }
                 foreach(var id in Ids)
                 {

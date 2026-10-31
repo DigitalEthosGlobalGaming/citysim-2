@@ -1,11 +1,11 @@
 {
-  "Title": "City Sim",
+  "Title": "Plotter",
   "Type": "game",
   "Org": "degg",
   "Ident": "city_sim",
   "Schema": 1,
   "IncludeSourceFiles": false,
-  "Resources": "",
+  "Resources": "materials/board/*.vmat\nmaterials/simple/simple_grey_50.vmat\nmodels/buildings/forest.vmdl\nmodels/buildings/house_01.vmdl\nmodels/buildings/shop.vmdl\nmodels/kenney/roads/road-bend.vmdl\nmodels/kenney/roads/road-crossroad-line.vmdl\nmodels/kenney/roads/road-crossroad.vmdl\nmodels/kenney/roads/road-end.vmdl\nmodels/kenney/roads/road-intersection.vmdl\nmodels/kenney/roads/road-straight.vmdl\nmodels/roads/street_empty.vmdl\nmodels/roads/street_ghost.vmdl\nsounds/feedback/*.sound\nsounds/vehicles/ambulance/ambulance.siren.sound\nmodels/kenney/commercial/*.vmdl\nmodels/kenney/cars/*.vmdl\nmodels/kenney/industrial/*.vmdl\nsounds/tabletop/*-*.sound\nmodels/kenney/suburban/*.vmdl",
   "PublishUsedAssetsOnly": true,
   "PackageReferences": [],
   "EditorReferences": null,
@@ -34,6 +34,15 @@
       "ShowChangeMap": false,
       "DefaultMap": null,
       "MapTarget": null
-    }
+    },
+    "RecommendedMinPlayers": 0,
+    "RecommendedMaxPlayers": 0,
+    "Coop": false,
+    "Versus": false,
+    "WorkshopTags": [
+      "Competitive",
+      "Puzzle",
+      "Strategy"
+    ]
   }
 }

@@ -1,0 +1,28 @@
+schema_version: 1
+slug: plotter
+name: Plotter (working title)
+one_liner: A competitive card-driven city builder played on one shared board.
+tagline: One city. Plenty of plans.
+archetype: ""
+status: draft
+stage: prototype
+industry: games
+languages: [en]
+links:
+  domain: ""
+  repo: ""
+created: 2026-11-01
+updated: 2026-11-01
+version: 1
+artifacts:
+  context: true
+  naming: true
+  strategy: true
+  architecture: false
+  identity: true
+  voice: true
+  messaging: true
+  positioning: true
+  story: false
+  guidelines: true
+  audit: false

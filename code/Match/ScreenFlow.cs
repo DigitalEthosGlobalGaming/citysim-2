@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CitySim.Match;
 
-public enum GameScreen { Menu, Lobby, Match, End, Pause, Settings, ContractPick, Goals, Recovery }
+public enum GameScreen { Menu, Lobby, Match, End, Pause, Settings, ContractPick, Goals, Recovery, GameSetup }
 
 /// <summary>Only the top screen receives input. Back pops an overlay without losing the match.</summary>
 public sealed class ScreenFlow

@@ -54,12 +54,14 @@ public static class EventChecks
   s.SetPhase(MatchPhase.Build,2,80); slot=s.Players[A].Hand.ToList().IndexOf("rush-hour");
   Check(s.PlayEvent(A,slot),"retained Rush Hour becomes playable in the next round");
   var botState=new MatchState(9,9,88,new MatchSettings {EnableContracts=false,EnableAuctions=false,StubBidSeconds=0,DefaultStreets=0,DefaultCommons=0});
-  botState.AddPlayer(A,"Bot"); botState.SeedStreet(4,4); botState.GiveCard(A,"house"); botState.GiveCard(A,"ribbon-cutting"); botState.GiveCard(A,"rush-hour");
+  botState.AddPlayer(A,"Bot"); botState.SeedStreet(4,4);
+  botState.SetPhase(MatchPhase.Build,1,40);botState.GiveCard(A,"shop");botState.TryPlace(A,"shop",4,3);botState.SetPhase(MatchPhase.Lobby,0,0);
+  botState.GiveCard(A,"house"); botState.GiveCard(A,"ribbon-cutting"); botState.GiveCard(A,"rush-hour");
   var botRounds=new RoundMachine(botState); var bot=new Bot(A,botState,botRounds,BotDifficulty.Hard,5); var actions=new List<string>();
   botState.Events.CardPlaced+=cell=>{ if (cell.Owner==A) actions.Add(cell.CardId); };
   botState.Events.EventPlayed+=ev=>actions.Add(ev.CardId); botRounds.Start(0); botRounds.Tick(0);
-  for (int n=0;n<100 && botState.Phase==MatchPhase.Build;n++) bot.Update(n*0.25);
-  Check(actions.SequenceEqual(new[]{"house","ribbon-cutting","rush-hour"}) && botState.Phase==MatchPhase.Payout,"bot places buildings before Ribbon Cutting, plays Rush Hour, then readies");
+  for (int n=0;n<1200 && botState.Phase==MatchPhase.Build;n++) bot.Update(n/60.0);
+  Check(actions.Count==3 && actions[0]=="house" && actions.Contains("ribbon-cutting") && actions.Contains("rush-hour") && botState.Phase==MatchPhase.Payout,"bot builds before Ribbon Cutting, uses a productive Rush Hour, then readies");
   return passed.AsReadOnly();
  }
 }

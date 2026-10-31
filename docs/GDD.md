@@ -1,8 +1,8 @@
 # City Sim: Game Design Document
 
-**Version 0.10.** Prototype B removes economic linking and introduces independent local income and marginal park scoring, with free placement and revised market prices. A redesign: from a solo placement puzzle to a competitive, round-based **shared market** game on a shared city board. The first design is kept as [GDD_v0.1.md](GDD_v0.1.md). v0.4 added tap-to-bid auctions, default cards and card rarity, and made traffic purely cosmetic. v0.6 added tags, trigger and growth cards, landmarks, public goals and secret contracts. v0.7 removed every card that destroys buildings or touches the auction. v0.8 is a second balance pass, and removes every card that hurts a rival directly except Land Claim. v0.9 replaces sealed auctions with a shared, fixed-price market.
+**Version 0.12.** One-time Street-owner and optional building road bonuses replace recurring Street VP. Parks use fixed placement VP plus a Nature-neighbour bonus. Fourteen road requirements are removed. Solo setup supports one to four named AI opponents with individual difficulties. AI planning uses the current income, park, competition and market rules. Prototype B removes economic linking and introduces independent local income and park scoring, with free placement and revised market prices. A redesign: from a solo placement puzzle to a competitive, round-based **shared market** game on a shared city board. The first design is kept as [GDD_v0.1.md](GDD_v0.1.md). v0.4 added tap-to-bid auctions, default cards and card rarity, and made traffic purely cosmetic. v0.6 added tags, trigger and growth cards, landmarks, public goals and secret contracts. v0.7 removed every card that destroys buildings or touches the auction. v0.8 is a second balance pass, and removes every card that hurts a rival directly except Land Claim. v0.9 replaces sealed auctions with a shared, fixed-price market.
 
-Engine: s&box (C#). Players: 1 to 6 (solo uses AI rivals). Match length: about 8-10 minutes.
+Engine: s&box (C#). Solo: one human and 1–4 AI opponents (2–5 players total). Multiplayer: 2–4 human players. Match length: about 8-10 minutes.
 All numbers marked *(tune)* are starting guesses to be balanced in playtests. See the [current 48-card catalog](CARD_CATALOG.md) and [implementation evidence](BALANCE_IMPLEMENTATION_2026-10-30.md).
 
 ---
@@ -151,15 +151,15 @@ Cards are grouped by what they are for. Anything that says *per X* counts your o
 
 | Card | Rarity | Tags | Needs road | Effect |
 |---|---|---|---|---|
-| **Street** | Common | | no | Payout: +1 VP per building adjacent to your Streets. Count each building once. |
-| **Avenue** | Uncommon | | no | Counts as 2 tiles for Longest Road. Payout: +1 coin if adjacent to at least 2 buildings. |
-| **Roundabout** | Uncommon | | no | When anyone builds beside this: gain 1 VP. |
+| **Street** | Common | None | no | Gain 1 VP when a building is placed beside your Streets. Once per building per Street owner. |
+| **Avenue** | Uncommon | None | no | Counts as 2 road tiles for Longest Road. Payout: +1 coin if adjacent to at least 2 buildings. |
+| **Roundabout** | Uncommon | None | no | Gain 1 VP whenever anyone places an adjacent building. |
 
 **Residential**
 
 | Card | Rarity | Tags | Needs road | Effect |
 |---|---|---|---|---|
-| **House** | Common | Home | yes | Place: +1 VP per adjacent Home building. Payout: +1 coin if a Shop is within 2 tiles. |
+| **House** | Common | Home | no | Place: +1 VP per adjacent Home building, plus 1 VP if beside a road. Payout: +1 coin if a Shop is within 2 tiles. |
 | **Cottage** | Common | Home | no | Place: +1 VP per adjacent park tile or Lake. Payout: +1 coin if adjacent to a park tile or Lake. |
 | **Apartment** | Uncommon | Home | yes | Place: +2 VP per adjacent Home building. Payout: +2 coins if a Shop is within 2 tiles. |
 
@@ -168,33 +168,33 @@ Cards are grouped by what they are for. Anything that says *per X* counts your o
 | Card | Rarity | Tags | Needs road | Effect |
 |---|---|---|---|---|
 | **Shop** | Common | Trade | yes | Payout: +1 coin per Home building within 2 tiles, max 3. |
-| **Cafe** | Uncommon | Trade, Culture | yes | Payout: +1 coin per adjacent Home building or Shop, max 3. End: +2 VP if adjacent to a park tile or Lake. |
+| **Cafe** | Uncommon | Trade, Culture | no | Place: +1 VP if beside a road. Payout: +1 coin per adjacent Home building or Shop, max 3. End: +2 VP if adjacent to a park tile or Lake. |
 | **Market** | Rare | Trade | yes | Payout: +1 coin per Shop you own within 2 tiles, max 4. |
 
 **Industry**
 
 | Card | Rarity | Tags | Needs road | Effect |
 |---|---|---|---|---|
-| **Farm** | Common | Nature | yes | Payout: +1 coin if adjacent to another Farm or Orchard. |
-| **Orchard** | Uncommon | Nature | yes | Park size 1. Place: score the park's increase. Payout: +1 coin if adjacent to a Farm or another Orchard. |
+| **Farm** | Common | Nature | no | Payout: +1 coin if adjacent to another Farm or Orchard. |
+| **Orchard** | Uncommon | Nature | no | Place: +1 VP, plus 1 VP if beside a Nature card. Payout: +1 coin if adjacent to a Farm or another Orchard. |
 | **Factory** | Uncommon | Industry | yes | Payout: +2 coins. End: each adjacent Home building or Cafe loses its owner 1 VP, including yours. |
 
 **Green**
 
 | Card | Rarity | Tags | Needs road | Effect |
 |---|---|---|---|---|
-| **Park** | Common | Nature | no | Park size 1. Place: score the park's increase. |
-| **Wild Garden** | Common | Nature | no | Park size 1. Place: score the park's increase. |
-| **Fountain** | Uncommon | Nature, Culture | no | Park size 2. Place: score the park's increase. |
-| **Lake** | Uncommon | Nature | no | Payout: each adjacent Home building earns its owner 1 coin. Counts as a park neighbor, but is not a park tile. |
+| **Park** | Common | Nature | no | Place: +1 VP, plus 1 VP if beside a Nature card. |
+| **Wild Garden** | Common | Nature | no | Place: +1 VP, plus 1 VP if beside a Nature card. |
+| **Fountain** | Uncommon | Nature, Culture | no | Place: +2 VP, plus 1 VP if beside a Nature card. |
+| **Lake** | Uncommon | Nature | no | Place: +1 VP, plus 1 VP if beside a Nature card. Payout: each adjacent Home building earns its owner 1 coin. Counts as a park tile. |
 
 **Growth** (these start weak and pay off if you place them early)
 
 | Card | Rarity | Tags | Needs road | Effect |
 |---|---|---|---|---|
-| **Sapling** | Uncommon | Nature | no | Park size 1. Place: score the park's increase. After its second payout, grows to size 3 and scores the increase again. |
-| **Vineyard** | Uncommon | Nature, Trade | yes | Payout: nothing for its first 2 payouts; then +3 coins each payout. |
-| **Startup** | Rare | Trade | yes | Payout: +1 coin the first time, +2 the second, then +3 each time. |
+| **Sapling** | Uncommon | Nature | no | Place: +1 VP, plus 1 VP if beside a Nature card. Growth: after its second payout, grows into a Forest and earns 2 VP. Counts as one park tile. |
+| **Vineyard** | Uncommon | Trade, Nature | no | Payout: 0 coins for the first 2 payouts, then +3 coins each payout. |
+| **Startup** | Rare | Trade | no | Payout: +1 coin, then +2 coins, then +3 coins each payout. |
 
 **Landmarks** (they change the buildings next to them, for everyone)
 
@@ -208,34 +208,34 @@ Cards are grouped by what they are for. Anything that says *per X* counts your o
 
 | Card | Rarity | Tags | Needs road | Icon | Effect |
 |---|---|---|---|---|---|
-| **Warehouse** | Uncommon | Industry | yes | yes | Round start: gain a Street if your hand has room. When you build your first Street each round: gain 1 coin. |
-| **Builders' Yard** | Rare | Industry | yes | yes | Round start: gain a Street or a random Common, if your hand has room. Choose which before the round starts. |
+| **Warehouse** | Uncommon | Industry | yes | yes | Round start: gain a Street if your hand has room. Gain 1 coin for your first Street each round. |
+| **Builders' Yard** | Rare | Industry | yes | yes | Round start: gain a Street or random Common card if your hand has room. Choose before the round starts. |
 | **Bank** | Rare | Trade | no | yes | Payout: +2 coins. |
 | **Town Hall** | Rare | Civic | yes | yes | Payout: +2 coins if you own at least 3 Civic buildings, including this. |
-| **Tourist Office** | Rare | Culture, Civic | yes | yes | Payout: +1 coin per Culture building you own, max 3. Includes this. |
+| **Tourist Office** | Rare | Culture, Civic | no | yes | Place: +1 VP if beside a road. Payout: +1 coin per Culture building you own, including this, max 3. |
 | **Tax Office** | Uncommon | Civic | no | yes | Payout: +1 coin per 4 Home buildings you own. |
 | **Depot** | Uncommon | Industry | yes | yes | Payout: +1 coin per 5 road tiles you own, max 4 coins. |
-| **School** | Uncommon | Civic, Culture | yes | yes | Payout: +1 coin per Home building you own within 2 tiles, max 4. |
-| **Hospital** | Rare | Civic | yes | yes | Each round: one random Home building has an emergency. The nearest Hospital within 4 tiles earns its owner 1 VP. Ties go to the earlier Hospital. |
+| **School** | Uncommon | Culture, Civic | no | yes | Place: +1 VP if beside a road. Payout: +1 coin per Home building you own within 2 tiles, max 4. |
+| **Hospital** | Rare | Civic | no | yes | Place: +1 VP if beside a road. Each round: one random Home building has an emergency. The nearest Hospital within 4 tiles earns its owner 1 VP. Ties go to the Hospital built first. |
 | **Granary** | Uncommon | Civic | no | yes | Payout: +1 coin per Farm or Orchard you own, max 3. |
 
 **Tag engines** (these reward focusing on one tag)
 
 | Card | Rarity | Tags | Needs road | Icon | Effect |
 |---|---|---|---|---|---|
-| **Chamber of Commerce** | Rare | Trade, Civic | yes | yes | Payout: +1 coin per 2 Trade buildings you own, max 4 coins. Includes this. |
-| **Industrial Estate** | Rare | Industry, Civic | yes | yes | Payout: +1 coin per Industry building you own, max 5. Includes this. |
-| **Housing Authority** | Rare | Home, Civic | yes | yes | End: +1 VP per 3 Home buildings you own, max 6. Includes this. |
-| **Museum** | Rare | Culture, Civic | yes | yes | End: +1 VP per other Culture building you own, max 8. |
-| **Eco Council** | Rare | Nature, Civic | yes | yes | End: +1 VP per 2 Nature buildings you own, max 8; then subtract 2 VP per Industry building you own, minimum 0. Includes this in Nature. |
+| **Chamber of Commerce** | Rare | Trade, Civic | yes | yes | Payout: +1 coin per 2 Trade buildings you own, including this, max 4 coins. |
+| **Industrial Estate** | Rare | Industry, Civic | yes | yes | Payout: +1 coin per Industry building you own, including this, max 5. |
+| **Housing Authority** | Rare | Home, Civic | no | yes | End: +1 VP per 3 Home buildings you own, including this, max 6. |
+| **Museum** | Rare | Culture, Civic | no | yes | Place: +1 VP if beside a road. End: +1 VP per other Culture building you own, max 8. |
+| **Eco Council** | Rare | Nature, Civic | no | yes | End: +1 VP per 2 Nature buildings you own, including this, max 8. Subtract 2 VP per Industry building you own. This bonus cannot fall below 0. |
 
 **Triggers** (they pay out when you do something, so they chain with everything else)
 
 | Card | Rarity | Tags | Needs road | Icon | Effect |
 |---|---|---|---|---|---|
-| **Gardener's Guild** | Uncommon | Nature, Civic | no | yes | When you build a park tile: gain 1 coin. |
-| **Contractor** | Rare | Industry, Civic | yes | yes | When you build a House card or Shop: gain 1 coin, up to 2 coins per round. |
-| **Architect's Studio** | Rare | Culture, Civic | yes | yes | When you build your first building each round beside one of your buildings: gain 2 coins. This Studio can trigger its own effect. |
+| **Gardener's Guild** | Uncommon | Nature, Civic | no | yes | Gain 1 coin when you build a park tile. |
+| **Contractor** | Rare | Industry, Civic | no | yes | Gain 1 coin when you build a House or Shop, max 2 per round. |
+| **Architect's Studio** | Rare | Culture, Civic | no | yes | Gain 2 coins if your first building this round is adjacent to one of your tiles. Can trigger when you build this. |
 
 **Legendary**
 
@@ -243,7 +243,7 @@ Cards are grouped by what they are for. Anything that says *per X* counts your o
 |---|---|---|---|---|---|
 | **Central Station** | Legendary | Trade, Civic | yes | yes | Payout: +1 coin per Shop or Market you own, max 4. |
 | **Monument** | Legendary | Culture | no | yes | End: +6 VP. |
-| **Senate** | Legendary | Civic | yes | yes | End: +2 VP for each tag you have on at least 3 buildings, max 12. Includes this. |
+| **Senate** | Legendary | Civic | yes | yes | End: +2 VP for each tag shared by at least 3 of your buildings, max 12. Counts this building. |
 
 **Economy events** (one-shot, played from your hand during the active phase, then discarded)
 
@@ -259,9 +259,9 @@ Cards are grouped by what they are for. Anything that says *per X* counts your o
 
 ### 5.3 Park rules
 
-Orthogonally adjacent park tiles (Park, Wild Garden, Fountain, Sapling and Orchard) form a park region; Lake is not a park tile. Park size is the sum of tile sizes: Fountain contributes 2 and mature Forest 3. Physical tile count is separate from size.
+Park, Wild Garden, Fountain, Sapling/Forest, Orchard and Lake connect along shared edges to form park regions, regardless of ownership. Every card is one physical tile. Fountain and Forest have no extra size weight.
 
-On placement or Sapling growth, sum the sizes of the distinct regions joined before the addition as `S_before`, counting each region once. Let `S_after` be the resulting size. Only the placer or growing tile's owner earns `ceil(min(S_after, 10) / 2) - ceil(min(S_before, 10) / 2)` VP. There are no shared awards. An isolated size-1 park earns 1 VP; extensions 1Ã¢â€ â€™2, 2Ã¢â€ â€™3, 9Ã¢â€ â€™10 and 10Ã¢â€ â€™11 earn 0, 1, 0 and 0 respectively. Fountain and growth use their actual size increase.
+On placement, the builder gains the park card's base VP (Fountain 2, other park cards 1), plus 1 VP if any edge neighbour has the Nature tag. Any owner's Nature card qualifies; multiple neighbours do not multiply the bonus. Existing park owners receive no placement award. No cap or rounding applies. Sapling gains a fixed 2 VP for its owner after its second payout, once, without another adjacency award.
 
 ### 5.4 Adjacency rules
 
@@ -337,7 +337,7 @@ Vehicles exist to make the board feel busy and to show the economy at work.
 
 Penalties are applied (Factory pollution, Airport noise). **Highest VP wins.** Ties go to the player with more coins left.
 
-Tied bonus pools split equally and round down; a bonus with no qualifying entries is not awarded. A road chain is a simple path through owned road tiles, excluding neutral starting roads. Biggest Park Owner counts physical owned tiles, separate from park size. Home rules use the Home tag. Architect's Studio can trigger on its own placement. Vineyard and Startup age by completed payouts. Hospital selects one random Home-building emergency per round; nearest uses Chebyshev distance and oldest placement breaks ties. Senate counts each tag independently.
+Tied bonus pools split equally and round down; a bonus with no qualifying entries is not awarded. A road chain is a simple path through owned road tiles, excluding neutral starting roads. Biggest Park Owner counts physical owned tiles in one connected park. Home rules use the Home tag. Architect's Studio can trigger on its own placement. Vineyard and Startup age by completed payouts. Hospital selects one random Home-building emergency per round; nearest uses Chebyshev distance and oldest placement breaks ties. Senate counts each tag independently.
 
 **Builder and Renovation conventions (M7):** Warehouse and Builders' Yard grant extra cards after the shared defaults, in source placement order, starting the round after the building is placed. The Yard's persistent choice initially selects Street and can be changed for the following round through the owner's effect tray; a full hand skips the grant without consuming a random Common draw. Warehouse pays only for the exact Street definition, once per source per round. Renovation consumes its event and a different non-road/non-event building card, targeting only the player's own non-road building. The old building is excluded during validation and scoring; prior earned points are retained, and the replacement starts at age zero with a fresh placement order. The replacement counts as new construction, but removing an earlier building does not reset that round's first-building or source-trigger history. Authenticated commands validate both slots against one hand version before consumption. Bots use the same validator and scoring rules.
 
@@ -385,7 +385,9 @@ Each player's two offers are distinct; different players may receive the same co
 - The host is authoritative, as in v0.1. Clients send requests (buy, pass, place, play event), and the host validates and broadcasts the result.
 - Purchases and buyer identities are public; unplayed hands remain private.
 - A late joiner is given a snapshot, as in v0.1.
-- **Solo mode:** 1-3 AI rivals. They choose market cards with a budget-and-preference heuristic and place with the same scoring rules the player sees. Difficulty adjusts their evaluation and choices.
+- **Solo setup:** Play opens Game setup. Choose 1–4 AI opponents, edit their names (up to 24 characters) and set Easy, Normal or Hard separately. Generated names are unique within the roster. Back preserves edits, hidden slots retain their settings, and Start captures the roster for the match. Preferences persist locally.
+- **Solo decisions:** AI rates options using public board information, its own hand/contract and the current placement rules. Easy uses a short payoff horizon; Normal values several rounds of income and coherent goals; Hard values the remaining rounds and searches short combinations of held cards. Every difficulty makes weighted random choices for market cards, contracts and placements. With credible alternatives, the best-rated option receives 55%/75%/90% probability for Easy/Normal/Hard; other options are weighted by rating. Best-rated ties share that probability equally. A sole clearly superior option receives 100%. Build choices rate cards first, then sites, so extra possible sites do not bias card selection. Balanced, Housing, Trade, Nature, Industry and Culture preferences vary opponents. AI pays the same costs and receives the same resources as humans. See [weighted AI choices](AI_WEIGHTED_CHOICES.md).
+- **Solo pacing:** AI waits 2–4 seconds before its first build and 1.2–2.6 seconds between ordinary builds. Once the human empties their hand or readies, opponents finish promptly. Planning resumes across frames under the rotating soft CPU budget and validates placement again before committing. See [AI implementation and evidence](AI_REDESIGN.md).
 - **Disconnects:** the host passes for disconnected players in the market and readies them during Build.
 
 ---
@@ -432,7 +434,7 @@ Reuse as is: `CityGrid` (placement, road shaping, pathfinding for cosmetic cars)
 ## 13. Open questions
 
 1. Do the three market selections and hand limit keep the market phase quick?
-2. Does marginal park scoring leave parks desirable?
+2. Do fixed park placement points and the Nature-neighbour bonus leave several strategies competitive?
 3. Do prototype B prices create meaningful spending choices in human play?
 4. Is Land Claim fair, and is the catch-up bonus sufficient?
 5. Are eight rounds, the full 48-card set, public goals and secret contracts easy to follow?

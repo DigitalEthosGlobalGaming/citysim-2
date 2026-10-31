@@ -1,5 +1,6 @@
 # Balance implementation — 30 October 2026
 
+Historical evidence from before balance 2026-10-30.4. See [the current placement and park balance pass](BALANCE_LOCAL_PLACEMENT_2026-10-30.md) for the replacement rules and fresh simulations.
 Implemented the independent-income and park redesign, with **prototype B's simpler market economy** selected after comparison. All placements remain free. [Current cards](CARD_CATALOG.md) supersedes the historical review's pre-change catalog; [GDD v0.10](GDD.md) describes the active rules.
 
 ## What changed

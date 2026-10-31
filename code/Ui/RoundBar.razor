@@ -6,7 +6,7 @@
 <root class="round-bar"><PbPanel Title=@(City.Mode == GameMode.Sandbox ? "DEBUG SANDBOX" : $"ROUND {Round} / {BoundMatch?.Settings.Rounds}")><ChildContent>
 <div class="round-content"><div class="round-copy"><div class="round-phase">@PhaseName</div>@if (City.BuildReady && phase?.Phase == MatchPhase.Build) { <div class="round-status">Waiting for rivals</div> }</div>
 @if (CanSkip) {
-<PbButton CssClass="round-skip" Help=@(phase?.Phase == MatchPhase.Payout ? "Skip the income animation." : "Finish building this round. Unplayed cards stay in your hand.") Kind=@(PbButtonKind.Ghost) Disabled=@(phase?.Phase == MatchPhase.Build && City.BuildReady) Clicked=@Skip><ChildContent><PbDial Text=@TimerText Fill=@TimerFill Alert=@(Seconds <= 10) /><span class="skip-label">@(phase?.Phase == MatchPhase.Payout ? "Skip tally" : City.BuildReady ? "✓" : "Skip · Space")</span></ChildContent></PbButton>
+<PbButton CssClass="round-skip" Help=@(phase?.Phase == MatchPhase.Payout ? "Skip the income animation." : "Finish building this round. Unplayed cards stay in your hand.") Kind=@(PbButtonKind.Ghost) Disabled=@(phase?.Phase == MatchPhase.Build && City.BuildReady) Clicked=@Skip><ChildContent><PbDial Text=@TimerText Fill=@TimerFill Alert=@(Seconds <= 10) /><span class="skip-label">@(phase?.Phase == MatchPhase.Payout ? "Skip tally" : City.BuildReady ? "✓" : "Skip")</span></ChildContent></PbButton>
 } else { <PbDial Text=@TimerText Fill=@TimerFill Alert=@(Seconds <= 10 && TimerText != "—" && TimerText != "∞") /> }
 </div>
 </ChildContent></PbPanel></root>

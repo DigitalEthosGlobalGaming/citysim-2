@@ -43,8 +43,8 @@ public static class AuctionChecks
         var roadside=new MatchState(6,6,10,settings); roadside.AddPlayer(a,"A"); roadside.AddPlayer(b,"B");
         roadside.UpdateCell(new(2,2,"house",b,1,1)); roadside.UpdateCell(new(2,1,"street",a,2,1)); roadside.UpdateCell(new(1,2,"avenue",a,3,1)); roadside.UpdateCell(new(3,2,"roundabout",b,4,1)); roadside.UpdateCell(new(2,3,"street",a,5,1));
         roadside.SetPhase(MatchPhase.Payout,1,1); var roadPayout=Payout.Calculate(roadside);
-        Check(roadPayout.Entries.Where(e=>e.Reason=="Street · adjacent building" && e.Player==a).Sum(e=>e.Vp)==1 && roadPayout.Entries.Where(e=>e.Reason=="Street · adjacent building" && e.Player==b).Sum(e=>e.Vp)==0,"only Streets score once per adjacent building, including rival buildings");
-        Check(Payout.Apply(roadside,roadPayout) && !Payout.Apply(roadside,roadPayout) && roadside.Players[a].Vp==1 && roadside.Players[b].Vp==0,"Street VP settles once per payout");
+        Check(roadPayout.Entries.All(e=>e.Vp==0),"existing buildings beside Streets produce no recurring payout VP");
+        Check(Payout.Apply(roadside,roadPayout) && !Payout.Apply(roadside,roadPayout) && roadside.Players[a].Vp==0 && roadside.Players[b].Vp==0,"payout settles once without Street VP");
         var poor=new MatchState(5,5,4,settings with {StartingCoins=0}); poor.AddPlayer(a,"A"); poor.AddPlayer(b,"B"); var pr=new RoundMachine(poor); pr.Start(0);
         var pv=pr.GetAuctionView(a); Check(!pv.Lots[0].Allowed && !pr.BuyMarketCard(a,pv.Id,0,0),"unaffordable cards cannot be purchased");
         var limited=new MatchState(5,5,5,settings); limited.AddPlayer(a,"A"); limited.GiveCard(a,"museum");

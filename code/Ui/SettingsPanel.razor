@@ -3,10 +3,10 @@
 @using CitySim.Match
 @inherits MatchPanel
 
-<root class="overlay settings-stage">
+<root class="overlay settings-stage @(City.State == GameState.Menu ? "from-menu" : "from-game")">
  <div class="settings-layout"><PbPanel Title="SETTINGS" Kind=@(PbPanelKind.Raised)><ChildContent>
   <div class="settings-content">
-   <div class="settings-title">Make it yours</div>
+   <div class="settings-title">Settings</div>
    <div class="settings-volume"><div>UI scale: @($"{PlayerPreferences.Current.UiScale}%")</div><div class="settings-buttons">
     <PbButton Text="Smaller" Kind=@(PbButtonKind.Secondary) Disabled=@(PlayerPreferences.Current.UiScale<=60) Clicked=@(() => { Scale(-10); }) />
     <PbButton Text="Larger" Kind=@(PbButtonKind.Secondary) Disabled=@(PlayerPreferences.Current.UiScale>=120) Clicked=@(() => { Scale(10); }) />
@@ -17,7 +17,7 @@
    </div></div>
    <PbToggle Label="Reduce screen shake" Value=@PlayerPreferences.Current.ReduceShake ValueChanged=@((Action<bool>)(value => { City.SetPreferences(PlayerPreferences.Current with {ReduceShake=value}); })) />
    <PbToggle Label="Reduce flashing" Value=@PlayerPreferences.Current.ReduceFlashing ValueChanged=@((Action<bool>)(value => { City.SetPreferences(PlayerPreferences.Current with {ReduceFlashing=value}); })) />
-   <PbButton CssClass="primary" Text="Back · Esc / B" Kind=@(PbButtonKind.Ghost) Clicked=@(() => { City.Screens.Pop(); }) />
+   <PbButton CssClass="primary" Text="Back" Kind=@(PbButtonKind.Ghost) Clicked=@(() => { City.Screens.Pop(); }) />
   </div>
  </ChildContent></PbPanel></div>
 </root>

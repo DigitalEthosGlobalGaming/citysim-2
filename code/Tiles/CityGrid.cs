@@ -53,8 +53,7 @@ public sealed class CityGrid : Component
 		{
 			var tile = new Tile { X = x, Y = y, Center = CellToWorld( x, y ) };
 			// Quiet variation keeps the grid legible without a high-contrast checkerboard.
-			tile.GroundBaseTint = (x + y) % 2 == 0
-				? new Color( 0.66f, 0.76f, 0.46f ) : new Color( 0.69f, 0.79f, 0.49f );
+			tile.GroundBaseTint = CardVisualVariation.Ground(null,x,y);
 
 			tile.Ground = new GameObject( true, $"Ground {x},{y}" );
 			tile.Ground.Parent = GameObject;
@@ -256,6 +255,8 @@ public sealed class CityGrid : Component
 		if (tile.Building.IsValid()) tile.Building.Destroy();
 		tile.Building=null; tile.BuildingRenderer=null; tile.Type=TileType.Empty; tile.Piece=default;
 		tile.CardId=null; tile.Owner=Guid.Empty; tile.Order=0; tile.ByPlayer=false; tile.BaseTint=Color.White; tile.DropTime=0;
+		tile.GroundBaseTint=CardVisualVariation.Ground(null,x,y);
+		if (tile.GroundRenderer.IsValid()) tile.GroundRenderer.Tint=tile.GroundBaseTint;
 		if (tile.Ground.IsValid()) tile.Ground.Enabled=true;
 		EmptyCount++; return true;
 	}

@@ -18,7 +18,7 @@ Each event has `SchemaVersion`, `BalanceVersion`, `RecordingId`, `MatchId`, `Seq
 
 | Event | Contents / purpose |
 | --- | --- |
-| `recording_started` | Mode, bot difficulty and bot seats, seed, dimensions, settings, catalogue, initial hands/resources/board, and whether joining an existing round |
+| `recording_started` | Mode, aggregate bot difficulties, bot seats with individual difficulty/style, seed, dimensions, settings, catalogue, initial hands/resources/board, and whether joining an existing round |
 | `market_offered` | Per-seat market ID, lot IDs, card IDs, prices, budget, eligibility/readiness and whether each lot is allowed; emitted when the market opens, or when recording resumes during a market |
 | `card_received` | Successful card addition to hand, including defaults, effects and purchases |
 | `card_purchased` | Committed purchase, seat, card, market/lot, price and remaining coins |
@@ -35,6 +35,8 @@ Each event has `SchemaVersion`, `BalanceVersion`, `RecordingId`, `MatchId`, `Seq
 Rejected requests and previews are not recorded as purchases or plays. Purchase is a subset of receipt: do not add those counts together. Renovation consumes an event card and a replacement building, so legitimately emits two plays plus a replacement event. Growth is not a hand-card play. A phase snapshot is a point-in-time view: payout/growth and final scoring have their own subsequent events. The completion event can precede the EndGame phase notification; its event name is the completion signal.
 
 ## First balance reports
+
+Balance version `2026-10-30.5` adds weighted AI choices at all three difficulties while retaining the `.4` placement rules. Use this version to separate recordings from the previous mostly deterministic AI. Difficulty probabilities and verification are documented in [weighted AI choices](AI_WEIGHTED_CHOICES.md).
 
 1. **Market preference:** purchases divided by eligible, allowed offers for each card and price. Restrict denominators to players who could act; show unaffordable/ownership-blocked offers separately. A resumed segment's offer snapshot is not a new market exposure. Players may buy the same lot independently.
 2. **Card usefulness:** plays, deliberate discards and cards still held at completion. Track receipt-to-play lag by round; identical copies have no individual instance ID, so use a documented FIFO attribution approximation where necessary.

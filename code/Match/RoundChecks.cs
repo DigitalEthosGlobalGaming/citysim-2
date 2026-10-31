@@ -30,7 +30,7 @@ public static class RoundChecks
 		Check(payout.Entries.Where(e => e.Source != null).Select(e => e.Source.Order).SequenceEqual(payout.Entries.Where(e => e.Source != null).Select(e => e.Source.Order).Order()),"payout entries animate oldest building first");
 		links.SetPhase(MatchPhase.Payout,2,80); links.ChangeVp(B,2);
 		Check(Payout.Calculate(links).CoinsFor(A) == 5 && Payout.Calculate(links).CoinsFor(B) == 4,"catch-up goes to last place from round 2");
-		links.ChangeVp(A,2);
+		links.ChangeVp(A,links.Players[B].Vp-links.Players[A].Vp);
 		Check(Payout.Calculate(links).CoinsFor(A) == 5 && Payout.Calculate(links).CoinsFor(B) == 5,"tied last-place players both receive catch-up");
 
 
@@ -67,7 +67,7 @@ public static class RoundChecks
 		Check(cottage.Players[A].Vp == 1,"Cottage preview and committed VP agree");
 		var houses = Board();
 		Place(houses,A,"house",4,4); Place(houses,B,"house",5,4);
-		Check(houses.Players[A].Vp == 0 && houses.Players[B].Vp == 1,"only the placing House owner gets adjacency VP");
+		Check(houses.Players[A].Vp == 1 && houses.Players[B].Vp == 2,"House adjacency VP goes only to the placing owner, alongside each road bonus");
 		Place(houses,A,"cafe",6,4);
 		Check(Payout.Calculate(houses).CoinsFor(A) == 4,"Cafe pays its owner for an adjacent house");
 		var noRoad = new MatchState(11,11); noRoad.AddPlayer(A,"A"); noRoad.SetPhase(MatchPhase.Build,1,40);

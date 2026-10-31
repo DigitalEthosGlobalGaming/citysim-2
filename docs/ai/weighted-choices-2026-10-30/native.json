@@ -1,0 +1,40 @@
+{
+  "Balance": "2026-10-30.5",
+  "Policy": "2026-10-30.5-weighted-choices",
+  "Difficulties": [
+    {
+      "Difficulty": "Easy",
+      "BestChance": 0.55,
+      "Probabilities": [
+        0.55,
+        0.24227363545318828,
+        0.20772636454681165,
+        0
+      ]
+    },
+    {
+      "Difficulty": "Normal",
+      "BestChance": 0.75,
+      "Probabilities": [
+        0.75,
+        0.14054412522144955,
+        0.10945587477855048,
+        0
+      ]
+    },
+    {
+      "Difficulty": "Hard",
+      "BestChance": 0.9,
+      "Probabilities": [
+        0.9,
+        0.05986876601124518,
+        0.04013123398875479,
+        0
+      ]
+    }
+  ],
+  "Street": "Gain 1 VP when a building is placed beside your Streets. Once per building per Street owner.",
+  "Park": "Place: +1 VP, plus 1 VP if beside a Nature card.",
+  "RequiredRoads": 15
+}
+

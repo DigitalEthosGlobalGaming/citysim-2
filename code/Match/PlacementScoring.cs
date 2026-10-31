@@ -19,14 +19,23 @@ public static class PlacementScoring
 				"adjacent-house-vp" => effect.Amount*neighbours.Count(BoardRules.IsHome),
 				"adjacent-home-tag-vp" => effect.Amount*neighbours.Count(c => CardLibrary.Get(c.CardId).Tags.HasFlag(Tag.Home)),
 				"adjacent-park-vp" => effect.Amount*neighbours.Count(c => BoardRules.IsPark(c) || c.CardId == "lake"), _ => 0 };
+			if (effect.Rule=="beside-road-vp" && neighbours.Any(c=>CardLibrary.Get(c.CardId).Type==CardType.Road))
+				awards.Add(new(added.Owner,effect.Amount,0,"Beside road",added));
 			if (vp != 0) awards.Add(new(added.Owner,vp,0,"Placement adjacency",added));
 		}
 		ParkScoreResult park = null;
 		if (card.ParkSize > 0) { park = ParkScoring.OnTileAdded(state,added); awards.AddRange(park.Awards); }
 		if (card.Type != CardType.Road && card.Type != CardType.Event)
+		{
+		// A new building pays each neighbouring Street owner once. Existing buildings,
+		// road placement and later payouts never retrigger this award.
+		foreach (var source in neighbours.Where(n=>n.CardId=="street" && state.Players.ContainsKey(n.Owner))
+			.GroupBy(n=>n.Owner).Select(g=>g.OrderBy(n=>n.Order).First()))
+			awards.Add(new(source.Owner,CardLibrary.Get("street").Effects.Single(e=>e.Rule=="street-building-vp").Amount,0,"Street · building placed",source));
 		foreach (var source in neighbours.Where(n => n.CardId == "roundabout" && state.Players.ContainsKey(n.Owner)))
 		foreach (var effect in CardLibrary.Get(source.CardId).Effects.Where(e => e.Rule == "roundabout-vp"))
 			awards.Add(new(source.Owner,effect.Amount,0,"Roundabout",source));
+		}
 		var owned = state.Cells().Where(c => c.Owner == added.Owner).ToList();
 		// Persistent effects may trigger themselves unless the rule explicitly says otherwise.
 		foreach (var source in owned.Append(added))

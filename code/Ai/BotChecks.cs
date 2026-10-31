@@ -10,7 +10,7 @@ namespace CitySim.Ai;
 /// <summary>Bounded, transport-independent M6 behavior checks. Full simulation sweeps belong to M8.</summary>
 public static class BotChecks
 {
- static readonly Guid[] Ids = Enumerable.Range(1,4).Select(i => new Guid($"00000000-0000-0000-0000-{i:000000000000}")).ToArray();
+ static readonly Guid[] Ids = Enumerable.Range(1,5).Select(i => new Guid($"00000000-0000-0000-0000-{i:000000000000}")).ToArray();
  public static IReadOnlyList<string> Run()
  {
   var passed=new List<string>();
@@ -31,9 +31,9 @@ public static class BotChecks
    foreach (var bot in bots) bot.ChooseContract();
    Check(rounds.ContractsChosen && Ids.Take(players).All(id=>offered[id].Contains(rounds.GetContractView(id)?.Selected)),$"{players} bots choose their offered contracts");
    rounds.Start(0); var denied=0; state.Events.PlacementRejected+=_=>denied++;
-   for (var step=0;step<2500 && state.Phase!=MatchPhase.EndGame;step++)
+   for (var step=0;step<30000 && state.Phase!=MatchPhase.EndGame;step++)
    {
-    var now=step*0.25;
+    var now=step/30.0;
     foreach (var bot in bots) bot.Update(now);
     foreach (var id in Ids.Take(players))
     {
@@ -55,12 +55,12 @@ public static class BotChecks
   var deadlineState=Json(sample.Capture()); var deadlineBid=Json(round.GetAuctionView(Ids[0]));
   bots[0].Update(sample.PhaseEndsAt);
   Check(deadlineState==Json(sample.Capture()) && deadlineBid==Json(round.GetAuctionView(Ids[0])),"bot submits no action at the auction deadline");
-  for (var rivals=1;rivals<=3;rivals++)
+  for (var rivals=1;rivals<=4;rivals++)
   {
    var (s,r,agents)=Setup(rivals+1);
    foreach (var id in Ids.Take(rivals+1)) { var offer=r.GetContractView(id); r.ChooseContract(id,offer.DraftId,offer.Choices[0]); }
    r.Start(0);
-   for (var n=0;n<32;n++) foreach (var bot in agents.Skip(1)) bot.Update(n*0.25);
+   for (var n=0;n<1200 && Ids.Skip(1).Take(rivals).Any(id=>!r.GetAuctionView(id).Ready);n++) foreach (var bot in agents.Skip(1)) bot.Update(n/60.0);
    Check(Ids.Skip(1).Take(rivals).All(id=>r.GetAuctionView(id).Ready) && !r.GetAuctionView(Ids[0]).Ready && s.Phase==MatchPhase.Bid,$"{rivals} rivals independently choose or pass while the market is untimed while the human remains unready");
   }
   (MatchState,RoundMachine,Bot) Placement()
@@ -78,17 +78,45 @@ public static class BotChecks
   Check(beforeDeadline==Json(expired.Capture()),"bot performs no build action at the deadline");
   var first=Enumerable.Range(0,81).Select(i=>(X:i%9,Y:i/9)).First(p=>planned.PlacementError(Ids[0],"house",p.X,p.Y)==null);
   var firstVp=PlacementScoring.Preview(planned,"house",first.X,first.Y,Ids[0]);
-  for (var n=0;n<20 && planned.Players[Ids[0]].Hand.Count>0;n++) planner.Update(n*0.25);
+  for (var n=0;n<360 && planned.Players[Ids[0]].Hand.Count>0;n++) planner.Update(n/60.0);
   var chosen=planned.Cells().Single(c=>c.Owner==Ids[0] && c.PlacedRound==1 && (c.X!=5 || c.Y!=3));
   Check(planned.Players[Ids[0]].Vp>firstVp && chosen!=null,"hard bot chooses a VP-producing house placement over the first legal cell");
-  for (var n=20;n<40 && !plannedRounds.IsBuildReady(Ids[0]);n++) planner.Update(n*0.25);
+  for (var n=360;n<600 && !plannedRounds.IsBuildReady(Ids[0]);n++) planner.Update(n/60.0);
   Check(planned.Phase==MatchPhase.Payout || plannedRounds.IsBuildReady(Ids[0]),"bot readies after completing its build actions");
   var endSettings=new MatchSettings {EnableContracts=false,EnableAuctions=false,DefaultStreets=0,DefaultCommons=0};
   var late=new MatchState(9,9,72,endSettings); late.AddPlayer(Ids[0],"Planner");
   late.SeedStreet(4,4); late.SetPhase(MatchPhase.Build,8,40); late.GiveCard(Ids[0],"bank"); late.GiveCard(Ids[0],"monument");
   var lateRounds=new RoundMachine(late); var monumentBot=new Bot(Ids[0],late,lateRounds,BotDifficulty.Hard,12);
-  for (int n=0;n<12 && !late.Cells().Any(c=>c.Owner==Ids[0]);n++) monumentBot.Update(n*0.25);
+  for (int n=0;n<360 && !late.Cells().Any(c=>c.Owner==Ids[0]);n++) monumentBot.Update(n/60.0);
   Check(late.Cells().Any(c=>c.Owner==Ids[0] && c.CardId=="monument") && late.Players[Ids[0]].Hand.Contains("bank"),"late-round bot chooses six-VP Monument over a low-yield bank");
+  var paceSettings=new MatchSettings { EnableContracts=false,EnableGoals=false,EnableAuctions=false,DefaultCommons=0,DefaultStreets=0,StubBidSeconds=0 };
+  var paced=new MatchState(7,7,901,paceSettings); paced.AddPlayer(Ids[0],"Bot"); paced.AddPlayer(Ids[1],"Human");
+  var pacedRounds=new RoundMachine(paced); pacedRounds.Start(0); pacedRounds.Tick(0);
+  for(var i=0;i<3;i++) paced.GiveCard(Ids[0],"cottage");
+  paced.GiveCard(Ids[1],"park");
+  var pacedBot=new Bot(Ids[0],paced,pacedRounds,BotDifficulty.Normal,15,
+   finishBuildingQuickly:()=>paced.Players[Ids[1]].Hand.Count==0 || pacedRounds.IsBuildReady(Ids[1]));
+  var placementTimes=new List<double>();double clock=0;
+  paced.Events.CardPlaced+=cell=>{if(cell.Owner==Ids[0]) placementTimes.Add(clock);};
+  int tick=0;
+  for(;tick<120;tick++) {clock=tick/60.0;pacedBot.Update(clock);}
+  Check(placementTimes.Count==0,"bot waits at least two seconds before its first build while the human is playing");
+  for(;tick<600 && placementTimes.Count<2;tick++) {clock=tick/60.0;pacedBot.Update(clock);}
+  Check(placementTimes.Count==2 && placementTimes[0]<=4.05,"bot builds after the initial thinking pause");
+  Check(placementTimes[1]-placementTimes[0]>=1.19,"bot leaves at least 1.2 seconds between ordinary builds");
+  Check(paced.TryPlace(Ids[1],"park",6,6).Success,"human can finish their hand during the bot's build pause");
+  var finishedAt=clock;
+  for(;tick<900 && !pacedRounds.IsBuildReady(Ids[0]);tick++) {clock=tick/60.0;pacedBot.Update(clock);}
+  Check(paced.Players[Ids[0]].Hand.Count==0 && clock-finishedAt<1.2,"bot promptly finishes remaining builds when the human hand becomes empty");
+  Check(pacedRounds.IsBuildReady(Ids[0]),"bot marks itself ready after finishing its remaining cards");
+  var readyPaced=new MatchState(7,7,902,paceSettings); readyPaced.AddPlayer(Ids[0],"Bot"); readyPaced.AddPlayer(Ids[1],"Human");
+  var readyRounds=new RoundMachine(readyPaced); readyRounds.Start(0); readyRounds.Tick(0);
+  readyPaced.GiveCard(Ids[0],"cottage"); readyPaced.GiveCard(Ids[1],"park");
+  var readyBot=new Bot(Ids[0],readyPaced,readyRounds,BotDifficulty.Normal,16,
+   finishBuildingQuickly:()=>readyPaced.Players[Ids[1]].Hand.Count==0 || readyRounds.IsBuildReady(Ids[1]));
+  readyBot.Update(0);readyRounds.Ready(Ids[1],0.1);
+  for(var n=6;n<90 && readyPaced.Phase==MatchPhase.Build;n++) readyBot.Update(n/60.0);
+  Check(readyPaced.Players[Ids[0]].Hand.Count==0 && readyPaced.Phase==MatchPhase.Payout && readyPaced.Players[Ids[1]].Hand.Count==1,"human readiness accelerates remaining bot builds even when the human keeps a card");
   var scoring=new MatchState(9,9,101,endSettings); scoring.AddPlayer(Ids[0],"A"); scoring.AddPlayer(Ids[1],"B");
   for (var i=0;i<9;i++) { scoring.SeedStreet(i,4); if (i!=4) scoring.SeedStreet(4,i); }
   scoring.SetPhase(MatchPhase.Build,8,40);
@@ -109,12 +137,12 @@ public static class BotChecks
   for(var y=0;y<3;y++) for(var x=0;x<3;x++) if(replacementState.Get(x,y)==null) { replacementState.GiveCard(Ids[0],"park"); replacementState.TryPlace(Ids[0],"park",x,y); }
   replacementState.SetPhase(MatchPhase.Build,8,40); replacementState.GiveCard(Ids[0],"renovation"); replacementState.GiveCard(Ids[0],"monument");
   var replacementBot=new Bot(Ids[0],replacementState,new RoundMachine(replacementState),BotDifficulty.Hard,12);
-  for(var n=0;n<8 && replacementState.Players[Ids[0]].Hand.Count>0;n++) replacementBot.Update(n*0.25);
+  for(var n=0;n<360 && replacementState.Players[Ids[0]].Hand.Count>0;n++) replacementBot.Update(n/60.0);
   Check(replacementState.Cells().Count()==9 && replacementState.Cells().Count(c=>c.CardId=="monument")==1 && replacementState.Players[Ids[0]].Hand.Count==0,"bot renovates a full board into a useful end-game building through shared rules");
   Check(FinalScoring.CardEffects(replacementState).Single(e=>e.Reason=="Monument").Vp==6,"bot replacement retains the actual six-VP end-game effect");
   var replay=Play(2,9,144,out _); var replayAgain=Play(2,9,144,out _);
   Check(replay==replayAgain,"identical seeds reproduce full bot match decisions and scores");
-  Play(3,9,221,out _); Play(4,9,332,out _);
+  Play(3,9,221,out _); Play(4,9,332,out _); Play(5,17,334,out _);
   var stress=Play(4,18,443,out var duration);
   Check(!string.IsNullOrEmpty(stress) && duration<60,$"four bots finish an 18×18 eight-round stress match in {duration:0.00}s");
   return passed.AsReadOnly();

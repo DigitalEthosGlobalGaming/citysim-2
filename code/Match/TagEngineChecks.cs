@@ -28,7 +28,7 @@ public static class TagEngineChecks
         foreach (var id in new[] { "industrial-estate", "housing-authority", "eco-council" })
         {
             var card = CardLibrary.Get(id);
-            Check(card.Rarity == Rarity.Rare && card.Type == CardType.Civic && card.Tags.HasFlag(Tag.Civic) && card.NeedsRoad && card.EffectTray && card.OwnershipLimit == 1 && card.Weight == 2,$"{card.Name} metadata");
+            Check(card.Rarity == Rarity.Rare && card.Type == CardType.Civic && card.Tags.HasFlag(Tag.Civic) && card.NeedsRoad==(id=="industrial-estate") && card.EffectTray && card.OwnershipLimit == 1 && card.Weight == 2,$"{card.Name} metadata");
         }
         var estate = Board(); Place(estate,A,"industrial-estate",0,11);
         Check(Payout.Calculate(estate).Entries.Single(e => e.Source?.CardId == "industrial-estate").Coins == 1,"Industrial Estate counts itself");
@@ -54,7 +54,7 @@ public static class TagEngineChecks
         var housing = Board(); Place(housing,A,"housing-authority",0,11);
         Check(BoardRules.IsHome(housing.Get(0,11)),"Housing Authority participates in Home interactions");
         Place(housing,A,"house",1,11);
-        Check(PlacementScoring.Preview(housing,"house",2,11,A) == 1,"Home-tagged Civic does not add House adjacency VP");
+        Check(PlacementScoring.Preview(housing,"house",2,11,A) == 2,"House preview includes its Home neighbour and road bonus");
         Check(End(housing,"Housing Authority") == 0,"Housing Authority rounds down below three Homes");
         Place(housing,A,"house",2,11);
         Check(End(housing,"Housing Authority") == 1,"Housing Authority counts itself in each group of three");

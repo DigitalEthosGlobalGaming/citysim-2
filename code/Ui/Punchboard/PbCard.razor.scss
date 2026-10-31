@@ -32,6 +32,7 @@ PbCard
 		border-radius: $pb-radius;
 		pointer-events: none;
 	}
+	.pb-foil-line { display: none; position: absolute; left: 8px; top: 8px; right: 8px; bottom: 8px; border: 1px solid; border-radius: $pb-radius; pointer-events: none; }
 
 	.pb-key
 	{
@@ -60,12 +61,11 @@ PbCard
 	}
 	&.has-cost .pb-tags { padding-right: 78px; }
 	.pb-build-cost { position: relative; font-size: 14px; font-weight: 800; flex-shrink: 0; }
-	.pb-park-help { position: relative; font-size: 12px; flex-shrink: 0; }
 
 	.pb-art
 	{
 		position: relative;
-		height: 58px;
+		height: 50px;
 		justify-content: center;
 		align-items: center;
 		border: 2px solid $pb-ink;
@@ -84,9 +84,13 @@ PbCard
 	.pb-rule-line.timed { flex-direction: column; gap: 1px; align-items: stretch; }
 	.pb-rule-line.timed .pb-rule-copy { margin-left: 12px; flex-grow: 0; flex-shrink: 0; }
 	.pb-rarity-row { position: relative; margin-top: auto; align-self: flex-start; }
+	.pb-rarity-row PbRarityMarker { font-size: 15px; }
 	&.hand-card .pb-rarity-row { padding-right: 42px; min-height: 36px; }
 	.card-discard { position: absolute; right: 9px; bottom: 9px; width: 36px; height: 36px; min-height: 36px; padding: 4px; z-index: 6; }
 	.card-discard > * { pointer-events: none; }
+	.discard-icon { position: relative; width: 18px; height: 20px; flex-shrink: 0; }
+	.discard-lid { position: absolute; top: 3px; left: 1px; width: 16px; height: 2px; background-color: $pb-ink; }
+	.discard-bin { position: absolute; top: 6px; left: 3px; width: 12px; height: 12px; border: 2px solid $pb-ink; border-radius: 0 0 2px 2px; }
 
 	// Market faces share a fixed height with room for the longest printed rules.
 	&.lot-face, &.hand-card.big
@@ -100,8 +104,10 @@ PbCard
 		.pb-interactions > *, .pb-text > * { flex-shrink: 0; }
 	}
 	&.uncommon .pb-rarity-frame { border-color: $pb-r-uncommon; }
-	&.rare .pb-rarity-frame { border-color: $pb-r-rare; }
-	&.legendary .pb-rarity-frame { border-color: $pb-r-legendary; }
+	&.rare .pb-rarity-frame { border: 3px solid $pb-r-rare; border-top-color: lighten($pb-r-rare, 23%); border-left-color: lighten($pb-r-rare, 12%); border-bottom-color: darken($pb-r-rare, 16%); }
+	&.rare .pb-foil-line { display: flex; border-color: rgba($pb-r-rare, 0.45); }
+	&.legendary .pb-rarity-frame { border: 4px solid $pb-r-legendary; border-top-color: lighten($pb-r-legendary, 30%); border-left-color: lighten($pb-r-legendary, 16%); border-bottom-color: darken($pb-r-legendary, 18%); }
+	&.legendary .pb-foil-line { display: flex; border-color: rgba($pb-r-legendary, 0.7); }
 	&.legendary { box-shadow: 0 2px 0 rgba($pb-ink, 0.6), 0 7px 12px rgba(0, 0, 0, 0.3), 0 0 18px rgba($pb-r-legendary, 0.6); }
 
 	&:hover { transform: translateY(-6px); }
@@ -121,7 +127,7 @@ PbCard
 	&.compact .pb-text { display: none; }
 	&.compact:focus .pb-text, &.compact:hover .pb-text, &.compact.selected .pb-text { display: flex; min-height: 0px; }
 	&.compact.hand-card .pb-text { display: flex; min-height: 0px; }
-	&.big { width: 310px; min-height: 280px; .pb-art { height: 80px; font-size: 44px; } .pb-name { font-size: 24px; } .pb-text { font-size: 16px; } .pb-key { font-size: 18px; width: 30px; height: 30px; } }
+	&.big { width: 310px; min-height: 280px; .pb-art { height: 70px; font-size: 44px; } .pb-name { font-size: 24px; } .pb-text { font-size: 16px; } .pb-key { font-size: 18px; width: 30px; height: 30px; } }
 	&.big.compact.hand-card { width: 310px; }
 	&.big.lot-face { width: 280px; }
 }
@@ -135,4 +141,5 @@ PbCard
 
 .large-text PbCard .pb-cost { font-size: 22px; min-width: 92px; }
 .large-text PbCard.has-cost .pb-tags { padding-right: 110px; }
-.large-text PbCard .pb-build-cost, .large-text PbCard .pb-park-help { font-size: 20px; }
+.large-text PbCard .pb-build-cost { font-size: 20px; }
+.large-text PbCard .pb-rarity-row PbRarityMarker { font-size: 23px; }

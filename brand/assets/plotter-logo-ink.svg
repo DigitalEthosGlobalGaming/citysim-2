@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 144" role="img" aria-labelledby="title">
+  <title id="title">Plotter</title>
+  <g fill="none" stroke="#293A3B" stroke-width="8" stroke-linejoin="round">
+    <rect x="8" y="8" width="128" height="128" rx="6"/>
+    <path d="M8 73h128M72 8v128"/>
+  </g>
+  <path fill="#B94F3E" d="M22 56V37l17-16 17 16v19H45V44H33v12z"/>
+  <path fill="#293A3B" d="M88 91h30v30H88z"/>
+  <g fill="none" stroke="#293A3B" stroke-width="15" stroke-linecap="square" stroke-linejoin="round">
+    <path d="M174 121V24h36c24 0 34 10 34 28s-10 28-34 28h-36"/>
+    <path d="M270 24v97h54"/>
+    <rect x="349" y="24" width="75" height="97" rx="28"/>
+    <path d="M449 24h73m-36 0v97M541 24h73m-36 0v97M641 24v97m0-97h57m-57 48h48m-48 49h57"/>
+    <path d="M729 121V24h30c23 0 32 10 32 27s-9 27-32 27h-30m30 0 32 43"/>
+  </g>
+</svg>

@@ -53,7 +53,7 @@ public static class CardVisuals
 	}
 	public static void Clear(GameObject root)
 	{
-		foreach (var child in root.Children.ToList()) child.Destroy();
+		foreach (var child in root.Children.ToList()) { child.Parent = null; child.Destroy(); }
 	}
 	public static void BuildRoad(GameObject root, string path, bool roundabout = false)
 	{
@@ -81,26 +81,76 @@ public static class CardVisuals
 			marker.Components.Create<ModelRenderer>().Model = roundaboutMarker;
 		}
 	}
-	public static void Build(GameObject root, string id, bool mature = false)
+	public static void Build(GameObject root, string id, bool mature = false, int visualSeed = 0)
 	{
 		Clear(root);
 		var key = id == "sapling" && mature ? "forest" : id;
 		if (key == "farm") { AddFarm(root); return; }
 		if (key == "lake") { AddLake(root); return; }
 		if (!visuals.TryGetValue(key, out var parts) || parts.Length == 0) { AddFallback(root,key); return; }
-		foreach (var part in parts)
+		var layout = Layout(parts,key,visualSeed);
+		foreach (var pose in layout)
 		{
+			var part = pose.Part;
 			var model = Model.Load(part.Path);
 			if (model == null || model.IsError) { AddFallback(root,part.Path); continue; }
 			var bounds = model.Bounds;
 			var extent = Math.Max(bounds.Size.x,bounds.Size.y);
 			if (extent <= 0) { AddFallback(root,part.Path); continue; }
-			var scale = part.Size/extent * BuildingFootprint;
+			var scale = part.Size/extent * BuildingFootprint * pose.Scale;
 			var child = new GameObject(true,part.Path) { Parent = root };
-			child.LocalRotation = Rotation.Identity; child.LocalScale = scale;
-			child.LocalPosition = new Vector3(part.X,part.Y,part.Z)*BuildingFootprint + Vector3.Up*15 - new Vector3(bounds.Center.x,bounds.Center.y,bounds.Mins.z)*scale;
+			child.LocalRotation = Rotation.FromYaw(pose.Yaw); child.LocalScale = scale;
+			child.LocalPosition = new Vector3(pose.X,pose.Y,part.Z)*BuildingFootprint + Vector3.Up*15 - child.LocalRotation * (new Vector3(bounds.Center.x,bounds.Center.y,bounds.Mins.z)*scale);
 			child.Components.Create<ModelRenderer>().Model = model;
 		}
+	}
+
+	readonly record struct Pose(Part Part, float X, float Y, float Scale = 1, float Yaw = 0);
+	static bool Tree(Part part) => part.Path.Contains("/tree-");
+	static bool GroundPart(Part part) => part.Path.Contains("/path-stones");
+	static bool Movable(Part part) => Tree(part) || part.Path.Contains("/planter.") || part.Path.Contains("/detail-parasol-") || part.Path.Contains("/shipping-container-") || part.Path.Contains("/detail-tank-");
+
+	static Pose[] Layout(Part[] parts, string key, int seed)
+	{
+		var random = new Random(seed);
+		float Range(float min,float max) => min+(max-min)*(float)random.NextDouble();
+		// Retry the complete arrangement: props stay in their authored zones and must
+		// clear each other and the tile edge. Paths intentionally run beneath foliage.
+		for (var attempt=0; attempt<32; attempt++)
+		{
+			var poses = parts.Select(part =>
+			{
+				if (!Movable(part)) return new Pose(part,part.X,part.Y);
+				var y = part.Y;
+				// Side yards can occupy either end; facade and rooftop attachments stay fixed.
+				if (!Tree(part) && key is "cafe" or "builders-yard" or "granary" or "vineyard" or "gardeners-guild") y = random.Next(2)==0 ? -45 : 45;
+				return new Pose(part,part.X+Range(-9,9),y+Range(-9,9),Tree(part) ? Range(0.94f,1.06f) : 1,Tree(part) || part.Path.Contains("/detail-parasol-") ? Range(0,360) : 0);
+			}).ToArray();
+			var boxes = new List<(float X,float Y,float HalfX,float HalfY,bool Ground,bool Movable)>();
+			var valid = true;
+			foreach (var pose in poses)
+			{
+				var model = Model.Load(pose.Part.Path);
+				if (model == null || model.IsError) continue;
+				var size = model.Bounds.Size;
+				var extent = Math.Max(size.x,size.y);
+				if (extent <= 0) continue;
+				var scale = pose.Part.Size/extent*pose.Scale;
+				var angle = pose.Yaw*MathF.PI/180;
+				var c = MathF.Abs(MathF.Cos(angle)); var s = MathF.Abs(MathF.Sin(angle));
+				var hx = (c*size.x+s*size.y)*scale*0.5f;
+				var hy = (s*size.x+c*size.y)*scale*0.5f;
+				var ground = GroundPart(pose.Part); var movable = Movable(pose.Part);
+				var edgeX = MathF.Abs(pose.X)+hx; var edgeY = MathF.Abs(pose.Y)+hy;
+				// Free-rotating forest clusters must fit even at diagonal root angles.
+				if (edgeX>112 || edgeY>112 || (key is "forest" or "sapling") && edgeX*edgeX+edgeY*edgeY>122*122) { valid=false; break; }
+				if (!ground && boxes.Any(b => !b.Ground && (movable || b.Movable) && MathF.Abs(pose.X-b.X)<hx+b.HalfX+3 && MathF.Abs(pose.Y-b.Y)<hy+b.HalfY+3)) { valid=false; break; }
+				boxes.Add((pose.X,pose.Y,hx,hy,ground,movable));
+			}
+			if (valid) return poses;
+		}
+		// The original composition is the safe fallback for unusually shaped assets.
+		return parts.Select(part => new Pose(part,part.X,part.Y)).ToArray();
 	}
 
 	static void AddFarm(GameObject root)

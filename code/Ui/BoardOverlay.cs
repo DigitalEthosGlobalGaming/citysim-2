@@ -1,6 +1,7 @@
 using CitySim.Match;
 using CitySim.Cards;
 using Sandbox.UI;
+using CitySim.Punchboard;
 
 namespace CitySim;
 
@@ -9,8 +10,10 @@ public sealed class BoardOverlay : MatchPanel
 	readonly List<(TileClaim Claim,SceneLabel Label)> claims = new();
 	readonly Dictionary<(int X,int Y),SceneLabel> highlightLabels = new();
 	Panel inspection;
-	Label inspectionTitle, inspectionMeta, inspectionRules;
-	Label referenceStatus;
+	Label inspectionOwner;
+	PbCard inspectionCard;
+	BoardCell inspectedCell;
+	float hoverStarted;
 	protected override void Subscribe() { if (BoundMatch != null) BoundMatch.Events.ClaimsChanged += Read; if (City?.Player != null) City.Player.PreviewChanged += Inspect; if (City != null) City.UiChanged += Inspect; Read(); Inspect(); }
 	protected override void Unsubscribe() { if (BoundMatch != null) BoundMatch.Events.ClaimsChanged -= Read; if (City?.Player != null) City.Player.PreviewChanged -= Inspect; if (City != null) City.UiChanged -= Inspect; foreach (var item in claims) item.Label.Destroy(); claims.Clear(); foreach (var label in highlightLabels.Values) label.Destroy(); highlightLabels.Clear(); }
 	void Inspect()
@@ -18,23 +21,28 @@ public sealed class BoardOverlay : MatchPanel
 		if (inspection == null)
 		{
 			inspection=AddChild<Panel>("board-inspect");
-			inspectionTitle=inspection.AddChild<Label>("inspect-title");
-			inspectionMeta=inspection.AddChild<Label>("inspect-meta");
-			inspectionRules=inspection.AddChild<Label>("inspect-rules");
+			inspectionOwner=inspection.AddChild<Label>("inspect-owner");
+			inspectionCard=inspection.AddChild<PbCard>();
+			inspectionCard.Size=PbSize.Big;
+			inspectionCard.BuildOnly=true;
 		}
 		var hover=City?.Player?.Hovered;
 		var cell=hover == null ? null : BoundMatch?.Get(hover.X,hover.Y);
-		var visible=cell != null && City.Screens.Top==GameScreen.Match && City.State==GameState.Playing;
-		inspection.Style.Display=visible ? DisplayMode.Flex : DisplayMode.None;
+		var allowed=City?.Screens.Top==GameScreen.Match && City.State==GameState.Playing &&
+			(BoundMatch?.Phase != MatchPhase.Bid || Hud.MarketPeeking);
+		if (!allowed) cell=null;
+		if (cell != inspectedCell)
+		{
+			inspectedCell=cell;
+			hoverStarted=Time.Now;
+			inspection.SetClass("visible",false);
+		}
+		var visible=cell != null && Time.Now-hoverStarted >= 0.4f;
+		inspection.SetClass("visible",visible);
 		if (!visible) return;
-		var card=CardLibrary.Get(cell.CardId);
-		var name=cell.CardId=="sapling" && Growth.IsMature(cell) ? "Forest" : card.Name;
-		inspectionTitle.Text=$"{card.Icon} {name}";
-		var owner=BoundMatch.Players.TryGetValue(cell.Owner,out var player) ? player.Name : "City road";
-		inspectionMeta.Text=$"{owner} · {card.Rarity} · {(card.Tags==Tag.None ? "Road" : card.Tags.ToString())}";
-		inspectionRules.Text=card.Rules;
-		inspectionRules.Tooltip=card.ParkSize > 0 ? CardPresentation.ParkHelp(BoundMatch.Settings) : "Adjacent means a shared edge. Tile ranges include diagonals. Home refers to the Home tag.";
-		inspectionRules.TooltipClass="city-tooltip";
+		inspectionCard.City=City;
+		inspectionCard.Card=CardLibrary.Get(cell.CardId);
+		inspectionOwner.Text=BoundMatch.Players.TryGetValue(cell.Owner,out var player) ? player.Name : "City road";
 	}
 	void Read()
 	{
@@ -48,10 +56,7 @@ public sealed class BoardOverlay : MatchPanel
 	public override void Tick()
 	{
 		base.Tick();
-		if (referenceStatus == null) referenceStatus = AddChild<Label>("reference-status");
-		var showReference = City?.ReferenceTag is { } tag && tag != Tag.None && City.State == GameState.Playing && City.Screens.Top == GameScreen.Match && (City.Match?.Phase != MatchPhase.Bid || Hud.MarketPeeking);
-		referenceStatus.Style.Display = showReference ? DisplayMode.Flex : DisplayMode.None;
-		if (showReference) referenceStatus.Text = $"{City.HighlightStatus} · Matching cards highlighted";
+		Inspect();
 		var showHighlights = City?.Player != null && City.State == GameState.Playing && City.Screens.Top == GameScreen.Match &&
 			(City.Match?.Phase != MatchPhase.Bid || Hud.MarketPeeking);
 		var cells = showHighlights ? City.HighlightedCells : Array.Empty<BoardCell>();

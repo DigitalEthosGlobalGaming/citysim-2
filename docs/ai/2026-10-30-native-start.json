@@ -1,0 +1,56 @@
+{
+  "Screen": "ContractPick",
+  "Board": 17,
+  "Players": [
+    {
+      "Id": "11111111-0000-0000-0000-000000000001",
+      "Name": "You"
+    },
+    {
+      "Id": "22222222-0000-0000-0000-000000000002",
+      "Name": "Casey"
+    },
+    {
+      "Id": "33333333-0000-0000-0000-000000000003",
+      "Name": "Dakota"
+    },
+    {
+      "Id": "44444444-0000-0000-0000-000000000004",
+      "Name": "Drew"
+    },
+    {
+      "Id": "00000005-0000-0000-0000-000000000005",
+      "Name": "Captain Casey"
+    }
+  ],
+  "ActiveOpponents": [
+    {
+      "Seat": 0,
+      "Name": "Casey",
+      "Difficulty": "Hard"
+    },
+    {
+      "Seat": 1,
+      "Name": "Dakota",
+      "Difficulty": "Hard"
+    },
+    {
+      "Seat": 2,
+      "Name": "Drew",
+      "Difficulty": "Hard"
+    },
+    {
+      "Seat": 3,
+      "Name": "Captain Casey",
+      "Difficulty": "Hard"
+    }
+  ],
+  "IndependentDifficulties": [
+    "Easy",
+    "Normal",
+    "Hard",
+    "Normal"
+  ],
+  "Frozen": true
+}
+

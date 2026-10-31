@@ -35,8 +35,6 @@ public sealed record MatchSettings
 	public int TilesPerPlayer { get; init; } = 55;
 	public int MinimumBoardSide { get; init; } = 11;
 	public int MaximumBoardSide { get; init; } = 18;
-	public int ParkScoringCap { get; init; } = 10;
-	public int ParkPlacerDivisor { get; init; } = 2;
 	public int CoinsPerEndVp { get; init; } = 5;
 	public int PublicGoalCount { get; init; } = 3;
 	public bool EnableGoals { get; init; } = true;

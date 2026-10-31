@@ -14,22 +14,29 @@ public static class FoundationChecks
 		void Check( bool ok, string name ) { if (!ok) throw new InvalidOperationException(name); results.Add($"PASS {name}"); }
 		Check(CardLibrary.All.Select(c => c.Id).Distinct().Count() == CardLibrary.All.Count,"unique catalog card IDs");
 		var cafeRules = CardRuleText.Split(CardLibrary.Get("cafe").Rules);
-		Check(cafeRules.Count == 2 && cafeRules[0].Label == "Payout" && cafeRules[1].Label == "End" && cafeRules.All(part => !string.IsNullOrEmpty(part.Help)),"card timing labels split into explained payout and end sections");
+		Check(cafeRules.Select(p=>p.Label).SequenceEqual(new[]{"Place","Payout","End"}) && cafeRules.All(part => !string.IsNullOrEmpty(part.Help)),"card timing labels explain placement, payout and end sections");
 		var houseRules = CardRuleText.Split(CardLibrary.Get("house").Rules);
 		Check(houseRules.Count == 2 && houseRules[0].Label == "Place" && houseRules[1].Label == "Payout" && houseRules[1].Text.Contains("Shop"),"House explains payout and placement separately");
 		Check(CardRuleText.Split("A plain rule.").Single().Text == "A plain rule.","plain card text remains intact");
 		var apartmentWords = CardRuleText.Words(CardRuleText.Split(CardLibrary.Get("apartment").Rules).First().Text);
-		Check(apartmentWords.Any(w => w.Tag == Tag.Home) && apartmentWords.Any(w => w.Text == "building."),"Apartment description renders its Home-tag target as a tag");
+		Check(apartmentWords.Any(w => w.Tag == Tag.Home) && apartmentWords.Any(w => w.Text == "building"),"Apartment description renders its Home-tag target as a tag");
+		Check(CardRuleText.Words(CardLibrary.Get("park").Rules).Any(w => w.Tag==Tag.Nature) && CardRuleText.Words(CardLibrary.Get("cottage").Rules).Any(w => w.Park),"Nature-card and park references become highlightable chips");
 		var tagWords = CardRuleText.Words(CardLibrary.Get("eco-council").Rules);
 		Check(tagWords.Any(w => w.Tag == Tag.Nature) && tagWords.Any(w => w.Tag == Tag.Industry),"multiple tag references produce distinct inline chips");
 		Check(CardRuleText.Words(CardLibrary.Get("house").Rules).Any(w => w.Shop && w.Text == "Shop") && CardRuleText.Words(CardLibrary.Get("apartment").Rules).Any(w => w.Shop && w.Text == "Shop"),"singular and plural Shop references become chips");
 		Check(CardRuleText.Words(CardLibrary.Get("contractor").Rules).All(w => w.Tag == Tag.None),"specific House and Shop targets do not become category tags");
+        var avenueWords = CardRuleText.Words(CardLibrary.Get("avenue").Rules);
+        Check(avenueWords.Any(w => w.Kind == InteractionKind.Building) && avenueWords.Any(w => w.Kind == InteractionKind.Road),"Avenue exposes building and road hover targets");
+        Check(CardRuleText.Words(CardLibrary.Get("granary").Rules).Where(w => w.Kind == InteractionKind.Card).Select(w => w.CardId).SequenceEqual(new[] { "farm", "orchard" }),"Farm and Orchard references retain distinct targets");
+        foreach (var card in CardLibrary.All)
+        foreach (var word in CardRuleText.Words(card.Rules).Where(w => w.Kind == InteractionKind.Card))
+            Check(CardLibrary.TryGet(word.CardId,out _),$"{card.Name} inline reference {word.Text} resolves to a card");
 		var expected = new[] { "street", "house", "cottage", "shop", "farm", "park", "wild-garden", "grant", "apartment", "cafe", "fountain", "factory", "sapling", "bank", "town-hall", "museum", "chamber-of-commerce", "gardeners-guild", "architects-studio", "land-claim", "monument" };
 		Check(expected.All(id => CardLibrary.TryGet(id,out _)),"original GDD section 5.6 playtest cards remain available");
 		Check(CardLibrary.All.All(c => c.Weight > 0 && !string.IsNullOrWhiteSpace(c.Rules) && !string.IsNullOrWhiteSpace(c.Icon)),"card metadata is populated");
 		Check(CardLibrary.All.Count(c => c.Rarity == Rarity.Common) == 10,"ten Common cards including the two low-weight economy events");
 		Check(CardLibrary.Get("bank").OwnershipLimit == 3 && CardLibrary.Get("museum").OwnershipLimit == 1,"Civic ownership limits");
-		Check(CardLibrary.Get("fountain").ParkSize == 2 && CardLibrary.Get("sapling").ParkSize == 1,"park size metadata");
+		Check(CardLibrary.All.Where(c=>c.ParkSize>0).All(c=>c.ParkSize==1),"every park card represents one physical tile");
 		Check(!CardLibrary.TryGet("missing",out _),"unknown cards rejected");
 		var match = new MatchState(5,5,123);
 		var id = new Guid("11111111-1111-1111-1111-111111111111");
@@ -45,7 +52,7 @@ public static class FoundationChecks
 		Check(match.GiveCard(id,"house"),"deal a House");
 		Check(!match.TryPlace(id,"house",2,1).Success && player.Hand.Count == 1,"no placement outside Build");
 		match.SetPhase(MatchPhase.Build,1,40);
-		Check(!match.TryPlace(id,"house",0,0).Success && player.Hand.Count == 1,"road requirement preserves hand");
+		Check(!match.TryPlace(id,"house",99,0).Success && player.Hand.Count == 1,"invalid placement preserves hand");
 		var placement = match.TryPlace(id,"house",2,1);
 		Check(placement.Success && placement.Cell.Owner == id && player.Hand.Count == 0,"place House from hand");
 		Check(placement.Cell.Order == 2 && placement.Cell.Age == 0 && placement.Cell.PlacedRound == 1,"placement order and age");
